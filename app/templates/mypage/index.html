@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>마이페이지</h1>
+
+<h2>회원 정보</h2>
+<p>이름: {{ current_user.name }}</p>
+<p>이메일: {{ current_user.email }}</p>
+
+{% if current_user.is_teacher() %}
+<h2>등록한 강좌</h2>
+<ul>
+    {% for course in current_user.courses %}
+    <li>{{ course.title }}</li>
+    {% endfor %}
+</ul>
+
+<h2>수강 신청한 학생</h2>
+<ul>
+    {% for enrollment in enrollments %}
+    <li>
+        {{ enrollment.student.name }} - {{ enrollment.course.title }}
+        {% if not enrollment.approved %}
+        <a href="{{ url_for('mypage.approve_enrollment', enrollment_id=enrollment.id) }}">승인</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<h2>수강 신청한 강좌</h2>
+<ul>
+    {% for enrollment in enrollments %}
+    <li>
+        {{ enrollment.course.title }}
+        {% if enrollment.approved %}
+        (수강 중)
+        {% else %}
+        (승인 대기 중)
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}홈페이지{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">강의 구독 서비스에 오신 것을 환영합니다!</h1>
+    <p class="lead">다양한 강의를 구독하고 학습할 수 있는 플랫폼입니다.</p>
+    <hr class="my-4">
+    <p>회원가입하고 강의를 탐색해 보세요.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('courses.course_list') }}" role="button">강의 목록 보기</a>
+</div>
+{% endblock %}

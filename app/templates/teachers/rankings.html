@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>선생님 순위</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>순위</th>
+        <th>선생님</th>
+        <th>수강생 수</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for teacher in rankings %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><a href="{{ url_for('teachers.profile', teacher_id=teacher.id) }}">{{ teacher.name }}</a></td>
+          <td>{{ teacher.get_student_count() }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

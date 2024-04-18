@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}강의 목록{% endblock %}
+
+{% block content %}
+<h2>강의 목록</h2>
+<div class="row">
+    {% for course in courses %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description }}</p>
+                <p class="card-text">가격: {{ course.price }}원</p>
+                {% if course.teacher %}
+                <p class="card-text">강사: {{ course.teacher.name }}</p>
+                <a href="{{ url_for('teachers.profile', teacher_id=course.teacher.id) }}" class="btn btn-secondary">강사 프로필 보기</a>
+                {% else %}
+                <p class="card-text">강사: 미정</p>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user != course.teacher %}
+                {% if course.teacher %}
+                <form action="{{ url_for('teachers.enroll', teacher_id=course.teacher.id) }}" method="post" class="d-inline">
+                    <input type="hidden" name="course_id" value="{{ course.id }}">
+                    <button type="submit" class="btn btn-primary">수강 신청</button>
+                </form>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if current_user.is_authenticated %}
+<div class="mt-4">
+    {% if current_user.is_teacher %}
+    <a href="{{ url_for('teachers.enrollments') }}" class="btn btn-primary">수강 신청 목록 보기</a>
+    {% else %}
+    <a href="{{ url_for('courses.course_list') }}" class="btn btn-primary">강의 목록 보기</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
