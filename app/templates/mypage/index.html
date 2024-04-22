@@ -38,7 +38,41 @@
         (승인 대기 중)
         {% endif %}
     </li>
+        {% if enrollment.student == current_user %}
+            <form action="{{ url_for('mypage.rate_course', enrollment_id=enrollment.id) }}" method="post">
+                <select name="rating">
+                    <option value="1">1점</option>
+                    <option value="2">2점</option>
+                    <option value="3">3점</option>
+                    <option value="4">4점</option>
+                    <option value="5">5점</option>
+                </select>
+                <button type="submit">평점 매기기</button>
+            </form>
+        {% endif %}
     {% endfor %}
 </ul>
 {% endif %}
+<h3>구독 정보</h3>
+{% if subscriptions %}
+  <table>
+    <thead>
+      <tr>
+        <th>결제일</th>
+        <th>구독 유효 기간</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for subscription in subscriptions %}
+        <tr>
+          <td>{{ subscription.payment_date.strftime('%Y-%m-%d') }}</td>
+          <td>{{ subscription.payment_date.strftime('%Y-%m-%d') }} ~ {{ subscription.expiration_date.strftime('%Y-%m-%d') }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>구독 정보가 없습니다.</p>
+{% endif %}
+
 {% endblock %}

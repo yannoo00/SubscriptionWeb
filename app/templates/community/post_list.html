@@ -3,43 +3,43 @@
 {% block title %}커뮤니티{% endblock %}
 
 {% block content %}
-  <div class="row">
+<div class="row">
     <div class="col-md-8">
-      <h1>커뮤니티</h1>
-      <div class="mb-3">
-        <a href="{{ url_for('community.new_post') }}" class="btn btn-primary">새 글 작성</a>
-      </div>
-      {% for post in posts %}
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.content|truncate(100) }}</p>
-            <p class="card-text"><small class="text-muted">작성자: {{ post.author.name }} ({{ post.author.role }})</small></p>
-            <a href="{{ url_for('community.post_detail', post_id=post.id) }}" class="btn btn-primary">더보기</a>
-          </div>
+        <h1>커뮤니티</h1>
+        <div class="mb-3">
+            <a href="{{ url_for('community.new_post') }}" class="btn btn-primary">새 글 작성</a>
         </div>
-      {% endfor %}
+        {% for post in posts %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content|truncate(100) }}</p>
+                <p class="card-text"><small class="text-muted">작성자: {{ post.author.name }} ({{ post.author.role }})</small></p>
+                <a href="{{ url_for('community.post_detail', post_id=post.id) }}" class="btn btn-primary">더보기</a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
     <div class="col-md-4">
-      <h3>선생님 랭킹</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>순위</th>
-            <th>선생님</th>
-            <th>수강생 수</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for teacher in rankings %}
-            <tr>
-              <td>{{ loop.index }}</td>
-              <td><a href="{{ url_for('teachers.profile', teacher_id=teacher.id) }}">{{ teacher.name }}</a></td>
-              <td>{{ teacher.get_student_count() }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <h3>선생님 랭킹</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>선생님</th>
+                    <th>점수</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher, score in rankings %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="{{ url_for('teachers.profile', teacher_id=teacher.id) }}">{{ teacher.name }}</a></td>
+                    <td>{{ score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-  </div>
+</div>
 {% endblock %}

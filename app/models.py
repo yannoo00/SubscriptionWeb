@@ -1,5 +1,6 @@
 from app import db
 from flask_login import UserMixin
+from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 
 class User(UserMixin, db.Model):
@@ -24,6 +25,16 @@ class Course(db.Model):
     teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     teacher = db.relationship('User', back_populates='courses')
     enrollments = db.relationship('Enrollment', back_populates='course', lazy=True)
+    @hybrid_property
+    def average_rating(self):
+        if self.enrollments:
+            total_rating = sum(enrollment.rating for enrollment in self.enrollments if enrollment.rating)
+            count = sum(1 for enrollment in self.enrollments if enrollment.rating)
+            return round(total_rating / count, 1) if count > 0 else None
+        return None
+    @hybrid_property
+    def rating_count(self):
+        return sum(1 for enrollment in self.enrollments if enrollment.rating)
 
 class Enrollment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,6 +43,7 @@ class Enrollment(db.Model):
     approved = db.Column(db.Boolean, default=False)
     student = db.relationship('User', back_populates='enrollments')
     course = db.relationship('Course', back_populates='enrollments')
+    rating = db.Column(db.Integer)
 
 class Mentorship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +69,19 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     author = db.relationship('User', backref=db.backref('comments', lazy=True))
     post = db.relationship('Post', backref=db.backref('comments', lazy=True))
+
+class Subscription(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    payment_date = db.Column(db.DateTime, default=datetime.utcnow)
+    expiration_date = db.Column(db.DateTime)
+
+    user = db.relationship('User', backref=db.backref('subscriptions', lazy=True))
+
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.payment_date = datetime.utcnow()
+        self.expiration_date = self.payment_date + timedelta(days=30)
 
 User.mentees = db.relationship('Mentorship', foreign_keys=[Mentorship.mentor_id], back_populates='mentor', lazy=True)
 User.mentors = db.relationship('Mentorship', foreign_keys=[Mentorship.mentee_id], back_populates='mentee', lazy=True)

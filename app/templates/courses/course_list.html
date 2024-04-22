@@ -12,6 +12,11 @@
                 <h5 class="card-title">{{ course.title }}</h5>
                 <p class="card-text">{{ course.description }}</p>
                 <p class="card-text">가격: {{ course.price }}원</p>
+                {% if course.average_rating %}
+                <p class="card-text">평균 평점: {{ course.average_rating }} ({{ course.rating_count }}개의 평가)</p>
+                {% else %}
+                <p class="card-text">평점 없음</p>
+                {% endif %}
                 {% if course.teacher %}
                 <p class="card-text">강사: {{ course.teacher.name }}</p>
                 <a href="{{ url_for('teachers.profile', teacher_id=course.teacher.id) }}" class="btn btn-secondary">강사 프로필 보기</a>

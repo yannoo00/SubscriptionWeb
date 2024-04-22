@@ -47,7 +47,14 @@ def reject_enrollment(enrollment_id):
 
 def get_teacher_rankings():
     teachers = User.query.filter_by(role='teacher').all()
-    rankings = sorted(teachers, key=lambda t: t.get_student_count(), reverse=True)
+    teacher_scores = []
+    for teacher in teachers:
+        enrollments = Enrollment.query.join(Course).filter(Course.teacher == teacher).all()
+        num_students = len(enrollments)
+        avg_rating = sum(enrollment.rating or 0 for enrollment in enrollments) / num_students if num_students > 0 else 0
+        score = num_students * avg_rating
+        teacher_scores.append((teacher, score))
+    rankings = sorted(teacher_scores, key=lambda x: x[1], reverse=True)
     return rankings
 
 @bp.route('/rankings')
