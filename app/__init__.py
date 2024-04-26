@@ -55,6 +55,6 @@ def load_user(user_id):
 
 
 #PAYMENTS
-TOSS_PAYMENTS_CLIENT_KEY = 'test_ck_ma60RZblrqomPN1xAM6e3wzYWBn1'
-TOSS_PAYMENTS_SECRET_KEY = 'test_sk_PBal2vxj81gGY9mwM0g2V5RQgOAN'
+TOSSPAYMENTS_CLIENT_KEY = 'test_ck_ma60RZblrqomPN1xAM6e3wzYWBn1'
+TOSSPAYMENTS_SECRET_KEY = 'test_sk_PBal2vxj81gGY9mwM0g2V5RQgOAN'
 TOSS_PAYMENTS_API_URL = 'https://api.tosspayments.com/v1/'
