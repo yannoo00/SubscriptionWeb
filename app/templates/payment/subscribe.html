@@ -1,28 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>구독하기</title>
-    <script src="https://js.tosspayments.com/v1"></script>
-</head>
-<body>
-    <h1>구독하기</h1>
-    <button id="payment-button">구독하기</button>
+{% extends 'base.html' %}
 
-    <script>
-        var clientKey = '{{ client_key }}';
-        var tossPayments = TossPayments(clientKey);
-        var button = document.getElementById('payment-button');
+{% block title %}구독하기{% endblock %}
 
-        button.addEventListener('click', function () {
-            tossPayments.requestPayment('카드', {
-                amount: 10000,
-                orderId: 'order_' + new Date().getTime(),
-                orderName: '월간 구독',
-                customerName: '{{ current_user.name }}',
-                successUrl: window.location.origin + '/payments/complete',
-                failUrl: window.location.origin + '/payments/fail'
-            });
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h1 class="card-title text-center">구독하기</h1>
+                    <p class="card-text text-center">월간 구독료: 10,000원</p>
+                    <form id="payment-form" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="text-center">
+                            <button id="payment-button" class="btn btn-primary btn-lg">구독하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://js.tosspayments.com/v1"></script>
+<script>
+    var clientKey = '{{ client_key }}';
+    var tossPayments = TossPayments(clientKey);
+    var button = document.getElementById('payment-button');
+
+    button.addEventListener('click', function () {
+        tossPayments.requestPayment('카드', {
+            amount: 10000,
+            orderId: 'order_' + new Date().getTime(),
+            orderName: '월간 구독',
+            customerName: '{{ current_user.name }}',
+            successUrl: window.location.origin + '/payments/complete',
+            failUrl: window.location.origin + '/payments/fail'
+        }).then(function (result) {
+            if (result.success) {
+                var paymentKey = result.paymentKey;
+                var orderId = result.orderId;
+                var amount = result.totalAmount;
+                window.location.href = '/payments/complete?paymentKey=' + paymentKey + '&orderId=' + orderId + '&amount=' + amount;
+            } else {
+                window.location.href = '/payments/fail';
+            }
         });
-    </script>
-</body>
-</html>
+    });
+</script>
+{% endblock %}

@@ -7,8 +7,9 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 import requests
+from flask_wtf.csrf import CSRFProtect
 
-
+csrf = CSRFProtect()
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -18,6 +19,8 @@ login_manager.login_view = 'auth.login'
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    csrf.init_app(app)
 
     db.init_app(app)
     migrate.init_app(app, db) #초기화
