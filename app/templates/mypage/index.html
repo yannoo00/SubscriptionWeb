@@ -54,23 +54,9 @@
 </ul>
 {% endif %}
 <h3>구독 정보</h3>
-{% if subscriptions %}
-  <table>
-    <thead>
-      <tr>
-        <th>결제일</th>
-        <th>구독 유효 기간</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for subscription in subscriptions %}
-        <tr>
-          <td>{{ subscription.payment_date.strftime('%Y-%m-%d') }}</td>
-          <td>{{ subscription.payment_date.strftime('%Y-%m-%d') }} ~ {{ subscription.expiration_date.strftime('%Y-%m-%d') }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+{% if current_user.subscription %}
+  <p>구독 시작일: {{ current_user.subscription.payment_date.strftime('%Y-%m-%d') }}</p>
+  <p>구독 종료일: {{ current_user.subscription.expiration_date.strftime('%Y-%m-%d') }}</p>
 {% else %}
   <p>구독 정보가 없습니다.</p>
 {% endif %}

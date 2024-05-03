@@ -14,8 +14,8 @@ def index():
     else:
         enrollments = current_user.enrollments
 
-    subscriptios = current_user.subscriptions
-    return render_template('mypage/index.html', enrollments=enrollments)
+    subscription = current_user.subscriptions
+    return render_template('mypage/index.html', enrollments=enrollments, subscription=subscription)
 
 
 @bp.route('/approve_enrollment/<int:enrollment_id>')
