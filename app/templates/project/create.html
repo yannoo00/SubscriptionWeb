@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>프로젝트 생성</h2>
+<form action="{{ url_for('project.create_project', course_id=course.id) }}" method="post">
+    {{ form.hidden_tag() }}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div>
+        {{ form.title.label }}
+        {{ form.title(required=True) }}
+    </div>
+    <div>
+        {{ form.description.label }}
+        {{ form.description(required=True) }}
+    </div>
+    <div>
+        {{ form.start_date.label }}
+        {{ form.start_date(required=True) }}
+    </div>
+    <div>
+        {{ form.end_date.label }}
+        {{ form.end_date(required=True) }}
+    </div>
+    {{ form.submit() }}
+</form>
+{% endblock %}

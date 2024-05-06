@@ -10,15 +10,22 @@ def profile(teacher_id):
     teacher = User.query.get_or_404(teacher_id)  # User 모델로 변경
     return render_template('teachers/profile.html', teacher=teacher)
 
-@bp.route('/<int:teacher_id>/enroll', methods=['POST'])
+@bp.route('/enroll/<int:course_id>', methods=['POST'])
 @login_required
-def enroll(teacher_id):
-    course_id = request.form['course_id']
-    enrollment = Enrollment(student_id=current_user.id, course_id=course_id)
-    db.session.add(enrollment)
-    db.session.commit()
-    flash('수강 신청이 완료되었습니다. 선생님의 승인을 기다려 주세요.', 'success')
-    return redirect(url_for('teachers.profile', teacher_id=teacher_id))
+def enroll(course_id):
+    course = Course.query.get_or_404(course_id)
+    if current_user.is_authenticated:
+        enrollment = Enrollment.query.filter_by(student=current_user, course=course).first()
+        if enrollment:
+            flash('이미 신청한 강좌입니다!', 'warning')
+        else:
+            enrollment = Enrollment(student=current_user, course=course)
+            db.session.add(enrollment)
+            db.session.commit()
+            flash('수강 신청이 완료되었습니다!', 'success')
+    else:
+        flash('로그인이 필요합니다.', 'warning')
+    return redirect(url_for('courses.course_list'))
 
 @bp.route('/enrollments')
 @login_required

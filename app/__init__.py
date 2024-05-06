@@ -8,6 +8,7 @@ from logging.handlers import RotatingFileHandler
 import os
 import requests
 from flask_wtf.csrf import CSRFProtect
+from app import forms
 
 csrf = CSRFProtect()
 
@@ -35,7 +36,7 @@ def create_app(config_class=Config):
     app.logger.setLevel(logging.INFO)
     app.logger.info('Application startup')
 
-    from app.views import mypage, auth, courses, payments, main, teachers, mypage, community
+    from app.views import mypage, auth, courses, payments, main, teachers, mypage, community, project
     app.register_blueprint(auth.bp, url_prefix='/auth')
     app.register_blueprint(courses.bp, url_prefix='/courses')
     app.register_blueprint(payments.bp, url_prefix='/payments')
@@ -43,6 +44,7 @@ def create_app(config_class=Config):
     app.register_blueprint(teachers.bp, url_prefix='/teachers')
     app.register_blueprint(mypage.bp, url_prefix='/mypage')
     app.register_blueprint(community.bp, url_prefix='/community')
+    app.register_blueprint(project.bp)
 
     #with app.app_context():
     #     db.create_all()

@@ -4,6 +4,17 @@
 
 {% block content %}
 <h2>강의 목록</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flashes">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
 <div class="row">
     {% for course in courses %}
     <div class="col-md-4">
@@ -25,10 +36,14 @@
                 {% endif %}
                 {% if current_user.is_authenticated and current_user != course.teacher %}
                 {% if course.teacher %}
-                <form action="{{ url_for('teachers.enroll', teacher_id=course.teacher.id) }}" method="post" class="d-inline">
-                    <input type="hidden" name="course_id" value="{{ course.id }}">
-                    <button type="submit" class="btn btn-primary">수강 신청</button>
+                {% if course.id not in enrolled_course_ids %}
+                <form action="{{ url_for('teachers.enroll', course_id=course.id) }}" method="post" class="d-inline">
+                    {{ form.hidden_tag() }}
+                    {{ form.submit(class="btn btn-primary") }}
                 </form>
+                {% else %}
+                <button class="btn btn-secondary" onclick="alert('이미 신청한 강좌입니다!')">수강 신청</button>
+                {% endif %}
                 {% endif %}
                 {% endif %}
             </div>
@@ -46,5 +61,4 @@
     {% endif %}
 </div>
 {% endif %}
-
 {% endblock %}

@@ -61,4 +61,17 @@
   <p>구독 정보가 없습니다.</p>
 {% endif %}
 
+{% if projects %}
+<h3>프로젝트 목록</h3>
+<ul>
+    {% for project in projects %}
+    <li>
+        <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+        <p>{{ project.description }}</p>
+        <p>시작일: {{ project.start_date }}, 종료일: {{ project.end_date }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% endblock %}

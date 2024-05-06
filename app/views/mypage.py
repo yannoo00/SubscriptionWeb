@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from app.models import Course, Enrollment, Subscription
+from app.models import Course, Enrollment, Subscription, Project
 from app import db
 
 bp = Blueprint('mypage', __name__, url_prefix='/mypage')
@@ -11,12 +11,12 @@ def index():
     if current_user.is_teacher():
         courses = current_user.courses
         enrollments = Enrollment.query.filter(Enrollment.course_id.in_([course.id for course in courses])).all()
+        projects = Project.query.filter(Project.course_id.in_([course.id for course in courses])).all()
     else:
         enrollments = current_user.enrollments
-
-    subscription = current_user.subscriptions
-    return render_template('mypage/index.html', enrollments=enrollments, subscription=subscription)
-
+        projects = Project.query.join(Course).filter(Course.id.in_([enrollment.course_id for enrollment in enrollments])).all()
+        
+    return render_template('mypage/index.html', enrollments=enrollments, projects=projects)
 
 @bp.route('/approve_enrollment/<int:enrollment_id>')
 @login_required

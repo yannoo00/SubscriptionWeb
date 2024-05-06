@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ project.title }}</h2>
+<p>{{ project.description }}</p>
+<p>시작일: {{ project.start_date }}, 종료일: {{ project.end_date }}</p>
+
+{% if current_user.role == 'student' %}
+<h3>프로젝트 제출</h3>
+<form action="{{ url_for('project.submit', project_id=project.id) }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="file" name="file" required>
+    <button type="submit">제출</button>
+</form>
+{% endif %}
+
+{% if current_user.role == 'teacher' %}
+<h3>제출된 프로젝트</h3>
+{% if submissions %}
+<ul>
+    {% for submission in submissions %}
+    <li>
+        <p>제출자: {{ submission.student.name }}</p>
+        <p>제출일시: {{ submission.submitted_at }}</p>
+        <a href="{{ url_for('project.download_submission', submission_id=submission.id) }}">다운로드</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>제출된 프로젝트가 없습니다.</p>
+{% endif %}
+{% endif %}
+{% endblock %}

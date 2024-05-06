@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>프로젝트 목록</h2>
+
+{% if current_user.is_teacher() %}
+<a href="{{ url_for('project.create_project_select') }}" class="btn btn-primary">프로젝트 생성</a>
+{% endif %}
+
+{% if projects %}
+<ul>
+    {% for project in projects %}
+    <li>
+        <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+        <p>{{ project.description }}</p>
+        <p>시작일: {{ project.start_date }}, 종료일: {{ project.end_date }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>참여 중인 프로젝트가 없습니다.</p>
+{% endif %}
+{% endblock %}

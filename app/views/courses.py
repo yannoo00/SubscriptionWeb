@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from app.models import Course
 from flask import current_app
 from app import db
+from app.forms import EnrollmentForm
 #from app.models import Teacher
 
 bp = Blueprint('courses', __name__, url_prefix='/courses')
@@ -10,11 +11,11 @@ bp = Blueprint('courses', __name__, url_prefix='/courses')
 @bp.route('/')
 @login_required
 def course_list():
-    current_app.logger.info('Entering course_list function')
     courses = Course.query.all()
-    current_app.logger.info('Rendering course_list template')
-    return render_template('courses/course_list.html', courses=courses)
-
+    form = EnrollmentForm()
+    enrollments = current_user.enrollments if current_user.is_authenticated else []
+    enrolled_course_ids = [enrollment.course_id for enrollment in enrollments]
+    return render_template('courses/course_list.html', courses=courses, form=form, enrolled_course_ids=enrolled_course_ids)
 
 @bp.route('/create', methods=['GET','POST'])
 @login_required

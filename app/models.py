@@ -25,6 +25,8 @@ class Course(db.Model):
     teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     teacher = db.relationship('User', back_populates='courses')
     enrollments = db.relationship('Enrollment', back_populates='course', lazy=True)
+    projects = db.relationship('Project', back_populates='course', lazy=True)
+
     @hybrid_property
     def average_rating(self):
         if self.enrollments:
@@ -69,6 +71,24 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     author = db.relationship('User', backref=db.backref('comments', lazy=True))
     post = db.relationship('Post', backref=db.backref('comments', lazy=True))
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+    course = db.relationship('Course', back_populates='projects')
+    submissions = db.relationship('ProjectSubmission', backref='project', lazy=True)
+
+class ProjectSubmission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    file_path = db.Column(db.String(255), nullable=False)
+    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    student = db.relationship('User', backref=db.backref('project_submissions', lazy=True))
 
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
