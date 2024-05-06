@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
-from app.models import Project, Course
+from app.models import Project, Course, ProjectSubmission
 from app.forms import ProjectForm
+from werkzeug.utils import secure_filename
 from app import db
 import os
 

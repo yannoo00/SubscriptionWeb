@@ -80,7 +80,7 @@ class Project(db.Model):
     end_date = db.Column(db.Date, nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     course = db.relationship('Course', back_populates='projects')
-    submissions = db.relationship('ProjectSubmission', backref='project', lazy=True)
+    submissions = db.relationship('ProjectSubmission', back_populates='project', lazy=True)
 
 class ProjectSubmission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -88,8 +88,8 @@ class ProjectSubmission(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     file_path = db.Column(db.String(255), nullable=False)
     submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    project = db.relationship('Project', back_populates='submissions')
     student = db.relationship('User', backref=db.backref('project_submissions', lazy=True))
-
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

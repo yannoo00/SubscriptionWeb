@@ -21,6 +21,8 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    app.config['UPLOAD_FOLDER'] = 'uploads'
+
     csrf.init_app(app)
 
     db.init_app(app)
