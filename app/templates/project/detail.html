@@ -17,15 +17,28 @@
 {% if current_user.role == 'teacher' %}
 <h3>제출된 프로젝트</h3>
 {% if submissions %}
-<ul>
-    {% for submission in submissions %}
-    <li>
-        <p>제출자: {{ submission.student.name }}</p>
-        <p>제출일시: {{ submission.submitted_at }}</p>
-        <a href="{{ url_for('project.download_submission', submission_id=submission.id) }}">다운로드</a>
-    </li>
-    {% endfor %}
-</ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>제출자</th>
+            <th>제출일시</th>
+            <th>파일</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for submission in submissions %}
+        <tr>
+            <td>{{ submission.student.name }}</td>
+            <td>{{ submission.submitted_at }}</td>
+            <td>
+                <a href="{{ url_for('project.download_submission', submission_id=submission.id) }}">
+                    {{ submission.file_path.split('/')[-1] }}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
 <p>제출된 프로젝트가 없습니다.</p>
 {% endif %}

@@ -24,11 +24,12 @@
 </div>
 {% endfor %}
 
-<form action="{{ url_for('community.new_comment', post_id=post.id) }}" method="POST">
+<h4>댓글 작성</h4>
+<form method="POST" action="{{ url_for('community.new_comment', post_id=post.id) }}">
+    {{ form.csrf_token }}
     <div class="form-group">
-        <label for="content">댓글 작성</label>
-        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+        {{ form.content(class='form-control', rows=3, placeholder='댓글을 입력하세요') }}
     </div>
-    <button type="submit" class="btn btn-primary">댓글 작성</button>
+    <button type="submit" class="btn btn-primary">작성</button>
 </form>
 {% endblock %}

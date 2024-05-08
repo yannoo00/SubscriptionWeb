@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>제출된 프로젝트</h2>
+
+{% if submissions %}
+<ul>
+    {% for submission in submissions %}
+    <li>
+        <p>제출자: {{ submission.student.name }}</p>
+        <p>제출일시: {{ submission.submitted_at }}</p>
+        <a href="{{ url_for('project.download_submission', submission_id=submission.id) }}">다운로드</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>제출된 프로젝트가 없습니다.</p>
+{% endif %}
+{% endblock %}

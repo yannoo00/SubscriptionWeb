@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
 from flask_login import login_required, current_user
 from app.models import Project, Course, ProjectSubmission
 from app.forms import ProjectForm
@@ -83,7 +83,8 @@ def delete_project(project_id):
 @login_required
 def detail(project_id):
     project = Project.query.get_or_404(project_id)
-    return render_template('project/detail.html', project=project)
+    submissions = ProjectSubmission.query.filter_by(project_id=project_id).all()
+    return render_template('project/detail.html', project=project, submissions=submissions)
 
 @bp.route('/submissions/<int:project_id>')
 @login_required
@@ -91,7 +92,7 @@ def submissions(project_id):
     project = Project.query.get_or_404(project_id)
     if project.course.teacher != current_user:
         flash('권한이 없습니다.', 'error')
-        return redirect(url_for('mypage.index'))
+        return redirect(url_for('project.list'))
     submissions = ProjectSubmission.query.filter_by(project_id=project_id).all()
     return render_template('project/submissions.html', project=project, submissions=submissions)
 
@@ -109,7 +110,16 @@ def submit(project_id):
             db.session.add(submission)
             db.session.commit()
             flash('프로젝트가 제출되었습니다.', 'success')
-            return redirect(url_for('mypage.index'))
+            return redirect(url_for('project.detail', project_id=project_id))
         else:
             flash('파일을 선택해주세요.', 'error')
     return render_template('project/submit.html', project=project)
+
+@bp.route('/download/<int:submission_id>')
+@login_required
+def download_submission(submission_id):
+    submission = ProjectSubmission.query.get_or_404(submission_id)
+    if submission.project.course.teacher != current_user:
+        flash('권한이 없습니다.', 'error')
+        return redirect(url_for('project.detail', project_id=submission.project.id))
+    return send_file(submission.file_path, as_attachment=True)
