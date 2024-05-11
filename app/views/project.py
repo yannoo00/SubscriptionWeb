@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
 from flask_login import login_required, current_user
-from app.models import Project, Course, ProjectSubmission
+from app.models import Project, Course, ProjectSubmission, Notification
 from app.forms import ProjectForm
 from werkzeug.utils import secure_filename
-from app import db
+from app import db, socketio
 import os
 
 bp = Blueprint('project', __name__, url_prefix='/project')
@@ -46,6 +46,14 @@ def create_project(course_id):
                           course_id=course_id)
         db.session.add(project)
         db.session.commit()
+
+        for enrollment in course.enrollments:
+            notification = Notification(user_id=enrollment.student_id, 
+                                        message=f"{course.title} 강좌에 새로운 프로젝트가 등록되었습니다: {project.title}")
+            db.session.add(notification)
+            socketio.emit('new_notification', {'message': notification.message}, room=str(enrollment.student_id))
+        db.session.commit()
+
         flash('프로젝트가 생성되었습니다.', 'success')
         return redirect(url_for('project.list'))
 

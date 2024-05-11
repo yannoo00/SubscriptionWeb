@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Teacher Profile</title>
-</head>
-<body>
-    <h1>Teacher Profile</h1>
-    <p>Name: {{ teacher.name }}</p>
-    <p>Email: {{ teacher.email }}</p>
-    <!-- 추가 정보 -->
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Teacher Profile</h1>
+<p>Name: {{ teacher.name }}</p>
+<p>Email: {{ teacher.email }}</p>
+{% if teacher.bio %}
+<h2>About</h2>
+<p>{{ teacher.bio }}</p>
+{% endif %}
+{% endblock %}

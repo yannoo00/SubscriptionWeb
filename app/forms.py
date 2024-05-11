@@ -1,8 +1,12 @@
 # app/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, DateField, FloatField, SubmitField, HiddenField
-from wtforms.validators import DataRequired
+from wtforms import StringField, TextAreaField, DateField, FloatField, SubmitField, HiddenField, IntegerField
+from wtforms.validators import DataRequired, NumberRange
+
+class RatingForm(FlaskForm):
+    rating = IntegerField('평점', validators=[DataRequired(), NumberRange(min=1, max=5)])
+    submit = SubmitField('평점 매기기')
 
 class ProjectForm(FlaskForm):
     title = StringField('제목', validators=[DataRequired()])
@@ -29,3 +33,7 @@ class PostForm(FlaskForm):
 class CommentForm(FlaskForm):
     content = TextAreaField('댓글', validators=[DataRequired()])
     submit = SubmitField('작성')
+
+class TeacherProfileForm(FlaskForm):
+    bio = TextAreaField('약력')
+    submit = SubmitField('저장')

@@ -12,6 +12,8 @@ class User(UserMixin, db.Model):
     enrollments = db.relationship('Enrollment', back_populates='student', lazy=True)
     courses = db.relationship('Course', back_populates='teacher', lazy=True)  # 강사가 가르치는 강좌들
     subscription = db.relationship('Subscription', uselist=False)
+    bio = db.Column(db.Text)
+    notifications = db.relationship('Notification', back_populates='user', lazy=True)
     def is_teacher(self):
         return self.role == 'teacher'
     def get_student_count(self):
@@ -101,6 +103,14 @@ class Subscription(db.Model):
         self.user_id = user_id
         self.payment_date = datetime.utcnow()
         self.expiration_date = self.payment_date + timedelta(days=30)
+
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    message = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    read = db.Column(db.Boolean, default=False)
+    user = db.relationship('User', back_populates='notifications')
 
 User.mentees = db.relationship('Mentorship', foreign_keys=[Mentorship.mentor_id], back_populates='mentor', lazy=True)
 User.mentors = db.relationship('Mentorship', foreign_keys=[Mentorship.mentee_id], back_populates='mentee', lazy=True)

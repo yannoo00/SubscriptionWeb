@@ -8,6 +8,12 @@
     <script src = "https://js.tosspayments.com/v1"></script>
 </head>
 <body>
+  <a href="{{ url_for('notification.index') }}">
+    알림
+    {% if current_user.notifications|selectattr('read', '==', False)|list|length > 0 %}
+      <span class="badge">{{ current_user.notifications|selectattr('read', '==', False)|list|length }}</span>
+    {% endif %}
+  </a>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">강의 구독 서비스</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,6 +75,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('new_notification', function(data) {
+        var notificationCount = document.getElementById('notification-count');
+        var count = parseInt(notificationCount.innerText) || 0;
+        notificationCount.innerText = count + 1;
+      });
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

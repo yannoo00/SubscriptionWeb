@@ -8,6 +8,10 @@
 <p>이메일: {{ current_user.email }}</p>
 
 {% if current_user.is_teacher() %}
+<a href="{{ url_for('mypage.profile') }}" class="btn btn-primary">프로필 수정</a>
+{% endif %}
+
+{% if current_user.is_teacher() %}
 <h2>등록한 강좌</h2>
 <ul>
     {% for course in current_user.courses %}
@@ -38,18 +42,13 @@
         (승인 대기 중)
         {% endif %}
     </li>
-        {% if enrollment.student == current_user %}
-            <form action="{{ url_for('mypage.rate_course', enrollment_id=enrollment.id) }}" method="post">
-                <select name="rating">
-                    <option value="1">1점</option>
-                    <option value="2">2점</option>
-                    <option value="3">3점</option>
-                    <option value="4">4점</option>
-                    <option value="5">5점</option>
-                </select>
-                <button type="submit">평점 매기기</button>
-            </form>
-        {% endif %}
+    {% if enrollment.student == current_user %}
+    <form action="{{ url_for('mypage.rate_course', enrollment_id=enrollment.id) }}" method="post">
+      {{ form.hidden_tag() }}
+      {{ form.rating.label }} {{ form.rating(class="form-control") }}
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+    {% endif %}
     {% endfor %}
 </ul>
 {% endif %}
