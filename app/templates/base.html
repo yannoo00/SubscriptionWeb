@@ -75,13 +75,21 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
     <script>
-      var socket = io();
+      var socket = io({
+        transports: ['websocket'],
+        upgrade:false,
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000,
+        reconnectionDelyMax: 5000
+      });
+
       socket.on('new_notification', function(data) {
-        var notificationCount = document.getElementById('notification-count');
-        var count = parseInt(notificationCount.innerText) || 0;
-        notificationCount.innerText = count + 1;
+        var notificationCount = $('#notification-count');
+        var count = parseInt(notificationCount.text()) || 0;
+        notificationCount.text(count + 1);
       });
     </script>
     {% block scripts %}{% endblock %}

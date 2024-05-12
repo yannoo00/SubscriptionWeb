@@ -11,7 +11,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(20), nullable=False)  # 'student' 또는 'teacher'
     enrollments = db.relationship('Enrollment', back_populates='student', lazy=True)
     courses = db.relationship('Course', back_populates='teacher', lazy=True)  # 강사가 가르치는 강좌들
-    subscription = db.relationship('Subscription', uselist=False)
+    subscription = db.relationship('Subscription', back_populates='subscriber', uselist=False)
     bio = db.Column(db.Text)
     notifications = db.relationship('Notification', back_populates='user', lazy=True)
     def is_teacher(self):
@@ -92,12 +92,13 @@ class ProjectSubmission(db.Model):
     submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
     project = db.relationship('Project', back_populates='submissions')
     student = db.relationship('User', backref=db.backref('project_submissions', lazy=True))
+
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     payment_date = db.Column(db.DateTime, default=datetime.utcnow)
     expiration_date = db.Column(db.DateTime)
-    subscriber = db.relationship('User', backref=db.backref('subscriptions', lazy=True))
+    subscriber = db.relationship('User', back_populates='subscription')
 
     def __init__(self, user_id):
         self.user_id = user_id

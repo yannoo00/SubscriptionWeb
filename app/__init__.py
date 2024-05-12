@@ -16,7 +16,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
-socketio = SocketIO()  # 전역으로 선언
+socketio = SocketIO()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -27,8 +27,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
-    
-    socketio.init_app(app, cors_allowed_origins="*")  # 여기서 초기화
+    socketio.init_app(app, cors_allowed_origins="*", async_mode= 'gevent')  # 여기서 초기화
 
     # 로거 설정
     file_handler = RotatingFileHandler('app.log', maxBytes=10240, backupCount=10)
@@ -49,9 +48,8 @@ def create_app(config_class=Config):
     app.register_blueprint(project.bp)
     app.register_blueprint(notification.bp, url_prefix='/notification')
 
-    return app
+    return app  # app만 반환
 
-# ...
 
 from app.models import User
 

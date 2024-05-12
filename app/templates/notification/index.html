@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>알림 목록</h1>
-  <ul>
-    {% for notification in notifications %}
-      <li class="{% if not notification.read %}unread{% endif %}">
-        <a href="{{ url_for('notification.read', notification_id=notification.id) }}">
-          {{ notification.message }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+<h1>알림 목록</h1>
+<ul>
+  {% for notification in notifications %}
+  <li>
+    <a href="{{ url_for('notification.read', notification_id=notification.id) }}" 
+       class="{% if not notification.read %}text-dark{% else %}text-muted{% endif %}">
+      {{ notification.message }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
 {% endblock %}
