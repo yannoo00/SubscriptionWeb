@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session
 from flask_login import login_user, logout_user, login_required, current_user
 from app.models import User, db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,16 +13,16 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
-
         if user and check_password_hash(user.password, password):
             login_user(user)
             current_app.logger.info(f'User {user.email} logged in successfully')
-            flash('로그인 되었습니다.', 'success')
+            if 'logged_in' not in session:
+                flash('로그인 되었습니다.', 'success')
+                session['logged_in'] = True
             return redirect(url_for('courses.course_list'))
         else:
             current_app.logger.info(f'Login failed for email {email}')
             flash('잘못된 이메일 또는 비밀번호입니다.', 'danger')
-
     current_app.logger.info('Rendering login template')
     return render_template('auth/login.html')
 
