@@ -2,25 +2,16 @@
 
 {% block content %}
 <h2>프로젝트 생성</h2>
-<form action="{{ url_for('project.create_project', course_id=course.id) }}" method="post">
-    {{ form.hidden_tag() }}
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <div>
+<form method="post">
+    {{ form.csrf_token }}
+    <div class="form-group">
         {{ form.title.label }}
-        {{ form.title(required=True) }}
+        {{ form.title(class="form-control") }}
     </div>
-    <div>
+    <div class="form-group">
         {{ form.description.label }}
-        {{ form.description(required=True) }}
+        {{ form.description(class="form-control") }}
     </div>
-    <div>
-        {{ form.start_date.label }}
-        {{ form.start_date(required=True) }}
-    </div>
-    <div>
-        {{ form.end_date.label }}
-        {{ form.end_date(required=True) }}
-    </div>
-    {{ form.submit() }}
+    <button type="submit" class="btn btn-primary">생성</button>
 </form>
 {% endblock %}

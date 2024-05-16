@@ -19,7 +19,7 @@ def login():
             if 'logged_in' not in session:
                 flash('로그인 되었습니다.', 'success')
                 session['logged_in'] = True
-            return redirect(url_for('courses.course_list'))
+            return redirect(url_for('main.index'))  # 적절한 경로로 수정해주세요.
         else:
             current_app.logger.info(f'Login failed for email {email}')
             flash('잘못된 이메일 또는 비밀번호입니다.', 'danger')
@@ -33,8 +33,6 @@ def logout():
     flash('로그아웃 되었습니다.', 'success')
     return redirect(url_for('main.index'))
 
-
-
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     current_app.logger.info(f'Entering register function, request.method={request.method}')
@@ -43,8 +41,6 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        role = request.form['role']
-
         user = User.query.filter_by(email=email).first()
         if user:
             current_app.logger.info(f'Registration failed for email {email}, user already exists')
@@ -53,12 +49,11 @@ def register():
             current_app.logger.info('Registration failed, passwords do not match')
             flash('비밀번호가 일치하지 않습니다.', 'danger')
         else:
-            new_user = User(name=name, email=email, password=generate_password_hash(password, method='pbkdf2:sha256'), role=role)
+            new_user = User(name=name, email=email, password=generate_password_hash(password, method='pbkdf2:sha256'))
             db.session.add(new_user)
             db.session.commit()
             current_app.logger.info(f'New user {email} registered successfully')
             flash('회원가입이 완료되었습니다.', 'success')
             return redirect(url_for('auth.login'))
-
     current_app.logger.info('Rendering register template')
     return render_template('auth/register.html')

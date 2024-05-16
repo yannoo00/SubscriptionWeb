@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>게시글 작성</h2>
+<form method="post">
+    <div class="form-group">
+        <textarea name="content" class="form-control" rows="5"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">작성</button>
+</form>
+{% endblock %}
