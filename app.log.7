@@ -1,4 +1,4 @@
-2024-05-18 18:05:01,249 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
+2024-05-18 18:05:01,590 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
 Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2529, in wsgi_app
     response = self.full_dispatch_request()
@@ -39,7 +39,7 @@ Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/werkzeug/routing/map.py", line 917, in build
     raise BuildError(endpoint, values, method, self)
 werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'courses.course_list'. Did you mean 'community.post_list' instead?
-2024-05-18 18:05:01,363 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
+2024-05-18 21:24:23,902 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
 Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2529, in wsgi_app
     response = self.full_dispatch_request()
@@ -69,8 +69,7 @@ Traceback (most recent call last):
   File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/index.html", line 1, in top-level template code
     {% extends 'base.html' %}
   File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/base.html", line 28, in top-level template code
-    <a class="nav-link" href="{{ url_for('courses.course_list') }}">강의 목록</a>
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    <li class="nav-item">
   File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2034, in url_for
     return self.handle_url_build_error(error, endpoint, values)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -80,7 +79,7 @@ Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/werkzeug/routing/map.py", line 917, in build
     raise BuildError(endpoint, values, method, self)
 werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'courses.course_list'. Did you mean 'community.post_list' instead?
-2024-05-18 18:05:01,467 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
+2024-05-18 21:24:24,729 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
 Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2529, in wsgi_app
     response = self.full_dispatch_request()
@@ -110,8 +109,7 @@ Traceback (most recent call last):
   File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/index.html", line 1, in top-level template code
     {% extends 'base.html' %}
   File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/base.html", line 28, in top-level template code
-    <a class="nav-link" href="{{ url_for('courses.course_list') }}">강의 목록</a>
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    <li class="nav-item">
   File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2034, in url_for
     return self.handle_url_build_error(error, endpoint, values)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

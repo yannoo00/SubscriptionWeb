@@ -11,8 +11,9 @@ bp = Blueprint('project', __name__, url_prefix='/project')
 @bp.route('/list')
 @login_required
 def list_projects():
-    projects = current_user.projects
+    projects = Project.query.all()
     return render_template('project/list.html', projects=projects)
+
 
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -23,13 +24,7 @@ def create_project():
         db.session.add(project)
         db.session.commit()
         flash('프로젝트가 생성되었습니다.', 'success')
-        
-        # 프로젝트 생성 알림 보내기
-        notification = Notification(user=current_user, message=f'새 프로젝트가 생성되었습니다: {project.title}')
-        db.session.add(notification)
-        db.session.commit()
-        
-        return redirect(url_for('project.detail', project_id=project.id))
+        return redirect(url_for('project.list_projects'))  # 프로젝트 목록 페이지로 리다이렉트
     return render_template('project/create.html', form=form)
 
 @bp.route('/edit/<int:project_id>', methods=['GET', 'POST'])

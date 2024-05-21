@@ -1,4 +1,4 @@
-2024-05-17 02:58:37,385 ERROR: Exception on /project/list [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
+2024-05-17 02:58:40,287 ERROR: Exception on / [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
 Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
     self.dialect.do_execute(
@@ -21,18 +21,20 @@ Traceback (most recent call last):
   File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1799, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/utils.py", line 284, in decorated_view
-    elif not current_user.is_authenticated:
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/werkzeug/local.py", line 316, in __get__
-    obj = instance._get_current_object()
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/werkzeug/local.py", line 520, in _get_current_object
-    return get_name(local())  # type: ignore
-                    ^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/utils.py", line 25, in <lambda>
-    current_user = LocalProxy(lambda: _get_user())
-                                      ^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/main.py", line 7, in index
+    return render_template('index.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 147, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 128, in _render
+    app.update_template_context(context)
+  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 997, in update_template_context
+    context.update(func())
+                   ^^^^^^
+  File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/utils.py", line 405, in _user_context_processor
+    return dict(current_user=_get_user())
+                             ^^^^^^^^^^^
   File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/utils.py", line 370, in _get_user
     current_app.login_manager._load_user()
   File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/login_manager.py", line 364, in _load_user
