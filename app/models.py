@@ -11,9 +11,6 @@ class User(UserMixin, db.Model):
     bio = db.Column(db.Text)
     notifications = db.relationship('Notification', back_populates='user', lazy=True)
     projects = db.relationship('ProjectParticipant', back_populates='user', lazy=True)
-    mentor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    mentor = db.relationship('User', remote_side=[id], backref=db.backref('mentees', lazy=True))
-    assignments = db.relationship('Assignment', backref='user', lazy=True)
     subscription = db.relationship('Subscription', back_populates='subscriber', uselist=False)
 
 class Project(db.Model):

@@ -6,71 +6,33 @@
 <h2>회원 정보</h2>
 <p>이름: {{ current_user.name }}</p>
 <p>이메일: {{ current_user.email }}</p>
-
-{% if current_user.is_teacher() %}
 <a href="{{ url_for('mypage.profile') }}" class="btn btn-primary">프로필 수정</a>
-{% endif %}
 
-{% if current_user.is_teacher() %}
-<h2>등록한 강좌</h2>
-<ul>
-    {% for course in current_user.courses %}
-    <li>{{ course.title }}</li>
-    {% endfor %}
-</ul>
-
-<h2>수강 신청한 학생</h2>
-<ul>
-    {% for enrollment in enrollments %}
-    <li>
-        {{ enrollment.student.name }} - {{ enrollment.course.title }}
-        {% if not enrollment.approved %}
-        <a href="{{ url_for('mypage.approve_enrollment', enrollment_id=enrollment.id) }}">승인</a>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<h2>수강 신청한 강좌</h2>
-<ul>
-    {% for enrollment in enrollments %}
-    <li>
-        {{ enrollment.course.title }}
-        {% if enrollment.approved %}
-        (수강 중)
-        {% else %}
-        (승인 대기 중)
-        {% endif %}
-    </li>
-    {% if enrollment.student == current_user %}
-    <form action="{{ url_for('mypage.rate_course', enrollment_id=enrollment.id) }}" method="post">
-      {{ form.hidden_tag() }}
-      {{ form.rating.label }} {{ form.rating(class="form-control") }}
-      {{ form.submit(class="btn btn-primary") }}
-    </form>
-    {% endif %}
-    {% endfor %}
-</ul>
-{% endif %}
-<h3>구독 정보</h3>
-{% if current_user.subscription %}
-  <p>구독 시작일: {{ current_user.subscription.payment_date.strftime('%Y-%m-%d') }}</p>
-  <p>구독 종료일: {{ current_user.subscription.expiration_date.strftime('%Y-%m-%d') }}</p>
-{% else %}
-  <p>구독 정보가 없습니다.</p>
-{% endif %}
-
+<h2>프로젝트 목록</h2>
 {% if projects %}
-<h3>프로젝트 목록</h3>
 <ul>
     {% for project in projects %}
     <li>
-        <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
-        <p>{{ project.description }}</p>
-        <p>시작일: {{ project.start_date }}, 종료일: {{ project.end_date }}</p>
+        <a href="{{ url_for('project.detail', project_id=project.project.id) }}">{{ project.project.title }}</a>
+        <p>{{ project.project.description }}</p>
+        {% if project.project.completed %}
+        <p>프로젝트 완료</p>
+        {% else %}
+        <p>진행 중</p>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
+{% else %}
+<p>참여한 프로젝트가 없습니다.</p>
+{% endif %}
+
+<h2>구독 정보</h2>
+{% if current_user.subscription %}
+<p>구독 시작일: {{ current_user.subscription.payment_date.strftime('%Y-%m-%d') }}</p>
+<p>구독 종료일: {{ current_user.subscription.expiration_date.strftime('%Y-%m-%d') }}</p>
+{% else %}
+<p>구독 정보가 없습니다.</p>
 {% endif %}
 
 {% endblock %}

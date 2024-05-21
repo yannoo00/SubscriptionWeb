@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>회원 목록</h1>
+<ul>
+    {% for user in users %}
+    <li>
+        {{ user.name }}
+        {% if user != current_user %}
+        <form action="{{ url_for('mentorship.request_mentorship', mentor_id=user.id) }}" method="post">
+            <button type="submit" class="btn btn-primary">멘토링 신청</button>
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

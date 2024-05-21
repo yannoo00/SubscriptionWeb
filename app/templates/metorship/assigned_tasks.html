@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>할당한 과제 목록</h1>
+<ul>
+    {% for task in tasks %}
+    <li>
+        <h2>{{ task.title }}</h2>
+        <p>부사수: {{ task.mentee.name }}</p>
+        <p>내용: {{ task.description }}</p>
+        <p>제출 기한: {{ task.deadline.strftime('%Y-%m-%d') }}</p>
+        <p>상태: {% if task.completed %}완료{% else %}미완료{% endif %}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

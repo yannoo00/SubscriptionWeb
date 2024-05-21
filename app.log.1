@@ -1,121 +1,95 @@
-2024-05-13 14:16:37,776 ERROR: Exception on /teachers/enrollments [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
+2024-05-20 14:13:02,123 ERROR: Exception on /mentorship/ [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
 Traceback (most recent call last):
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2529, in wsgi_app
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1825, in full_dispatch_request
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
     rv = self.handle_user_exception(e)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1823, in full_dispatch_request
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
     rv = self.dispatch_request()
          ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1799, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/teachers.py", line 35, in enrollments
-    return render_template('teachers/enrollments.html', enrollments=enrollments)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 146, in render_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/mentorship.py", line 13, in index
+    return render_template('mentorship/index.html', users=users)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 149, in render_template
     template = app.jinja_env.get_or_select_template(template_name_or_list)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/environment.py", line 1081, in get_or_select_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1084, in get_or_select_template
     return self.get_template(template_name_or_list, parent, globals)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/environment.py", line 1010, in get_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1013, in get_template
     return self._load_template(name, globals)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/environment.py", line 969, in _load_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 972, in _load_template
     template = self.loader.load(self, name, self.make_globals(globals))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/loaders.py", line 125, in load
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/loaders.py", line 126, in load
     source, filename, uptodate = self.get_source(environment, name)
                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 62, in get_source
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 65, in get_source
     return self._get_source_fast(environment, template)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 98, in _get_source_fast
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 99, in _get_source_fast
     raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: teachers/enrollments.html
-2024-05-13 14:17:05,315 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:17:05,316 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-13 14:17:10,347 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:17:10,442 INFO: User teacher@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:19]
-2024-05-13 14:19:37,104 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:19:37,104 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-13 14:23:05,497 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:23:05,498 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-13 14:23:08,798 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:23:08,892 INFO: User teacher@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:19]
-2024-05-13 14:23:10,918 ERROR: Exception on /teachers/enrollments [GET] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
+jinja2.exceptions.TemplateNotFound: mentorship/index.html
+2024-05-20 14:13:36,125 ERROR: Exception on /mentorship/ [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
 Traceback (most recent call last):
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2529, in wsgi_app
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1825, in full_dispatch_request
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
     rv = self.handle_user_exception(e)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1823, in full_dispatch_request
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
     rv = self.dispatch_request()
          ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1799, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask_login/utils.py", line 290, in decorated_view
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/teachers.py", line 35, in enrollments
-    return render_template('teachers/enrollments.html', enrollments=enrollments)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 146, in render_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/mentorship.py", line 13, in index
+    return render_template('mentorship/index.html', users=users)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 149, in render_template
     template = app.jinja_env.get_or_select_template(template_name_or_list)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/environment.py", line 1081, in get_or_select_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1084, in get_or_select_template
     return self.get_template(template_name_or_list, parent, globals)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/environment.py", line 1010, in get_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1013, in get_template
     return self._load_template(name, globals)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/environment.py", line 969, in _load_template
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 972, in _load_template
     template = self.loader.load(self, name, self.make_globals(globals))
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/jinja2/loaders.py", line 125, in load
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/loaders.py", line 126, in load
     source, filename, uptodate = self.get_source(environment, name)
                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 62, in get_source
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 65, in get_source
     return self._get_source_fast(environment, template)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/templating.py", line 98, in _get_source_fast
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 99, in _get_source_fast
     raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: teachers/enrollments.html
-2024-05-13 14:24:17,910 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:38]
-2024-05-13 14:24:31,501 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:24:31,501 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-13 14:24:34,406 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:24:34,504 INFO: User teacher@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:19]
-2024-05-13 14:35:15,749 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:38]
-2024-05-13 14:35:24,542 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:35:24,542 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:28]
-2024-05-13 14:35:30,140 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-13 14:35:30,238 INFO: User teacher@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:19]
-2024-05-13 14:35:30,238 ERROR: Exception on /auth/login [POST] [in /opt/anaconda3/lib/python3.11/site-packages/flask/app.py:1744]
-Traceback (most recent call last):
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 2529, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1825, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1823, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/anaconda3/lib/python3.11/site-packages/flask/app.py", line 1799, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py", line 20, in login
-    if 'logged_in' not in session:
-                          ^^^^^^^
-NameError: name 'session' is not defined
-2024-05-13 14:37:54,630 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:38]
+jinja2.exceptions.TemplateNotFound: mentorship/index.html
+2024-05-20 14:56:18,964 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-05-21 12:29:10,030 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-05-21 12:31:33,679 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
+2024-05-21 12:31:33,680 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
+2024-05-21 12:31:38,972 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
+2024-05-21 12:31:39,134 INFO: User a@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
+2024-05-21 12:34:35,993 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-05-21 12:41:17,153 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-05-21 12:44:42,388 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-05-21 12:44:52,424 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
+2024-05-21 12:44:52,424 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
+2024-05-21 12:44:58,055 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
+2024-05-21 12:44:58,216 INFO: User a@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
