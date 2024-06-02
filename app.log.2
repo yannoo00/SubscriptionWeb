@@ -1,93 +1,77 @@
-2024-05-29 15:26:22,777 ERROR: Exception on /mentorship/received_tasks [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+2024-06-02 16:10:10,621 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:10:12,593 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:10:19,805 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 16:10:19,805 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
+2024-06-02 16:10:22,969 INFO: Entering login function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 16:10:23,474 INFO: User a@naver.com logged in successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:18]
+2024-06-02 16:10:29,208 ERROR: Exception on /mentorship/download_file/xyz-pretotype-_pmf.pdf [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
 Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
     response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
     rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
     rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/mentorship.py", line 76, in received_tasks
-    return render_template('mentorship/received_tasks.html', tasks=tasks)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 102, in download_file
+    return send_file(file_path, as_attachment=True)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\helpers.py", line 499, in send_file
+    return werkzeug.utils.send_file(  # type: ignore[return-value]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\werkzeug\utils.py", line 428, in send_file
+    stat = os.stat(path)
+FileNotFoundError: [WinError 3] 지정된 경로를 찾을 수 없습니다: 'C:\\Users\\My\\Desktop\\Yannoo\\Blending\\SubscriptionWeb\\app\\uploads\\xyz-pretotype-_pmf.pdf'
+2024-06-02 16:20:12,020 ERROR: Exception on /mentorship/download_file/xyz-pretotype-_pmf.pdf [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 102, in download_file
+    return send_file(file_path, as_attachment=True)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\helpers.py", line 499, in send_file
+    return werkzeug.utils.send_file(  # type: ignore[return-value]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\werkzeug\utils.py", line 428, in send_file
+    stat = os.stat(path)
+FileNotFoundError: [WinError 3] 지정된 경로를 찾을 수 없습니다: 'C:\\Users\\My\\Desktop\\Yannoo\\Blending\\SubscriptionWeb\\app\\uploads\\xyz-pretotype-_pmf.pdf'
+2024-06-02 16:23:10,461 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:28:37,070 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:28:37,380 ERROR: Exception on /mentorship/assigned_tasks [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 69, in assigned_tasks
+    return render_template('mentorship/assigned_tasks.html', tasks=tasks)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1081, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1010, in get_template
+    return self._load_template(name, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 969, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\loaders.py", line 137, in load
+    code = environment.compile(source, name, filename)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 768, in compile
+    self.handle_exception(source=source_hint)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
     raise rewrite_traceback_stack(source=source)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/mentorship/received_tasks.html", line 1, in top-level template code
-    {% extends 'base.html' %}
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/base.html", line 66, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/mentorship/received_tasks.html", line 18, in block 'content'
-    {{ form.hidden_tag() }}
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 487, in getattr
-    return getattr(obj, attribute)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.UndefinedError: 'form' is undefined
-2024-05-29 15:28:39,285 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:29:12,308 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:30:50,470 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-29 15:30:50,471 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-29 15:30:53,982 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-29 15:30:54,067 INFO: User a@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-05-30 17:23:15,962 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 17:23:16,236 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 17:25:19,361 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 17:28:43,340 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 17:28:43,604 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 18:43:23,666 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 18:44:06,095 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-30 18:44:06,096 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-30 18:44:12,436 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-30 18:44:12,534 INFO: User a@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-05-30 18:45:08,357 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-30 18:45:08,358 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-30 18:45:13,103 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-30 18:45:13,200 INFO: User a2@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-05-30 18:45:36,827 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-30 18:45:36,829 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-05-30 18:45:39,528 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-05-30 18:45:39,623 INFO: User a@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-05-30 18:48:39,889 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 23:18:40,216 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 23:20:27,877 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 23:23:28,679 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 23:23:58,678 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-30 23:23:58,948 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 16:37:34,357 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 16:37:34,632 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 16:48:35,021 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 16:48:36,356 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 16:48:37,714 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:00:27,723 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:00:34,845 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:00:39,370 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:00:48,014 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:00:48,300 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:05:01,695 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:05:01,966 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:26:24,249 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-06-01 17:26:24,250 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-06-01 17:26:31,013 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-06-01 17:26:31,107 INFO: User a2@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-06-01 17:27:05,120 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-06-01 17:27:05,121 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-06-01 17:27:08,826 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-06-01 17:27:08,895 INFO: User a@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-06-01 17:45:23,180 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-01 17:46:18,354 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\templates\mentorship\assigned_tasks.html", line 14, in template
+    <p><a href="{{ url_for('mentorship.download_file', filename=task.file}}">제출된 과제 파일 다운로드</a></p>
+jinja2.exceptions.TemplateSyntaxError: unexpected '}', expected ')'

@@ -21,7 +21,7 @@ socketio = SocketIO()
 def create_app(config_class=Config):
     app = Flask(__name__, template_folder='templates')
     app.config.from_object(config_class)
-    app.config['UPLOAD_FOLDER'] = 'uploads'
+    app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'uploads')
     csrf.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)

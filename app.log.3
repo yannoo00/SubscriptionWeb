@@ -1,98 +1,95 @@
-2024-05-29 15:00:58,698 ERROR: Exception on /mentorship/received_tasks [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+2024-06-02 13:13:22,495 INFO: Entering register function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
+2024-06-02 13:13:22,505 INFO: Rendering register template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:58]
+2024-06-02 13:13:24,120 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 13:13:24,120 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
+2024-06-02 13:13:27,945 INFO: Entering login function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 13:13:27,948 ERROR: Exception on /auth/login [POST] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
 Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/mentorship.py", line 72, in received_tasks
-    return render_template('mentorship/received_tasks.html', tasks=tasks)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/mentorship/received_tasks.html", line 1, in top-level template code
-    {% extends 'base.html' %}
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/base.html", line 66, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/mentorship/received_tasks.html", line 17, in block 'content'
-    <form action="{{ url_for('mentorship.submit_task', task_id=task.id) }}" method="post" enctype="multipart/form-data">
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1084, in url_for
-    return self.handle_url_build_error(error, endpoint, values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1073, in url_for
-    rv = url_adapter.build(  # type: ignore[union-attr]
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/werkzeug/routing/map.py", line 924, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'mentorship.submit_task' with values ['task_id']. Did you mean 'mentorship.assign_task' instead?
-2024-05-29 15:13:57,320 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:20:09,777 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:21:13,268 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:21:33,026 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:21:48,811 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:22:24,949 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:22:53,029 ERROR: Exception on /mentorship/received_tasks [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 1970, in _exec_single_context
+    self.dialect.do_execute(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: user
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
     response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
     rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
     rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/mentorship.py", line 75, in received_tasks
-    return render_template('mentorship/received_tasks.html', tasks=tasks)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/mentorship/received_tasks.html", line 1, in top-level template code
-    {% extends 'base.html' %}
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/base.html", line 66, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/mentorship/received_tasks.html", line 18, in block 'content'
-    {{ form.hidden_tag() }}
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 487, in getattr
-    return getattr(obj, attribute)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.UndefinedError: 'form' is undefined
-2024-05-29 15:24:08,395 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:24:45,409 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:25:36,793 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-05-29 15:25:48,288 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py", line 15, in login
+    user = User.query.filter_by(email=email).first()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\orm\query.py", line 2728, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\orm\query.py", line 2827, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\orm\session.py", line 2306, in execute
+    return self._execute_internal(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\orm\session.py", line 2191, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 1421, in execute
+    return meth(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\sql\elements.py", line 514, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 1849, in _execute_context
+    return self._exec_single_context(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 1989, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 2356, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\base.py", line 1970, in _exec_single_context
+    self.dialect.do_execute(
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user
+[SQL: SELECT user.id AS user_id, user.name AS user_name, user.email AS user_email, user.password AS user_password, user.bio AS user_bio 
+FROM user 
+WHERE user.email = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('a@naver.com', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-06-02 13:16:05,218 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 13:16:10,231 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 13:27:42,079 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 13:30:56,463 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 13:31:28,603 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 13:31:57,846 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 13:32:03,792 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 14:45:04,375 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 14:46:11,122 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 14:46:39,602 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 15:22:37,363 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 15:29:55,161 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 15:30:01,744 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 15:30:07,758 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 15:30:09,665 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 15:30:54,222 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 15:30:54,222 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
+2024-06-02 15:30:56,301 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 15:30:56,301 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
+2024-06-02 15:30:57,905 INFO: Entering register function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
+2024-06-02 15:30:57,906 INFO: Rendering register template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:58]
+2024-06-02 15:31:06,011 INFO: Entering register function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
+2024-06-02 15:31:06,574 INFO: New user a@naver.com registered successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:55]
+2024-06-02 15:31:06,578 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 15:31:06,578 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
+2024-06-02 15:31:09,908 INFO: Entering login function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 15:31:10,413 INFO: User a@naver.com logged in successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:18]
+2024-06-02 15:31:23,683 INFO: Entering register function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
+2024-06-02 15:31:23,683 INFO: Rendering register template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:58]
+2024-06-02 15:31:30,044 INFO: Entering register function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
+2024-06-02 15:31:30,567 INFO: New user a2@naver.com registered successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:55]
+2024-06-02 15:31:30,571 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 15:31:30,571 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
+2024-06-02 15:31:33,796 INFO: Entering login function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
+2024-06-02 15:31:34,304 INFO: User a2@naver.com logged in successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:18]
+2024-06-02 15:31:40,607 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
