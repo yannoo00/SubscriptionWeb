@@ -1,16 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>할당한 과제 목록</h1>
+<h1>받은 과제 목록</h1>
 <ul>
-    {% for task in tasks %}
+  {% for task in tasks %}
     <li>
-        <h2>{{ task.title }}</h2>
-        <p>부사수: {{ task.mentee.name }}</p>
-        <p>내용: {{ task.description }}</p>
-        <p>제출 기한: {{ task.deadline.strftime('%Y-%m-%d') }}</p>
-        <p>상태: {% if task.completed %}완료{% else %}미완료{% endif %}</p>
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+      <p>마감일: {{ task.deadline.strftime('%Y-%m-%d') }}</p>
+      
+      {% if task.file %}
+        <p><a href="{{ url_for('mentorship.download_file', filename=task.file) }}">과제 파일 다운로드</a></p>
+      {% endif %}
+      
+      {% if not task.completed %}
+        <form action="{{ url_for('mentorship.submit_task', task_id=task.id) }}" method="post" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="form-group">
+            <label for="file">과제 파일 제출:</label>
+            <input type="file" class="form-control-file" id="file" name="file" required>
+          </div>
+          <button type="submit" class="btn btn-primary">제출</button>
+        </form>
+      {% else %}
+        <p>완료됨</p>
+      {% endif %}
+      
     </li>
-    {% endfor %}
+  {% endfor %}
 </ul>
 {% endblock %}

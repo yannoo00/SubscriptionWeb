@@ -26,7 +26,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
-    socketio.init_app(app, cors_allowed_origins="*", async_mode='gevent')
+    socketio.init_app(app, cors_allowed_origins="*")
 
     file_handler = RotatingFileHandler('app.log', maxBytes=10240, backupCount=10)
     file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))

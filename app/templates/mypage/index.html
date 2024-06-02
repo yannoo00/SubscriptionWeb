@@ -1,32 +1,31 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <h1>마이페이지</h1>
-
 <h2>회원 정보</h2>
 <p>이름: {{ current_user.name }}</p>
 <p>이메일: {{ current_user.email }}</p>
 <a href="{{ url_for('mypage.profile') }}" class="btn btn-primary">프로필 수정</a>
-
 <h2>프로젝트 목록</h2>
 {% if projects %}
 <ul>
-    {% for project in projects %}
-    <li>
-        <a href="{{ url_for('project.detail', project_id=project.project.id) }}">{{ project.project.title }}</a>
-        <p>{{ project.project.description }}</p>
-        {% if project.project.completed %}
-        <p>프로젝트 완료</p>
-        {% else %}
-        <p>진행 중</p>
-        {% endif %}
-    </li>
-    {% endfor %}
+  {% for project in projects %}
+  <li>
+    <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+    <p>{{ project.description }}</p>
+    <p>시작일: {{ project.start_date.strftime('%Y-%m-%d') }}</p>
+    <p>종료일: {{ project.end_date.strftime('%Y-%m-%d') }}</p>
+    <p>클라이언트: {{ project.client.name }}</p>
+    <p>참여자: 
+      {% for participant in project.participants %}
+        {{ participant.name }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  </li>
+  {% endfor %}
 </ul>
 {% else %}
 <p>참여한 프로젝트가 없습니다.</p>
 {% endif %}
-
 <h2>구독 정보</h2>
 {% if current_user.subscription %}
 <p>구독 시작일: {{ current_user.subscription.payment_date.strftime('%Y-%m-%d') }}</p>
@@ -34,5 +33,4 @@
 {% else %}
 <p>구독 정보가 없습니다.</p>
 {% endif %}
-
 {% endblock %}

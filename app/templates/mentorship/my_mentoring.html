@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>나의 멘토링</h1>
+
+<h2>내가 멘토인 멘티 목록</h2>
+<ul>
+  {% for mentee in current_user.mentees %}
+    <li>{{ mentee.name }}</li>
+  {% endfor %}
+</ul>
+
+<h2>나의 멘토 목록</h2>
+<ul>
+  {% for mentor in current_user.mentors %}
+    <li>{{ mentor.name }}</li>
+  {% endfor %}
+</ul>
+
+<a href="{{ url_for('mentorship.assign_task') }}" class="btn btn-primary">과제 할당</a>
+<a href="{{ url_for('mentorship.assigned_tasks') }}" class="btn btn-primary">할당된 과제</a>
+<a href="{{ url_for('mentorship.received_tasks') }}" class="btn btn-primary">받은 과제</a>
+
+{% endblock %}

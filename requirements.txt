@@ -2,3 +2,5 @@ flask
 flask-sqlalchemy
 flask-login
 python-dotenv
+gevent
+gevent-websocket

@@ -21,9 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('project.list_projects') }}">프로젝트</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('community.post_list') }}">커뮤니티</a>
-                </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('mentorship.index') }}">멘토십</a>

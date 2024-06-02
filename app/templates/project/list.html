@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
-
 {% block content %}
-    <h2>프로젝트 목록</h2>
-    <a href="{{ url_for('project.create_project') }}" class="btn btn-primary mb-3">프로젝트 생성</a>
-    <ul>
-        {% for project in projects %}
-            <li>
-                <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
-                {% if current_user.is_authenticated %}
-                    {% if current_user not in project.participants %}
-                        <form action="{{ url_for('project.participate', project_id=project.id) }}" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-primary">참여하기</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+<h2>프로젝트 목록</h2>
+<a href="{{ url_for('project.create_project') }}" class="btn btn-primary mb-3">프로젝트 생성</a>
+<ul>
+{% for project in projects %}
+    <li>
+        <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+        {% if current_user.is_authenticated %}
+            {% if current_user in project.participants %}
+                <span class="badge badge-success">참여중</span>
+            {% else %}
+                <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
+                    {{ form.csrf_token }}
+                    <button type="submit" class="btn btn-primary">참여하기</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
 {% endblock %}

@@ -5,29 +5,40 @@
 <p>{{ project.description }}</p>
 <p>의뢰자: {{ project.client.name }}</p>
 <p>참여자:
-    {% for participant in project.participants %}
-    {{ participant.user.name }}{% if not loop.last %}, {% endif %}
-    {% endfor %}
+{% for participant in project.participants %}
+    {{ participant.name }}{% if not loop.last %}, {% endif %}
+{% endfor %}
 </p>
+
 {% if not project.completed %}
-<a href="{{ url_for('project.participate', project_id=project.id) }}" class="btn btn-primary">참여하기</a>
-{% if current_user.id == project.client_id %}
-<a href="{{ url_for('project.complete_project', project_id=project.id) }}" class="btn btn-success">완료하기</a>
-{% endif %}
+    {% if current_user not in project.participants %}
+    <a href="{{ url_for('project.participate', project_id=project.id) }}" class="btn btn-primary">참여하기</a>
+    {% endif %}
+    {% if current_user.id == project.client_id %}
+    <a href="{{ url_for('project.complete_project', project_id=project.id) }}" class="btn btn-success">완료하기</a>
+    {% endif %}
 {% else %}
 <p>프로젝트 완료</p>
 {% endif %}
 
 <hr>
+
 <h3>게시글 작성</h3>
 <form action="{{ url_for('project.create_post', project_id=project.id) }}" method="post">
+    {{ post_form.csrf_token }}
     <div class="form-group">
-        <textarea name="content" class="form-control" rows="3"></textarea>
+        {{ post_form.title.label }}
+        {{ post_form.title(class="form-control") }}
     </div>
-    <button type="submit" class="btn btn-primary">작성</button>
+    <div class="form-group">
+        {{ post_form.content.label }}
+        {{ post_form.content(class="form-control", rows="3") }}
+    </div>
+    {{ post_form.submit(class="btn btn-primary") }}
 </form>
 
 <hr>
+
 <h3>게시글 목록</h3>
 {% for post in project.posts %}
 <div class="card my-3">
@@ -35,6 +46,7 @@
         <p class="card-text">{{ post.content }}</p>
         <p class="card-text">작성자: {{ post.user.name }}</p>
         <form action="{{ url_for('project.create_comment', post_id=post.id) }}" method="post">
+            {{ comment_form.csrf_token }}
             <div class="form-group">
                 <textarea name="content" class="form-control" rows="2"></textarea>
             </div>
