@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
-from flask_socketio import SocketIO
+from flask_login import LoginManager, current_user
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from config import Config
 import logging
 from logging.handlers import RotatingFileHandler
@@ -44,7 +44,21 @@ def create_app(config_class=Config):
     app.register_blueprint(project.bp)
     app.register_blueprint(notification.bp, url_prefix='/notification')
     app.register_blueprint(mentorship.bp, url_prefix='/mentorship')
+
+    @socketio.on('connect')
+    def handle_connect():
+        if current_user.is_authenticated:
+            join_room(current_user.id)
+    
+    @socketio.on('disconnect')
+    def handle_disconnect():
+        if current_user.is_authenticated:
+            leave_room(current_user.id)
+
     return app
+
+def send_notification(user_id, message):
+    socketio.emit('notification', {'message':message}, room = user_id)
 
 from app.models import User
 

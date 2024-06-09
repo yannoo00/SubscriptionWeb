@@ -51,6 +51,7 @@ class Project(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     client_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     client = db.relationship('User', back_populates='created_projects')
+    completed = db.Column(db.Boolean, default=False)
     participants = db.relationship('User', secondary='project_participant', back_populates='projects', overlaps="project_participants")
     project_participants = db.relationship('ProjectParticipant', back_populates='project', lazy=True, overlaps="participants,projects")
 
@@ -58,6 +59,7 @@ class ProjectParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    hours_contributed = db.Column(db.Float, default=0.0)    
     user = db.relationship('User', back_populates='project_participants', overlaps="participants,projects")
     project = db.relationship('Project', back_populates='project_participants', overlaps="participants,projects")
 

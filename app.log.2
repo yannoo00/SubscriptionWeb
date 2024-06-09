@@ -1,77 +1,104 @@
-2024-06-02 16:10:10,621 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
-2024-06-02 16:10:12,593 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
-2024-06-02 16:10:19,805 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-02 16:10:19,805 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
-2024-06-02 16:10:22,969 INFO: Entering login function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-02 16:10:23,474 INFO: User a@naver.com logged in successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:18]
-2024-06-02 16:10:29,208 ERROR: Exception on /mentorship/download_file/xyz-pretotype-_pmf.pdf [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+2024-06-04 16:52:57,354 ERROR: Exception on /project/detail/1 [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
 Traceback (most recent call last):
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 102, in download_file
-    return send_file(file_path, as_attachment=True)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\helpers.py", line 499, in send_file
-    return werkzeug.utils.send_file(  # type: ignore[return-value]
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\werkzeug\utils.py", line 428, in send_file
-    stat = os.stat(path)
-FileNotFoundError: [WinError 3] 지정된 경로를 찾을 수 없습니다: 'C:\\Users\\My\\Desktop\\Yannoo\\Blending\\SubscriptionWeb\\app\\uploads\\xyz-pretotype-_pmf.pdf'
-2024-06-02 16:20:12,020 ERROR: Exception on /mentorship/download_file/xyz-pretotype-_pmf.pdf [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such column: project_participant.hours_contributed
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
     rv = self.dispatch_request()
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
-  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 102, in download_file
-    return send_file(file_path, as_attachment=True)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\helpers.py", line 499, in send_file
-    return werkzeug.utils.send_file(  # type: ignore[return-value]
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\werkzeug\utils.py", line 428, in send_file
-    stat = os.stat(path)
-FileNotFoundError: [WinError 3] 지정된 경로를 찾을 수 없습니다: 'C:\\Users\\My\\Desktop\\Yannoo\\Blending\\SubscriptionWeb\\app\\uploads\\xyz-pretotype-_pmf.pdf'
-2024-06-02 16:23:10,461 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
-2024-06-02 16:28:37,070 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
-2024-06-02 16:28:37,380 ERROR: Exception on /mentorship/assigned_tasks [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
-Traceback (most recent call last):
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
-    response = self.full_dispatch_request()
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 69, in assigned_tasks
-    return render_template('mentorship/assigned_tasks.html', tasks=tasks)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\templating.py", line 149, in render_template
-    template = app.jinja_env.get_or_select_template(template_name_or_list)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1081, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1010, in get_template
-    return self._load_template(name, globals)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 969, in _load_template
-    template = self.loader.load(self, name, self.make_globals(globals))
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\loaders.py", line 137, in load
-    code = environment.compile(source, name, filename)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 768, in compile
-    self.handle_exception(source=source_hint)
-  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 91, in detail
+    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form, contribution_form = contribution_form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
     raise rewrite_traceback_stack(source=source)
-  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\templates\mentorship\assigned_tasks.html", line 14, in template
-    <p><a href="{{ url_for('mentorship.download_file', filename=task.file}}">제출된 과제 파일 다운로드</a></p>
-jinja2.exceptions.TemplateSyntaxError: unexpected '}', expected ')'
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/project/detail.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/base.html", line 66, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/project/detail.html", line 30, in block 'content'
+    {% for participant in project.project_participants %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 487, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py", line 566, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py", line 1086, in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py", line 1121, in _fire_loader_callables
+    return self.callable_(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/strategies.py", line 967, in _load_for_state
+    return self._emit_lazyload(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/strategies.py", line 1130, in _emit_lazyload
+    result = session.execute(
+             ^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2351, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2236, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+    return meth(
+           ^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2353, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 924, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: project_participant.hours_contributed
+[SQL: SELECT project_participant.id AS project_participant_id, project_participant.user_id AS project_participant_user_id, project_participant.project_id AS project_participant_project_id, project_participant.hours_contributed AS project_participant_hours_contributed 
+FROM project_participant 
+WHERE ? = project_participant.project_id]
+[parameters: (1,)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-06-04 16:54:26,614 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-04 16:54:33,195 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-04 16:54:59,786 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-04 16:55:00,071 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]

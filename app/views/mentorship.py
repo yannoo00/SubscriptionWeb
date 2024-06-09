@@ -3,9 +3,9 @@ from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from wtforms.validators import DataRequired
-from app.models import User, Assignment
+from app.models import User, Assignment, Notification
 from app.forms import AssignTaskForm, RequestMentorshipForm, AcceptMentorshipForm, SubmitTaskForm
-from app import db
+from app import db, send_notification
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
@@ -127,7 +127,13 @@ def assign_task():
         for mentee in current_user.mentees:
             assignment = Assignment(mentor=current_user, mentee=mentee, title=title, description=description, deadline=deadline, file=file_path)
             db.session.add(assignment)
-        
+
+            notification = Notification(user=mentee, message=f"{current_user.name}님이 새로운 과제를 할당했습니다.")
+            db.session.add(notification)
+            db.session.commit()
+
+            send_notification(mentee.id, f"{current_user.name}님이 새로운 과제를 할당했습니다.")
+
         db.session.commit()
         
         flash('과제가 성공적으로 할당되었습니다.', 'success')

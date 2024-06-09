@@ -1,0 +1,101 @@
+2024-06-02 16:28:38,293 ERROR: Exception on /mentorship/assigned_tasks [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 69, in assigned_tasks
+    return render_template('mentorship/assigned_tasks.html', tasks=tasks)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1081, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1010, in get_template
+    return self._load_template(name, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 969, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\loaders.py", line 137, in load
+    code = environment.compile(source, name, filename)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 768, in compile
+    self.handle_exception(source=source_hint)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\templates\mentorship\assigned_tasks.html", line 14, in template
+    <p><a href="{{ url_for('mentorship.download_file', filename=task.file}}">제출된 과제 파일 다운로드</a></p>
+jinja2.exceptions.TemplateSyntaxError: unexpected '}', expected ')'
+2024-06-02 16:28:46,676 ERROR: Exception on /mentorship/assigned_tasks [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 69, in assigned_tasks
+    return render_template('mentorship/assigned_tasks.html', tasks=tasks)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1081, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1010, in get_template
+    return self._load_template(name, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 969, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\loaders.py", line 137, in load
+    code = environment.compile(source, name, filename)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 768, in compile
+    self.handle_exception(source=source_hint)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\templates\mentorship\assigned_tasks.html", line 14, in template
+    <p><a href="{{ url_for('mentorship.download_file', filename=task.file}}">제출된 과제 파일 다운로드</a></p>
+jinja2.exceptions.TemplateSyntaxError: unexpected '}', expected ')'
+2024-06-02 16:28:48,741 ERROR: Exception on /mentorship/assigned_tasks [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\mentorship.py", line 69, in assigned_tasks
+    return render_template('mentorship/assigned_tasks.html', tasks=tasks)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1081, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 1010, in get_template
+    return self._load_template(name, globals)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 969, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\loaders.py", line 137, in load
+    code = environment.compile(source, name, filename)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 768, in compile
+    self.handle_exception(source=source_hint)
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\env\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\templates\mentorship\assigned_tasks.html", line 14, in template
+    <p><a href="{{ url_for('mentorship.download_file', filename=task.file}}">제출된 과제 파일 다운로드</a></p>
+jinja2.exceptions.TemplateSyntaxError: unexpected '}', expected ')'
+2024-06-02 16:29:13,798 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:29:15,485 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:37:35,406 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:38:23,434 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-02 16:42:50,309 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-03 13:25:18,070 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-03 13:32:17,071 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-03 13:32:17,337 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]

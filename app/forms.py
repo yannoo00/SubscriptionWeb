@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField
+from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField
 from wtforms.validators import DataRequired, NumberRange
 
 class RatingForm(FlaskForm):
@@ -46,3 +46,7 @@ class AcceptMentorshipForm(FlaskForm):
 class SubmitTaskForm(FlaskForm):
     file = FileField('과제 파일', validators=[DataRequired(), FileAllowed(['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'gif', 'zip', 'rar'])])
     submit = SubmitField('제출')
+
+class ContributionForm(FlaskForm):
+    hours = FloatField('참여 시간', validators=[DataRequired()])
+    submit = SubmitField('기록')

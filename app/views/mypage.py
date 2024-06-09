@@ -9,8 +9,9 @@ bp = Blueprint('mypage', __name__, url_prefix='/mypage')
 @bp.route('/')
 @login_required
 def index():
-    projects = current_user.projects
-    return render_template('mypage/index.html', projects=projects)
+    participating_projects = current_user.projects
+    created_projects = current_user.created_projects
+    return render_template('mypage/index.html', participating_projects=participating_projects, created_projects=created_projects)
 
 @bp.route('/profile', methods=['GET', 'POST'])
 @login_required

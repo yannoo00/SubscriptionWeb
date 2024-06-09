@@ -12,7 +12,9 @@
 
 {% if not project.completed %}
     {% if current_user not in project.participants %}
-    <a href="{{ url_for('project.participate', project_id=project.id) }}" class="btn btn-primary">참여하기</a>
+    <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
+        <button type="submit" class="btn btn-primary">참여하기</button>
+    </form>
     {% endif %}
     {% if current_user.id == project.client_id %}
     <a href="{{ url_for('project.complete_project', project_id=project.id) }}" class="btn btn-success">완료하기</a>
@@ -22,6 +24,25 @@
 {% endif %}
 
 <hr>
+
+<h3>참여자 기여 시간</h3>
+<ul>
+  {% for participant in project.project_participants %}
+    <li>{{ participant.user.name }}: {{ participant.hours_contributed }} 시간</li>
+  {% endfor %}
+</ul>
+
+{% if current_user in project.participants %}
+  <h4>참여 시간 기록</h4>
+  <form action="{{ url_for('project.contribute', project_id=project.id) }}" method="post">
+    {{ contribution_form.csrf_token }}
+    <div class="form-group">
+      {{ contribution_form.hours.label }}
+      {{ contribution_form.hours(class="form-control") }}
+    </div>
+    {{ contribution_form.submit(class="btn btn-primary") }}
+  </form>
+{% endif %}
 
 <h3>게시글 작성</h3>
 <form action="{{ url_for('project.create_post', project_id=project.id) }}" method="post">

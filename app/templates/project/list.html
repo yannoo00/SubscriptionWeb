@@ -7,7 +7,9 @@
     <li>
         <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
         {% if current_user.is_authenticated %}
-            {% if current_user in project.participants %}
+            {% if project.completed %}
+                <span class="btn btn-secondary disabled">완료됨</span>
+            {% elif current_user in project.participants %}
                 <span class="badge badge-success">참여중</span>
             {% else %}
                 <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">

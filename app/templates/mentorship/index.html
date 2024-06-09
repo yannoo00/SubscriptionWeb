@@ -8,7 +8,20 @@
 <ul>
   {% for user in users %}
     <li>
-      {{ user.name }}
+      <h3>{{ user.name }}</h3>
+      {% if user.created_projects %}
+        <p>완료한 프로젝트:</p>
+        <ul>
+          {% for project in user.created_projects|selectattr('completed') %}
+            <li>
+              <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>완료한 프로젝트가 없습니다.</p>
+      {% endif %}
+      
       {% if user != current_user %}
         {% if user in current_user.mentors %}
           <span class="badge bg-secondary">멘토링 중</span>

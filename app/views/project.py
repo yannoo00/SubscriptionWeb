@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
 from flask_login import login_required, current_user
-from app.models import Project, Notification, ProjectPost, ProjectComment
-from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm
+from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant
+from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm
 from werkzeug.utils import secure_filename
 from app import db
 import os
@@ -87,7 +87,8 @@ def detail(project_id):
     project = Project.query.get_or_404(project_id)
     post_form = PostForm()
     comment_form = CommentForm()
-    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form)
+    contribution_form = ContributionForm()
+    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form, contribution_form = contribution_form)
 
 @bp.route('/participate/<int:project_id>', methods=['POST'])
 @login_required
@@ -116,4 +117,22 @@ def complete_project(project_id):
             notification = Notification(user=participant, message=f'프로젝트 {project.title}이(가) 완료되었습니다.')
             db.session.add(notification)
         db.session.commit()
+    return redirect(url_for('project.detail', project_id=project_id))
+
+@bp.route('/contribute/<int:project_id>', methods=['POST'])
+@login_required
+def contribute(project_id):
+    project = Project.query.get_or_404(project_id)
+    form = ContributionForm()
+    if form.validate_on_submit():
+        participant = ProjectParticipant.query.filter_by(user=current_user, project=project).first()
+        if participant:
+            if participant.hours_contributed is None:
+                participant.hours_contributed = form.hours.data
+            else:
+                participant.hours_contributed += form.hours.data
+            db.session.commit()
+            flash('참여 시간이 기록되었습니다.', 'success')
+        else:
+            flash('프로젝트에 참여한 회원만 참여 시간을 기록할 수 있습니다.', 'warning')
     return redirect(url_for('project.detail', project_id=project_id))

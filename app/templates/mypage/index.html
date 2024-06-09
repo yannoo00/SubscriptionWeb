@@ -5,10 +5,12 @@
 <p>이름: {{ current_user.name }}</p>
 <p>이메일: {{ current_user.email }}</p>
 <a href="{{ url_for('mypage.profile') }}" class="btn btn-primary">프로필 수정</a>
-<h2>프로젝트 목록</h2>
-{% if projects %}
+<h2>진행 중인 프로젝트</h2>
+<h3>참여한 프로젝트</h3>
+{% set ongoing_participating_projects = participating_projects|rejectattr('completed') %}
+{% if ongoing_participating_projects %}
 <ul>
-  {% for project in projects %}
+  {% for project in ongoing_participating_projects %}
   <li>
     <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
     <p>{{ project.description }}</p>
@@ -24,7 +26,70 @@
   {% endfor %}
 </ul>
 {% else %}
-<p>참여한 프로젝트가 없습니다.</p>
+<p>진행 중인 참여 프로젝트가 없습니다.</p>
+{% endif %}
+<h3>의뢰한 프로젝트</h3>
+{% set ongoing_created_projects = created_projects|rejectattr('completed') %}
+{% if ongoing_created_projects %}
+<ul>
+  {% for project in ongoing_created_projects %}
+  <li>
+    <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+    <p>{{ project.description }}</p>
+    <p>시작일: {{ project.start_date.strftime('%Y-%m-%d') }}</p>
+    <p>종료일: {{ project.end_date.strftime('%Y-%m-%d') }}</p>
+    <p>참여자: 
+      {% for participant in project.participants %}
+        {{ participant.name }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>진행 중인 의뢰 프로젝트가 없습니다.</p>
+{% endif %}
+<h2>완료한 프로젝트</h2>
+{% set completed_participating_projects = participating_projects|selectattr('completed') %}
+{% if completed_participating_projects %}
+<ul>
+  {% for project in completed_participating_projects %}
+  <li>
+    <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+    <p>{{ project.description }}</p>
+    <p>시작일: {{ project.start_date.strftime('%Y-%m-%d') }}</p>
+    <p>종료일: {{ project.end_date.strftime('%Y-%m-%d') }}</p>
+    <p>클라이언트: {{ project.client.name }}</p>
+    <p>참여자: 
+      {% for participant in project.participants %}
+        {{ participant.name }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>완료한 참여 프로젝트가 없습니다.</p>
+{% endif %}
+{% set completed_created_projects = created_projects|selectattr('completed') %}
+{% if completed_created_projects %}
+<ul>
+  {% for project in completed_created_projects %}
+  <li>
+    <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
+    <p>{{ project.description }}</p>
+    <p>시작일: {{ project.start_date.strftime('%Y-%m-%d') }}</p>
+    <p>종료일: {{ project.end_date.strftime('%Y-%m-%d') }}</p>
+    <p>참여자: 
+      {% for participant in project.participants %}
+        {{ participant.name }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>완료한 의뢰 프로젝트가 없습니다.</p>
 {% endif %}
 <h2>구독 정보</h2>
 {% if current_user.subscription %}
