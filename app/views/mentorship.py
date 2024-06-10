@@ -73,7 +73,7 @@ def assigned_tasks():
 def received_tasks():
     tasks = current_user.received_assignments
     form = SubmitTaskForm()
-    return render_template('mentorship/received_tasks.html', tasks=tasks, form=form)
+    return render_template('mentorship/received_tasks.html', tasks=tasks, form=form, datetime = datetime)
 
 @bp.route('/complete_task/<int:task_id>', methods=['POST'])
 @login_required

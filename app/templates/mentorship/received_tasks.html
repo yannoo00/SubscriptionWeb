@@ -10,14 +10,18 @@
       <p>마감일: {{ task.deadline.strftime('%Y-%m-%d') }}</p>
 
       {% if not task.completed %}
-        <form action="{{ url_for('mentorship.submit_task', task_id=task.id) }}" method="post" enctype="multipart/form-data">
-          {{ form.hidden_tag() }}
-          <div class="form-group">
-            <label for="file">과제 파일 제출:</label>
-            <input type="file" class="form-control-file" id="file" name="file" required>
-          </div>
-          <button type="submit" class="btn btn-primary">제출</button>
-        </form>
+        {% if not task.is_past_due() %}
+          <form action="{{ url_for('mentorship.submit_task', task_id=task.id) }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+              <label for="file">과제 파일 제출:</label>
+              <input type="file" class="form-control-file" id="file" name="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">제출</button>
+          </form>
+        {% else %}
+          <button type="button" class="btn btn-secondary" disabled>마감</button>
+        {% endif %}
       {% else %}
         <p>완료됨</p>
       {% endif %}

@@ -1,7 +1,7 @@
 from app import db
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 mentorship = db.Table('mentorship',
     db.Column('mentor_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
@@ -93,7 +93,10 @@ class Assignment(db.Model):
     mentor = db.relationship('User', foreign_keys=[mentor_id], backref=db.backref('given_assignments', lazy=True))
     mentee = db.relationship('User', foreign_keys=[mentee_id], backref=db.backref('received_assignments', lazy=True))
     file = db.Column(db.String(255), nullable = True)
-
+    def is_past_due(self):
+        return datetime.now(timezone.utc) > self.deadline.replace(tzinfo = timezone.utc)
+    def is_completed(self):
+        return self.completed or self.is_past_due()
 
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)

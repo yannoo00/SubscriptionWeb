@@ -8,7 +8,7 @@
     <h3>{{ task.title }}</h3>
     <p>마감일: {{ task.deadline.strftime('%Y-%m-%d') }}</p>
     <p>멘티: {{ task.mentee.name }}</p>
-    <p>상태: {% if task.completed %}완료{% else %}진행 중{% endif %}</p>
+    <p>상태: {% if task.is_completed() %}완료됨{% else %}진행 중{% endif %}</p>
     {% if task.completed %}
       {% if task.file %}
       <p><a href="{{ url_for('mentorship.download_file', filename=task.file) }}">제출된 과제 파일 다운로드</a></p>
