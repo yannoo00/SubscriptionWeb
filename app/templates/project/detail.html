@@ -4,18 +4,57 @@
 <h2>{{ project.title }}</h2>
 <p>{{ project.description }}</p>
 <p>의뢰자: {{ project.client.name }}</p>
+
+
+{% if current_user in project.participants or current_user == project.client %}
+<a href="{{ url_for('project.progress', project_id=project.id) }}" class="btn btn-secondary">진행상황</a>
+<a href="{{ url_for('project.plan', project_id=project.id) }}" class="btn btn-info">기획 페이지</a>
+{% endif %}
+
+
+{% if current_user != project.client %}  <!-- 의뢰자가 아닌 경우에만 참여 버튼 및 상태 표시 -->
+  {% if not project.completed %}
+    {% set participant = project.project_participants|selectattr('user', 'equalto', current_user)|first %}
+    {% if not participant %}
+      <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
+        <button type="submit" class="btn btn-primary">참가 신청</button>
+      </form>
+    {% elif not participant.accepted %}
+      <p>참가 신청 대기 중입니다.</p>
+    {% endif %}
+  {% endif %}
+{% endif %}
+
 <p>참여자:
 {% for participant in project.participants %}
     {{ participant.name }}{% if not loop.last %}, {% endif %}
 {% endfor %}
 </p>
 
+{% if current_user.id == project.client_id and not project.completed %}
+<a href="{{ url_for('project.complete_project', project_id=project.id) }}" class="btn btn-success">완료하기</a>
+{% endif %}
+
+{% if current_user.id == project.client_id %}
+  <h4>참가 신청 목록</h4>
+  <ul>
+    {% for participant in project.project_participants %}
+      {% if not participant.accepted %}
+        <li>
+            {{ participant.user.name }}
+            <form action="{{ url_for('project.accept_participant', project_id=project.id) }}" method="post" class="d-inline">
+                {{ accept_form.csrf_token }}  <!-- csrf_token 사용 -->
+                <input type="hidden" name="user_id" value="{{ participant.user.id }}">
+                {{ accept_form.submit(class='btn btn-sm btn-success') }}  <!-- submit 버튼 사용 -->
+            </form>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+
 {% if not project.completed %}
-    {% if current_user not in project.participants %}
-    <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
-        <button type="submit" class="btn btn-primary">참여하기</button>
-    </form>
-    {% endif %}
     {% if current_user.id == project.client_id %}
     <a href="{{ url_for('project.complete_project', project_id=project.id) }}" class="btn btn-success">완료하기</a>
     {% endif %}

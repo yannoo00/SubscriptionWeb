@@ -1,6 +1,11 @@
-flask
+flask == 3.0.1
 flask-sqlalchemy
 flask-login
 python-dotenv
 gevent
 gevent-websocket
+Werkzeug == 3.0.1
+flask_migrate
+flask_socketio
+requests
+flask_wtf

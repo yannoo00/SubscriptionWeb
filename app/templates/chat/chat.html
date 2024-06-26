@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ chat_room.name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ chat_room.name }}</h1>
+  <div id="messages" class="mb-3">
+    {% for message in messages %}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">{{ message.sender.name }}</h5>
+          <p class="card-text">{{ message.content }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <form id="message-form" method="POST" action="{{ url_for('send_message', chat_room_id=chat_room.id) }}">
+    <div class="input-group">
+      <input type="text" id="content" name="content" class="form-control" required>
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-primary">전송</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    const room = "{{ chat_room.id }}";
+    const username = "{{ current_user.name }}";
+
+    socket.emit('join', { username: username, room: room });
+
+    document.querySelector('#message-form').onsubmit = function(e) {
+      e.preventDefault();
+      let message = document.querySelector('#content').value;
+      socket.emit('message', { username: username, room: room, message: message });
+      document.querySelector('#content').value = '';
+    };
+
+    socket.on('message', function(data) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('card', 'mb-2');
+      messageElement.innerHTML = `
+        <div class="card-body">
+          <h5 class="card-title">${data.username}</h5>
+          <p class="card-text">${data.message}</p>
+        </div>
+      `;
+      document.querySelector('#messages').append(messageElement);
+    });
+
+    socket.on('status', function(data) {
+      const statusElement = document.createElement('div');
+      statusElement.classList.add('alert', 'alert-info');
+      statusElement.innerHTML = data.msg;
+      document.querySelector('#messages').append(statusElement);
+    });
+
+    window.onbeforeunload = function() {
+      socket.emit('leave', { username: username, room: room });
+    };
+  </script>
+{% endblock %}

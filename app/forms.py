@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField
+from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField
 from wtforms.validators import DataRequired, NumberRange
 
 class RatingForm(FlaskForm):
@@ -50,3 +50,21 @@ class SubmitTaskForm(FlaskForm):
 class ContributionForm(FlaskForm):
     hours = FloatField('참여 시간', validators=[DataRequired()])
     submit = SubmitField('기록')
+
+class AcceptParticipantForm(FlaskForm):
+    user_id = HiddenField('User ID', validators=[DataRequired()])
+    submit = SubmitField('수락')
+
+class ProjectProgressForm(FlaskForm):
+    date = DateField('날짜', validators=[DataRequired()])
+    description = TextAreaField('진행내용', validators=[DataRequired()])
+    submit = SubmitField('기록')    
+
+
+class RequirementForm(FlaskForm):
+    requirement = StringField('Requirement', validators=[DataRequired()])
+
+class ProjectPlanForm(FlaskForm):
+    overview = TextAreaField('Project Overview', validators=[DataRequired()])
+    flowchart = TextAreaField('Flowchart', validators=[DataRequired()])
+    submit = SubmitField('Save')

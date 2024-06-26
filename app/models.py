@@ -23,6 +23,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     bio = db.Column(db.Text)
+    chat_rooms = db.relationship('ChatRoom', secondary='chat_room_participant', back_populates='participants', overlaps="chat_room_participants")
+    chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='user', overlaps="chat_rooms,participants")
     notifications = db.relationship('Notification', back_populates='user', lazy=True)
     projects = db.relationship('Project', secondary='project_participant', back_populates='participants', overlaps="project_participants")
     subscription = db.relationship('Subscription', back_populates='subscriber', uselist=False)
@@ -54,12 +56,18 @@ class Project(db.Model):
     completed = db.Column(db.Boolean, default=False)
     participants = db.relationship('User', secondary='project_participant', back_populates='projects', overlaps="project_participants")
     project_participants = db.relationship('ProjectParticipant', back_populates='project', lazy=True, overlaps="participants,projects")
+    overview = db.Column(db.Text)
+    requirements = db.Column(db.Text)
+    flowchart = db.Column(db.Text)
+    timeline = db.Column(db.Text)
+
 
 class ProjectParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     hours_contributed = db.Column(db.Float, default=0.0)    
+    accepted = db.Column(db.Boolean, default=False)  # 새로 추가된 필드
     user = db.relationship('User', back_populates='project_participants', overlaps="participants,projects")
     project = db.relationship('Project', back_populates='project_participants', overlaps="participants,projects")
 
@@ -117,3 +125,39 @@ class Notification(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     read = db.Column(db.Boolean, default=False)
     user = db.relationship('User', back_populates='notifications')
+
+class ProjectProgress(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    project = db.relationship('Project', backref=db.backref('progress', lazy=True))
+    user = db.relationship('User', backref=db.backref('project_progress', lazy=True))
+
+class ChatRoom(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    participants = db.relationship('User', secondary='chat_room_participant', back_populates='chat_rooms', overlaps ='chat_room_participants')
+    chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='chat_room', overlaps = 'participants')
+
+
+
+class ChatRoomParticipant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_room.id'), nullable=False)
+    joined_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', back_populates='chat_room_participants', overlaps="chat_rooms,participants")
+    chat_room = db.relationship('ChatRoom', back_populates='chat_room_participants',  overlaps="participants")
+
+
+class ChatMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_room.id'), nullable=False)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    chat_room = db.relationship('ChatRoom', backref=db.backref('messages', lazy=True))
+    sender = db.relationship('User', backref=db.backref('sent_messages', lazy=True))
