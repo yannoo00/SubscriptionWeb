@@ -1,13 +1,4 @@
-2024-06-14 00:02:59,471 ERROR: Exception on /project/progress/3 [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
-Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 924, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.OperationalError: no such table: project_progress
-
-The above exception was the direct cause of the following exception:
-
+2024-06-14 20:58:18,548 ERROR: Exception on /project/plan/3 [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
 Traceback (most recent call last):
   File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -24,59 +15,97 @@ Traceback (most recent call last):
   File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 186, in progress
-    progress_list = ProjectProgress.query.filter_by(project=project, user=current_user).order_by(ProjectProgress.date.desc()).all()
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2673, in all
-    return self._iter().all()  # type: ignore
-           ^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2827, in _iter
-    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
-                                                  ^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2351, in execute
-    return self._execute_internal(
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2236, in _execute_internal
-    result: Result[Any] = compile_state_cls.orm_execute_statement(
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 293, in orm_execute_statement
-    result = conn.execute(
-             ^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
-    return meth(
-           ^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
-    ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
-    return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
-    self._handle_dbapi_exception(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2353, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
-    self.dialect.do_execute(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 924, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: project_progress
-[SQL: SELECT project_progress.id AS project_progress_id, project_progress.project_id AS project_progress_project_id, project_progress.user_id AS project_progress_user_id, project_progress.date AS project_progress_date, project_progress.description AS project_progress_description 
-FROM project_progress 
-WHERE ? = project_progress.project_id AND ? = project_progress.user_id ORDER BY project_progress.date DESC]
-[parameters: (3, 1)]
-(Background on this error at: https://sqlalche.me/e/20/e3q8)
-2024-06-14 00:06:12,249 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 00:06:15,978 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 00:08:54,523 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 00:08:54,836 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 00:14:56,399 INFO: Entering login function, request.method=GET [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-06-14 00:14:56,400 INFO: Rendering login template [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:26]
-2024-06-14 00:14:59,760 INFO: Entering login function, request.method=POST [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:11]
-2024-06-14 00:14:59,923 INFO: User a2@naver.com logged in successfully [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/auth.py:18]
-2024-06-14 00:19:04,683 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 00:19:07,076 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 20:44:25,773 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-14 20:44:26,046 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 214, in plan
+    if project.requirements:
+       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Project' object has no attribute 'requirements'
+2024-06-14 20:59:17,416 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-14 20:59:31,997 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-14 20:59:41,770 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-14 20:59:46,458 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-14 20:59:51,606 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-14 20:59:51,904 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:39:04,497 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:39:23,310 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:41:44,648 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:41:59,164 ERROR: Exception on /project/plan/3 [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 218, in plan
+    return render_template('project/plan.html', project=project, form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/project/plan.html", line 64, in top-level template code
+    {% for stage in project.timeline.split('\n') %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/utils.py", line 83, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'split'
+2024-06-15 22:42:17,162 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:42:23,782 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:42:28,958 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:42:29,232 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:43:06,075 ERROR: Exception on /project/plan/3 [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+Traceback (most recent call last):
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 218, in plan
+    return render_template('project/plan.html', project=project, form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/project/plan.html", line 64, in top-level template code
+    {% for stage in project.timeline.split('\n') %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/utils.py", line 83, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'split'
+2024-06-15 22:46:04,016 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:56:04,502 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-15 22:56:04,773 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]

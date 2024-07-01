@@ -8,7 +8,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 import requests
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from app import forms
 
 csrf = CSRFProtect()
@@ -35,7 +35,7 @@ def create_app(config_class=Config):
     app.logger.setLevel(logging.INFO)
     app.logger.info('Application startup')
 
-    from app.views import mypage, auth, payments, main, community, project, notification, mentorship
+    from app.views import mypage, auth, payments, main, community, project, notification, mentorship, chat
     app.register_blueprint(auth.bp, url_prefix='/auth')
     app.register_blueprint(payments.bp, url_prefix='/payments')
     app.register_blueprint(main.bp)
@@ -44,6 +44,7 @@ def create_app(config_class=Config):
     app.register_blueprint(project.bp)
     app.register_blueprint(notification.bp, url_prefix='/notification')
     app.register_blueprint(mentorship.bp, url_prefix='/mentorship')
+    app.register_blueprint(chat.bp, url_prefix='/chat')
 
     @socketio.on('connect')
     def handle_connect():

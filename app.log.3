@@ -1,116 +1,77 @@
-2024-06-15 22:56:20,580 ERROR: Exception on /project/plan/3 [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+2024-06-27 08:01:00,371 ERROR: Exception on /project/list [GET] [in c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\flask\app.py:828]
 Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 215, in plan
-    return render_template('project/plan.html', project=project, form=form)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 131, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/environment.py", line 939, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/templates/project/plan.html", line 23, in top-level template code
-    {% for requirement in project.requirements.split('\n') %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/jinja2/utils.py", line 83, in from_obj
-    if hasattr(obj, "jinja_pass_arg"):
-       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.UndefinedError: 'None' has no attribute 'split'
-2024-06-15 23:00:52,364 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:00:52,636 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:08:33,564 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:08:43,063 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:18,057 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:30,497 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:30,760 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:39,465 ERROR: Exception on /project/list [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
-Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
     self.dialect.do_execute(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 924, in do_execute
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
     cursor.execute(statement, parameters)
-sqlite3.OperationalError: no such column: project.flowchart
+sqlite3.OperationalError: no such column: project.completed
 
 The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\flask\app.py", line 1463, in wsgi_app
     response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\flask\app.py", line 872, in full_dispatch_request
     rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\flask\app.py", line 870, in full_dispatch_request
     rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\flask\app.py", line 855, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 290, in decorated_view
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/project.py", line 15, in list_projects
+  File "C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\project.py", line 15, in list_projects
     projects = Project.query.all()
-               ^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2673, in all
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\orm\query.py", line 2673, in all
     return self._iter().all()  # type: ignore
-           ^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2827, in _iter
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\orm\query.py", line 2827, in _iter
     result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
-                                                  ^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2351, in execute
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\orm\session.py", line 2351, in execute
     return self._execute_internal(
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2236, in _execute_internal
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\orm\session.py", line 2236, in _execute_internal
     result: Result[Any] = compile_state_cls.orm_execute_statement(
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 293, in orm_execute_statement
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
     result = conn.execute(
-             ^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1418, in execute
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
     return meth(
-           ^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 515, in _execute_on_connection
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
     return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1640, in _execute_clauseelement
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
     ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
     return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
     self._handle_dbapi_exception(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2353, in _handle_dbapi_exception
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 2353, in _handle_dbapi_exception
     raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
     self.dialect.do_execute(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 924, in do_execute
+  File "c:\users\my\desktop\yannoo\blending\subscriptionweb\venv\lib\site-packages\sqlalchemy\engine\default.py", line 924, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: project.flowchart
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: project.completed
 [SQL: SELECT project.id AS project_id, project.title AS project_title, project.description AS project_description, project.start_date AS project_start_date, project.end_date AS project_end_date, project.created_at AS project_created_at, project.client_id AS project_client_id, project.completed AS project_completed, project.overview AS project_overview, project.requirements AS project_requirements, project.flowchart AS project_flowchart, project.timeline AS project_timeline 
 FROM project]
 (Background on this error at: https://sqlalche.me/e/20/e3q8)
-2024-06-15 23:09:50,594 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:54,260 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:58,083 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-15 23:09:58,347 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
+2024-06-27 08:01:26,342 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-27 08:01:33,546 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-06-27 08:01:40,467 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
+2024-07-01 16:38:31,114 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
+2024-07-01 16:38:45,384 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+2024-07-01 16:38:45,385 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
+2024-07-01 16:38:47,575 INFO: Entering register function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:38]
+2024-07-01 16:38:47,575 INFO: Rendering register template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:58]
+2024-07-01 16:39:03,166 INFO: Entering register function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:38]
+2024-07-01 16:39:03,704 INFO: New user a1@naver.com registered successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:55]
+2024-07-01 16:39:03,708 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+2024-07-01 16:39:03,709 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
+2024-07-01 16:39:05,526 INFO: Entering register function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:38]
+2024-07-01 16:39:05,527 INFO: Rendering register template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:58]
+2024-07-01 16:39:12,581 INFO: Entering register function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:38]
+2024-07-01 16:39:12,581 INFO: Registration failed for email a2@naver.com, user already exists [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:46]
+2024-07-01 16:39:12,581 INFO: Rendering register template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:58]
+2024-07-01 16:39:20,483 INFO: Entering register function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:38]
+2024-07-01 16:39:20,483 INFO: Registration failed for email a2@naver.com, user already exists [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:46]
+2024-07-01 16:39:20,483 INFO: Rendering register template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:58]
+2024-07-01 16:39:22,597 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+2024-07-01 16:39:22,598 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
+2024-07-01 16:39:24,783 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+2024-07-01 16:39:25,249 INFO: User a2@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]

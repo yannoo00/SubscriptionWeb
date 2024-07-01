@@ -60,7 +60,6 @@ class ProjectProgressForm(FlaskForm):
     description = TextAreaField('진행내용', validators=[DataRequired()])
     submit = SubmitField('기록')    
 
-
 class RequirementForm(FlaskForm):
     requirement = StringField('Requirement', validators=[DataRequired()])
 
@@ -68,3 +67,9 @@ class ProjectPlanForm(FlaskForm):
     overview = TextAreaField('Project Overview', validators=[DataRequired()])
     flowchart = TextAreaField('Flowchart', validators=[DataRequired()])
     submit = SubmitField('Save')
+
+class ChatRoomForm(FlaskForm):
+    name = StringField('채팅방 이름', validators=[DataRequired()])
+ 
+
+ 

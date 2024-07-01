@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}채팅방 목록{% endblock %}
+
+{% block content %}
+  <h1>채팅방 목록</h1>
+  <ul>
+    {% for room in chat_rooms %}
+      <li><a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}">{{ room.name }}</a></li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('chat.create_chat_room') }}" class="btn btn-primary">새 채팅방 만들기</a>
+{% endblock %}
