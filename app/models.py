@@ -1,4 +1,4 @@
-from app import db
+from . import db
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime, timedelta, timezone
@@ -23,7 +23,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     bio = db.Column(db.Text)
-    chat_rooms = db.relationship('ChatRoom', secondary='chat_room_participant', back_populates='participants', overlaps="chat_room_participants")
+    chat_rooms = db.relationship('ChatRoom', secondary='chat_room_participant', back_populates='participants', overlaps="chat_room_participants", viewonly = True)
     chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='user', overlaps="chat_rooms,participants")
     notifications = db.relationship('Notification', back_populates='user', lazy=True)
     projects = db.relationship('Project', secondary='project_participant', back_populates='participants', overlaps="project_participants")
@@ -135,14 +135,14 @@ class ProjectProgress(db.Model):
     project = db.relationship('Project', backref=db.backref('progress', lazy=True))
     user = db.relationship('User', backref=db.backref('project_progress', lazy=True))
 
+
+
 class ChatRoom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     participants = db.relationship('User', secondary='chat_room_participant', back_populates='chat_rooms', overlaps ='chat_room_participants')
     chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='chat_room', overlaps = 'participants')
-
-
 
 class ChatRoomParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -151,7 +151,6 @@ class ChatRoomParticipant(db.Model):
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship('User', back_populates='chat_room_participants', overlaps="chat_rooms,participants")
     chat_room = db.relationship('ChatRoom', back_populates='chat_room_participants',  overlaps="participants")
-
 
 class ChatMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)

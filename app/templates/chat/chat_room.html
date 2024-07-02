@@ -4,7 +4,7 @@
     <h1>{{ chat_room.name }}</h1>
     <div id="messages">
         {% for message in messages %}
-            <div>{{ message.sender.name }}: {{ message.content }}</div>
+            <div>{{ message.username }}: {{ message.content }}</div>
         {% endfor %}
     </div>
     <form id="message-form">
@@ -22,7 +22,7 @@
         messageForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const message = messageInput.value;
-            socket.emit('message', { 'room': '{{ chat_room.id }}', 'message': message, 'username': '{{ current_user.name }}' });
+            socket.emit('message', { 'room': '{{ chat_room.id }}', 'msg': message, 'username': '{{ current_user.name }}' });
             messageInput.value = '';
         });
 
@@ -32,7 +32,7 @@
 
         socket.on('message', (data) => {
             const messageElement = document.createElement('div');
-            messageElement.innerText = data.username + ': ' + data.message;
+            messageElement.innerText = data.username + ': ' + data.content;
             messages.appendChild(messageElement);
         });
 
@@ -40,6 +40,15 @@
             const statusElement = document.createElement('div');
             statusElement.innerText = data.msg;
             messages.appendChild(statusElement);
+        });
+
+        socket.on('load_messages', (data) => {
+            const loadedMessages = JSON.parse(data.messages);
+            loadedMessages.forEach((msg) => {
+                const messageElement = document.createElement('div');
+                messageElement.innerText = `${msg.username}: ${msg.content}`;
+                messages.appendChild(messageElement);
+            });
         });
 
         window.onbeforeunload = () => {
