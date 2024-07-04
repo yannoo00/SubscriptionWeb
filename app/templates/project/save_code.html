@@ -1,0 +1,16 @@
+<form method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.code.label }} {{ form.code() }}
+    </div>
+    <div>
+        {{ form.file_name.label }} {{ form.file_name() }}
+    </div>
+    <div>
+        {{ form.branch_name.label }} {{ form.branch_name() }}
+    </div>
+    <div>
+        {{ form.commit_message.label }} {{ form.commit_message() }}
+    </div>
+    <input type="submit" value="코드 저장">
+</form>

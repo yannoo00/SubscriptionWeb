@@ -1,10 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
-from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm
+from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
 from werkzeug.utils import secure_filename
 from app import db
 import os
+from github import Github, GithubException
 
 bp = Blueprint('project', __name__, url_prefix='/project')
 
@@ -15,6 +16,7 @@ def list_projects():
     projects = Project.query.all()
     return render_template('project/list.html', projects=projects, form=form)
 
+
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_project():
@@ -23,9 +25,80 @@ def create_project():
         project = Project(title=form.title.data, description=form.description.data, start_date=form.start_date.data, end_date=form.end_date.data, client=current_user)
         db.session.add(project)
         db.session.commit()
-        flash('프로젝트가 생성되었습니다.', 'success')
+
+        # GitHub 리포지토리 생성
+        github_token = current_app.config['GITHUB_ACCESS_TOKEN']
+        g = Github(github_token)
+        user = g.get_user()
+        try:
+            repo = user.create_repo(project.title, private=False, auto_init=True)
+            project.github_repo = repo.full_name
+            db.session.commit()
+            flash(f'프로젝트와 GitHub 리포지토리 {repo.full_name}가 생성되었습니다.', 'success')
+        except Exception as e:
+            flash(f'GitHub 리포지토리 생성 중 오류가 발생했습니다: {str(e)}', 'error')
+
         return redirect(url_for('project.detail', project_id=project.id))
     return render_template('project/create.html', form=form)
+
+
+@bp.route('/save_code/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def save_code(project_id):
+    project = Project.query.get_or_404(project_id)
+    if not project.github_repo:
+        flash('이 프로젝트에는 연결된 GitHub 리포지토리가 없습니다.', 'error')
+        return redirect(url_for('project.detail', project_id=project.id))
+
+    form = CodeSaveForm()
+    if form.validate_on_submit():
+        code_content = form.code.data
+        file_name = form.file_name.data
+        branch_name = form.branch_name.data
+        commit_message = form.commit_message.data
+
+        github_token = current_app.config['GITHUB_ACCESS_TOKEN']
+        g = Github(github_token)
+        try:
+            repo = g.get_repo(project.github_repo)
+            
+            # 브랜치 확인 및 생성
+            try:
+                branch = repo.get_branch(branch_name)
+            except GithubException as e:
+                if e.status == 404:
+                    # 브랜치가 없으면 생성
+                    default_branch = repo.get_branch(repo.default_branch)
+                    repo.create_git_ref(ref=f"refs/heads/{branch_name}", sha=default_branch.commit.sha)
+                    flash(f'새로운 브랜치 "{branch_name}"가 생성되었습니다.', 'info')
+                else:
+                    raise
+
+            # 파일 생성 또는 업데이트
+            try:
+                contents = repo.get_contents(file_name, ref=branch_name)
+                repo.update_file(contents.path, commit_message, code_content, contents.sha, branch=branch_name)
+                flash(f'파일 "{file_name}"이 업데이트되었습니다.', 'success')
+            except GithubException as e:
+                if e.status == 404:
+                    # 파일이 없으면 새로 생성
+                    repo.create_file(file_name, commit_message, code_content, branch=branch_name)
+                    flash(f'새 파일 "{file_name}"이 생성되었습니다.', 'success')
+                else:
+                    raise
+
+            flash('코드가 성공적으로 GitHub에 업로드되었습니다.', 'success')
+        except GithubException as e:
+            flash(f'GitHub 작업 중 오류가 발생했습니다: {e.data.get("message", str(e))}', 'error')
+            current_app.logger.error(f'GitHub 오류: {str(e)}')
+        except Exception as e:
+            flash(f'예상치 못한 오류가 발생했습니다: {str(e)}', 'error')
+            current_app.logger.error(f'예상치 못한 오류: {str(e)}')
+
+        return redirect(url_for('project.detail', project_id=project.id))
+    
+    return render_template('project/save_code.html', form=form, project=project)
+
 
 @bp.route('/create_post/<int:project_id>', methods=['POST'])
 @login_required

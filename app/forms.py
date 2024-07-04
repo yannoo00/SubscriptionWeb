@@ -76,4 +76,9 @@ class ChatRoomForm(FlaskForm):
     name = StringField('채팅방 이름', validators=[DataRequired()])
  
 
- 
+class CodeSaveForm(FlaskForm):
+    code = TextAreaField('코드', validators=[DataRequired()])
+    file_name = StringField('파일 이름', validators=[DataRequired()])
+    branch_name = StringField('브랜치 이름', validators=[DataRequired()])
+    commit_message = StringField('커밋 메시지', validators=[DataRequired()])
+    submit = SubmitField('저장 및 업로드')

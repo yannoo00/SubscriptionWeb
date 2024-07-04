@@ -5,6 +5,9 @@
 <p>{{ project.description }}</p>
 <p>의뢰자: {{ project.client.name }}</p>
 
+{% if project.github_repo %}
+<p>GitHub 리포지토리: <a href="https://github.com/{{ project.github_repo }}" target="_blank">{{ project.github_repo }}</a></p>
+{% endif %}
 
 {% if current_user in project.participants or current_user == project.client %}
 <a href="{{ url_for('project.progress', project_id=project.id) }}" class="btn btn-secondary">진행상황</a>
@@ -79,6 +82,8 @@
     {{ contribution_form.submit(class="btn btn-primary") }}
   </form>
 {% endif %}
+
+<a href="{{ url_for('project.save_code', project_id=project.id) }}" class="btn btn-primary">코드 저장</a>
 
 <h3>게시글 작성</h3>
 <form action="{{ url_for('project.create_post', project_id=project.id) }}" method="post">

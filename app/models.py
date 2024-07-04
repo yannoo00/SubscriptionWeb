@@ -60,6 +60,7 @@ class Project(db.Model):
     requirements = db.Column(db.Text)
     flowchart = db.Column(db.Text)
     timeline = db.Column(db.Text)
+    github_repo = db.Column(db.String(200))
 
 
 class ProjectParticipant(db.Model):
