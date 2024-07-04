@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
-from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm
+from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm
 from werkzeug.utils import secure_filename
 from app import db
 import os
@@ -89,23 +89,28 @@ def detail(project_id):
     comment_form = CommentForm()
     contribution_form = ContributionForm()
     accept_form = AcceptParticipantForm()
-    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form, contribution_form = contribution_form, accept_form = accept_form)
+    participate_form = ParticipateForm()
+    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form, contribution_form = contribution_form, accept_form = accept_form, form=participate_form)
 
 @bp.route('/participate/<int:project_id>', methods=['POST'])
 @login_required
 def participate(project_id):
-    project = Project.query.get_or_404(project_id)
-    participant = ProjectParticipant.query.filter_by(user=current_user, project=project).first()
-    if participant:
-        if participant.accepted:
-            flash('이미 프로젝트에 참여 중입니다.', 'warning')
+    form = ParticipateForm()
+    if form.validate_on_submit():
+        project = Project.query.get_or_404(project_id)
+        participant = ProjectParticipant.query.filter_by(user=current_user, project=project).first()
+        if participant:
+            if participant.accepted:
+                flash('이미 프로젝트에 참여 중입니다.', 'warning')
+            else:
+                flash('이미 참가 신청을 하였습니다.', 'warning')
         else:
-            flash('이미 참가 신청을 하였습니다.', 'warning')
+            new_participant = ProjectParticipant(user=current_user, project=project)
+            db.session.add(new_participant)
+            db.session.commit()
+            flash('프로젝트 참가 신청이 완료되었습니다.', 'success')
     else:
-        new_participant = ProjectParticipant(user=current_user, project=project)
-        db.session.add(new_participant)
-        db.session.commit()
-        flash('프로젝트 참가 신청이 완료되었습니다.', 'success')
+        flash('CSRF 토큰이 유효하지 않습니다. 다시 시도해주세요.', 'error')
     return redirect(url_for('project.detail', project_id=project_id))
 
 @bp.route('/complete/<int:project_id>')

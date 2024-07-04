@@ -27,8 +27,12 @@ class TeacherProfileForm(FlaskForm):
     bio = TextAreaField('약력')
     submit = SubmitField('저장')
 
+#이 코드는 project_list에서 버튼 삭제하고 얘도 같이 삭제할 것.
 class ProjectParticipationForm(FlaskForm):
     submit =  SubmitField('참여하기')
+
+class ParticipateForm(FlaskForm):
+    submit = SubmitField('참가 신청')
 
 class AssignTaskForm(FlaskForm):
     title = StringField('과제 제목', validators=[DataRequired()])

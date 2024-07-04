@@ -16,12 +16,13 @@
   {% if not project.completed %}
     {% set participant = project.project_participants|selectattr('user', 'equalto', current_user)|first %}
     {% if not participant %}
-      <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
-        <button type="submit" class="btn btn-primary">참가 신청</button>
-      </form>
-    {% elif not participant.accepted %}
-      <p>참가 신청 대기 중입니다.</p>
-    {% endif %}
+    <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
+      {{ form.csrf_token }}
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+  {% elif not participant.accepted %}
+    <p>참가 신청 대기 중입니다.</p>
+  {% endif %}
   {% endif %}
 {% endif %}
 
