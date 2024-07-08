@@ -1,16 +1,82 @@
-<form method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.code.label }} {{ form.code() }}
+{% extends "base.html" %}
+
+{% block content %}
+<h1>코드 관리</h1>
+
+<div style="display: flex; justify-content: space-between;">
+    <!-- 새 파일 작성 섹션 -->
+    <div style="width: 45%;">
+        <h2>새 파일 작성</h2>
+        <form method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="action" value="new_file">
+            <div>
+                {{ form.code.label }} {{ form.code(rows=15, cols=50) }}
+            </div>
+            <div>
+                {{ form.file_name.label }} {{ form.file_name() }}
+            </div>
+            <div>
+                {{ form.branch_name.label }} {{ form.branch_name() }}
+            </div>
+            <div>
+                {{ form.commit_message.label }} {{ form.commit_message() }}
+            </div>
+            <input type="submit" value="새 파일 저장">
+        </form>
     </div>
-    <div>
-        {{ form.file_name.label }} {{ form.file_name() }}
+
+    <!-- 기존 파일 편집 섹션 -->
+    <div style="width: 45%;">
+        <h2>기존 파일 편집</h2>
+        <h3>파일 목록</h3>
+        <select id="file-select" onchange="loadFile()">
+            <option value="">파일을 선택하세요</option>
+            {% for file in files %}
+                <option value="{{ file.path }}">{{ file.path }}</option>
+            {% endfor %}
+        </select>
+
+        <form id="edit-form" method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="action" value="edit_file">
+            <input type="hidden" id="edit-file-path" name="file_path">
+            <div>
+                <label for="edit-content">파일 내용:</label><br>
+                <textarea id="edit-content" name="edit_content" rows="15" cols="50"></textarea>
+            </div>
+            <div>
+                <label for="edit-branch-name">브랜치 이름:</label>
+                <input type="text" id="edit-branch-name" name="edit_branch_name" value="main">
+            </div>
+            <div>
+                <label for="edit-commit-message">Commit 메시지:</label><br>
+                <input type="text" id="edit-commit-message" name="edit_commit_message" required>
+            </div>
+            <input type="submit" value="파일 수정">
+        </form>
     </div>
-    <div>
-        {{ form.branch_name.label }} {{ form.branch_name() }}
-    </div>
-    <div>
-        {{ form.commit_message.label }} {{ form.commit_message() }}
-    </div>
-    <input type="submit" value="코드 저장">
-</form>
+</div>
+
+<script>
+function loadFile() {
+    var select = document.getElementById('file-select');
+    var path = select.value;
+    if (path) {
+        fetch(`{{ url_for('project.get_file_content', project_id=project.id) }}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': "{{ csrf_token() }}"
+            },
+            body: `file_path=${encodeURIComponent(path)}&csrf_token={{ csrf_token() }}`
+        })
+        .then(response => response.text())
+        .then(content => {
+            document.getElementById('edit-file-path').value = path;
+            document.getElementById('edit-content').value = content;
+        });
+    }
+}
+</script>
+{% endblock %}

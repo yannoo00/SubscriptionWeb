@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, Length
 
 class RatingForm(FlaskForm):
     rating = IntegerField('평점', validators=[DataRequired(), NumberRange(min=1, max=5)])
@@ -82,3 +82,10 @@ class CodeSaveForm(FlaskForm):
     branch_name = StringField('브랜치 이름', validators=[DataRequired()])
     commit_message = StringField('커밋 메시지', validators=[DataRequired()])
     submit = SubmitField('저장 및 업로드')
+
+class CodeEditForm(FlaskForm):
+    file_path = StringField('파일 경로', validators=[DataRequired()])
+    content = TextAreaField('파일 내용', validators=[DataRequired()])
+    branch_name = StringField('브랜치 이름', validators=[DataRequired(), Length(max=100)])
+    commit_message = StringField('Commit 메시지', validators=[DataRequired(), Length(max=200)])
+    submit = SubmitField('수정')

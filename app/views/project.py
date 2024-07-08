@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
-from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
+from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm, CodeEditForm
 from werkzeug.utils import secure_filename
 from app import db
 import os
@@ -41,7 +41,6 @@ def create_project():
         return redirect(url_for('project.detail', project_id=project.id))
     return render_template('project/create.html', form=form)
 
-
 @bp.route('/save_code/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def save_code(project_id):
@@ -50,55 +49,105 @@ def save_code(project_id):
         flash('이 프로젝트에는 연결된 GitHub 리포지토리가 없습니다.', 'error')
         return redirect(url_for('project.detail', project_id=project.id))
 
+    github_token = current_app.config['GITHUB_ACCESS_TOKEN']
+    g = Github(github_token)
+    repo = g.get_repo(project.github_repo)
+
+    # 파일 목록 가져오기
+    files = []
+    contents = repo.get_contents("")
+    while contents:
+        file_content = contents.pop(0)
+        if file_content.type == "dir":
+            contents.extend(repo.get_contents(file_content.path))
+        else:
+            files.append(file_content)
+
     form = CodeSaveForm()
-    if form.validate_on_submit():
-        code_content = form.code.data
-        file_name = form.file_name.data
-        branch_name = form.branch_name.data
-        commit_message = form.commit_message.data
 
-        github_token = current_app.config['GITHUB_ACCESS_TOKEN']
-        g = Github(github_token)
-        try:
-            repo = g.get_repo(project.github_repo)
-            
-            # 브랜치 확인 및 생성
-            try:
-                branch = repo.get_branch(branch_name)
-            except GithubException as e:
-                if e.status == 404:
-                    # 브랜치가 없으면 생성
-                    default_branch = repo.get_branch(repo.default_branch)
-                    repo.create_git_ref(ref=f"refs/heads/{branch_name}", sha=default_branch.commit.sha)
-                    flash(f'새로운 브랜치 "{branch_name}"가 생성되었습니다.', 'info')
-                else:
-                    raise
+    if request.method == 'POST':
+        action = request.form.get('action')
 
-            # 파일 생성 또는 업데이트
-            try:
-                contents = repo.get_contents(file_name, ref=branch_name)
-                repo.update_file(contents.path, commit_message, code_content, contents.sha, branch=branch_name)
-                flash(f'파일 "{file_name}"이 업데이트되었습니다.', 'success')
-            except GithubException as e:
-                if e.status == 404:
-                    # 파일이 없으면 새로 생성
+        if action == 'new_file':
+            if form.validate_on_submit():
+                code_content = form.code.data
+                file_name = form.file_name.data
+                branch_name = form.branch_name.data
+                commit_message = form.commit_message.data
+
+                try:
+                    # 브랜치 확인 및 생성
+                    try:
+                        repo.get_branch(branch_name)
+                    except GithubException as e:
+                        if e.status == 404:
+                            default_branch = repo.get_branch(repo.default_branch)
+                            repo.create_git_ref(ref=f"refs/heads/{branch_name}", sha=default_branch.commit.sha)
+                            flash(f'새로운 브랜치 "{branch_name}"가 생성되었습니다.', 'info')
+                        else:
+                            raise
+
+                    # 새 파일 생성
                     repo.create_file(file_name, commit_message, code_content, branch=branch_name)
                     flash(f'새 파일 "{file_name}"이 생성되었습니다.', 'success')
-                else:
-                    raise
 
-            flash('코드가 성공적으로 GitHub에 업로드되었습니다.', 'success')
-        except GithubException as e:
-            flash(f'GitHub 작업 중 오류가 발생했습니다: {e.data.get("message", str(e))}', 'error')
-            current_app.logger.error(f'GitHub 오류: {str(e)}')
-        except Exception as e:
-            flash(f'예상치 못한 오류가 발생했습니다: {str(e)}', 'error')
-            current_app.logger.error(f'예상치 못한 오류: {str(e)}')
+                except GithubException as e:
+                    flash(f'GitHub 작업 중 오류가 발생했습니다: {e.data.get("message", str(e))}', 'error')
+                    current_app.logger.error(f'GitHub 오류: {str(e)}')
+                except Exception as e:
+                    flash(f'예상치 못한 오류가 발생했습니다: {str(e)}', 'error')
+                    current_app.logger.error(f'예상치 못한 오류: {str(e)}')
+
+            else:
+                flash('폼 데이터가 유효하지 않습니다.', 'error')
+
+        elif action == 'edit_file':
+            file_path = request.form.get('file_path')
+            content = request.form.get('edit_content')
+            branch_name = request.form.get('edit_branch_name')
+            commit_message = request.form.get('edit_commit_message')
+
+            if file_path and content and branch_name and commit_message:
+                try:
+                    # 파일 업데이트
+                    contents = repo.get_contents(file_path, ref=branch_name)
+                    repo.update_file(contents.path, commit_message, content, contents.sha, branch=branch_name)
+                    flash(f'파일 "{file_path}"이 업데이트되었습니다.', 'success')
+
+                except GithubException as e:
+                    flash(f'GitHub 작업 중 오류가 발생했습니다: {e.data.get("message", str(e))}', 'error')
+                    current_app.logger.error(f'GitHub 오류: {str(e)}')
+                except Exception as e:
+                    flash(f'예상치 못한 오류가 발생했습니다: {str(e)}', 'error')
+                    current_app.logger.error(f'예상치 못한 오류: {str(e)}')
+            else:
+                flash('필요한 모든 필드를 입력해주세요.', 'error')
 
         return redirect(url_for('project.detail', project_id=project.id))
-    
-    return render_template('project/save_code.html', form=form, project=project)
 
+    return render_template('project/save_code.html', form=form, project=project, files=files)
+
+
+
+@bp.route('/get_file_content/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def get_file_content(project_id):
+    project = Project.query.get_or_404(project_id)
+    
+    if request.method == 'POST':
+        file_path = request.form.get('file_path')
+    else:
+        file_path = request.args.get('file_path')
+    
+    github_token = current_app.config['GITHUB_ACCESS_TOKEN']
+    g = Github(github_token)
+    repo = g.get_repo(project.github_repo)
+
+    try:
+        content = repo.get_contents(file_path)
+        return content.decoded_content.decode('utf-8')
+    except Exception as e:
+        return str(e), 400
 
 @bp.route('/create_post/<int:project_id>', methods=['POST'])
 @login_required
