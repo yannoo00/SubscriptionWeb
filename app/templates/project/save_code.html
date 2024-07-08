@@ -1,17 +1,14 @@
 {% extends "base.html" %}
-
 {% block content %}
 <h1>코드 관리</h1>
 
-<div style="display: flex; justify-content: space-between;">
-    <!-- 새 파일 작성 섹션 -->
-    <div style="width: 45%;">
+<div class="code-management-container">
+    <div class="code-section">
         <h2>새 파일 작성</h2>
         <form method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
             {{ form.hidden_tag() }}
-            <input type="hidden" name="action" value="new_file">
             <div>
-                {{ form.code.label }} {{ form.code(rows=15, cols=50) }}
+                {{ form.code.label }} {{ form.code(rows=15, cols=40) }}
             </div>
             <div>
                 {{ form.file_name.label }} {{ form.file_name() }}
@@ -22,61 +19,106 @@
             <div>
                 {{ form.commit_message.label }} {{ form.commit_message() }}
             </div>
-            <input type="submit" value="새 파일 저장">
+            <input type="submit" name="action" value="new_file">
         </form>
     </div>
 
-    <!-- 기존 파일 편집 섹션 -->
-    <div style="width: 45%;">
+    <div class="code-section">
         <h2>기존 파일 편집</h2>
-        <h3>파일 목록</h3>
-        <select id="file-select" onchange="loadFile()">
-            <option value="">파일을 선택하세요</option>
-            {% for file in files %}
-                <option value="{{ file.path }}">{{ file.path }}</option>
-            {% endfor %}
-        </select>
-
-        <form id="edit-form" method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
-            {{ form.hidden_tag() }}
-            <input type="hidden" name="action" value="edit_file">
-            <input type="hidden" id="edit-file-path" name="file_path">
+        <form id="editForm" method="POST" action="{{ url_for('project.save_code', project_id=project.id) }}">
             <div>
-                <label for="edit-content">파일 내용:</label><br>
-                <textarea id="edit-content" name="edit_content" rows="15" cols="50"></textarea>
+                <label for="edit_branch_name">브랜치 선택:</label>
+                <select id="edit_branch_name" name="edit_branch_name">
+                    {% for branch in branches %}
+                    <option value="{{ branch }}">{{ branch }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div>
-                <label for="edit-branch-name">브랜치 이름:</label>
-                <input type="text" id="edit-branch-name" name="edit_branch_name" value="main">
+                <label for="file_path">파일 선택:</label>
+                <select id="file_path" name="file_path"></select>
             </div>
             <div>
-                <label for="edit-commit-message">Commit 메시지:</label><br>
-                <input type="text" id="edit-commit-message" name="edit_commit_message" required>
+                <label for="edit_content">파일 내용:</label>
+                <textarea id="edit_content" name="edit_content" rows="15" cols="40"></textarea>
             </div>
-            <input type="submit" value="파일 수정">
+            <div>
+                <label for="edit_commit_message">Commit 메시지:</label>
+                <input type="text" id="edit_commit_message" name="edit_commit_message">
+            </div>
+            <input type="submit" name="action" value="edit_file">
         </form>
     </div>
 </div>
 
-<script>
-function loadFile() {
-    var select = document.getElementById('file-select');
-    var path = select.value;
-    if (path) {
-        fetch(`{{ url_for('project.get_file_content', project_id=project.id) }}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': "{{ csrf_token() }}"
-            },
-            body: `file_path=${encodeURIComponent(path)}&csrf_token={{ csrf_token() }}`
-        })
-        .then(response => response.text())
-        .then(content => {
-            document.getElementById('edit-file-path').value = path;
-            document.getElementById('edit-content').value = content;
-        });
+<style>
+    .code-management-container {
+        display: flex;
+        justify-content: space-between;
     }
+    .code-section {
+        width: 48%;
+    }
+    form div {
+        margin-bottom: 10px;
+    }
+    textarea, input[type="text"], select {
+        width: 100%;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var branchSelect = document.getElementById('edit_branch_name');
+    var fileSelect = document.getElementById('file_path');
+
+    // 초기 파일 목록 로드
+    loadFiles(branchSelect.value);
+
+    branchSelect.addEventListener('change', function() {
+        loadFiles(this.value);
+    });
+
+    fileSelect.addEventListener('change', function() {
+        loadFileContent(this.value, branchSelect.value);
+    });
+
+    function loadFiles(branch) {
+    fetch(`/project/get_files/{{ project.id }}?branch=${branch}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(files => {
+            var fileSelect = document.getElementById('file_path');
+            fileSelect.innerHTML = '';
+            files.forEach(file => {
+                var option = document.createElement('option');
+                option.value = file.path;
+                option.textContent = file.path;
+                fileSelect.appendChild(option);
+            });
+            // 파일 목록이 로드된 후 첫 번째 파일의 내용을 로드
+            if (files.length > 0) {
+                loadFileContent(files[0].path, branch);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading files:', error);
+            alert('파일 목록을 불러오는 데 실패했습니다.'+ error.message);
+        });
 }
+
+    function loadFileContent(file, branch) {
+        fetch(`/project/get_file_content/{{ project.id }}?file_path=${file}&branch_name=${branch}`)
+            .then(response => response.text())
+            .then(content => {
+                document.getElementById('edit_content').value = content;
+            })
+            .catch(error => console.error('Error loading file content:', error));
+    }
+});
 </script>
 {% endblock %}

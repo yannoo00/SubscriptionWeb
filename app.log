@@ -1,4 +1,4 @@
-2024-07-05 10:36:55,622 ERROR: Exception on /project/save_code/7 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
+2024-07-08 10:32:55,016 ERROR: Exception on /project/save_code/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
 Traceback (most recent call last):
   File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
     response = self.full_dispatch_request()
@@ -15,40 +15,30 @@ Traceback (most recent call last):
   File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 108, in save_code
-    return render_template('project/save_code.html', form=form, project=project, files=files)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 150, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 131, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1304, in render
-    self.environment.handle_exception()
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\templates\project\save_code.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\templates\base.html", line 70, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\templates\project\save_code.html", line 62, in block 'content'
-    fetch(`{{ url_for('project.get_file_content', project_id=project.id) }}?file_path=${encodeURIComponent(path)}`)
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1074, in url_for
-    return self.handle_url_build_error(error, endpoint, values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1063, in url_for
-    rv = url_adapter.build(  # type: ignore[union-attr]
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\werkzeug\routing\map.py", line 919, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'project.get_file_content' with values ['project_id']. Did you forget to specify values ['file_path']?
-2024-07-05 10:39:05,095 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-05 10:54:08,669 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-05 10:55:41,741 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-05 10:56:15,286 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-05 10:57:34,697 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-05 11:04:35,623 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-05 11:17:57,401 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 144, in save_code
+    files = files_response.json if files_response.status_code == 200 else[]
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'status_code'
+2024-07-08 10:36:36,522 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
+2024-07-08 10:36:40,421 ERROR: Exception on /project/save_code/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 143, in save_code
+    files_response = get_files_internal(project_id)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: get_files_internal() missing 1 required positional argument: 'branch'
+2024-07-08 10:40:03,162 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]

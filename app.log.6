@@ -1,78 +1,87 @@
-2024-06-16 21:03:00,016 ERROR: Exception on / [GET] [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py:838]
+2024-07-01 16:59:12,106 ERROR: Exception on /chat/ [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
 Traceback (most recent call last):
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
     response = self.full_dispatch_request()
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
     rv = self.handle_user_exception(e)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
     rv = self.dispatch_request()
          ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/views/main.py", line 7, in index
-    return render_template('index.html')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 150, in render_template
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\chat.py", line 13, in chat
+    return render_template('chat.html', chat_rooms=chat_rooms)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1084, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1013, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 972, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: chat.html
+2024-07-01 17:08:46,196 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
+2024-07-01 17:08:49,078 ERROR: Exception on /chat/ [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\chat.py", line 13, in chat
+    return render_template('chat/chat_list.html', chat_rooms=chat_rooms)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 150, in render_template
     return _render(app, template, context)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/templating.py", line 127, in _render
-    app.update_template_context(context)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask/app.py", line 493, in update_template_context
-    context.update(self.ensure_sync(func)())
-                   ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 405, in _user_context_processor
-    return dict(current_user=_get_user())
-                             ^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/utils.py", line 370, in _get_user
-    current_app.login_manager._load_user()
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_login/login_manager.py", line 364, in _load_user
-    user = self._user_callback(user_id)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py", line 68, in load_user
-    return User.query.get(int(user_id))
-           ^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/flask_sqlalchemy/model.py", line 22, in __get__
-    return cls.query_class(
-           ^^^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 275, in __init__
-    self._set_entities(entities)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 288, in _set_entities
-    coercions.expect(
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py", line 389, in expect
-    insp._post_inspect
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 1253, in __get__
-    obj.__dict__[self.__name__] = result = self.fget(obj)
-                                           ^^^^^^^^^^^^^^
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/mapper.py", line 2711, in _post_inspect
-    self._check_configure()
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/mapper.py", line 2388, in _check_configure
-    _configure_registries({self.registry}, cascade=True)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/mapper.py", line 4204, in _configure_registries
-    _do_configure_registries(registries, cascade)
-  File "/Users/yannoo/Documents/GitHub/SubscriptionWeb/instance/venv/lib/python3.12/site-packages/sqlalchemy/orm/mapper.py", line 4241, in _do_configure_registries
-    raise e
-sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ChatRoomParticipant(chat_room_participant)]'. Original exception was: Mapper 'Mapper[ChatRoom(chat_room)]' has no property 'chat_room_participants'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
-2024-06-16 21:07:20,503 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-16 21:07:23,973 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-16 21:07:27,445 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-24 19:21:55,095 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-27 00:13:22,906 INFO: Application startup [in /Users/yannoo/Documents/GitHub/SubscriptionWeb/app/__init__.py:36]
-2024-06-27 00:46:07,232 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
-2024-06-27 00:46:14,787 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-27 00:46:14,788 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
-2024-06-27 00:46:18,519 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-27 00:46:18,519 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
-2024-06-27 08:00:16,146 INFO: Application startup [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\__init__.py:36]
-2024-06-27 08:00:25,565 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-27 08:00:25,565 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
-2024-06-27 08:00:29,166 INFO: Entering register function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
-2024-06-27 08:00:29,167 INFO: Rendering register template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:58]
-2024-06-27 08:00:47,363 INFO: Entering register function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:38]
-2024-06-27 08:00:47,972 INFO: New user a1@naver.com registered successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:55]
-2024-06-27 08:00:47,976 INFO: Entering login function, request.method=GET [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-27 08:00:47,977 INFO: Rendering login template [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:26]
-2024-06-27 08:00:53,554 INFO: Entering login function, request.method=POST [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:11]
-2024-06-27 08:00:54,056 INFO: User a1@naver.com logged in successfully [in C:\Users\My\Desktop\Yannoo\Blending\SubscriptionWeb\app\views\auth.py:18]
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\templates\chat\chat_list.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\templates\base.html", line 33, in top-level template code
+    <a class="nav-link" href="{{ url_for('chat.chat_room') }}">Ã¤ÆÃ</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1074, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1063, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\werkzeug\routing\map.py", line 919, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'chat.chat_room'. Did you forget to specify values ['chat_room_id']?
+2024-07-01 17:12:04,197 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]

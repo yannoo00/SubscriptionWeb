@@ -1,4 +1,4 @@
-2024-07-01 17:12:30,632 ERROR: Exception on /chat/create [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
+2024-07-08 10:19:29,119 ERROR: Exception on /project/get_files/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
 Traceback (most recent call last):
   File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
     response = self.full_dispatch_request()
@@ -15,76 +15,30 @@ Traceback (most recent call last):
   File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\chat.py", line 29, in create_chat_room
-    return render_template('create_chat_room.html')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 149, in render_template
-    template = app.jinja_env.get_or_select_template(template_name_or_list)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1084, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1013, in get_template
-    return self._load_template(name, globals)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 972, in _load_template
-    template = self.loader.load(self, name, self.make_globals(globals))
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\loaders.py", line 126, in load
-    source, filename, uptodate = self.get_source(environment, name)
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 65, in get_source
-    return self._get_source_fast(environment, template)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 99, in _get_source_fast
-    raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: create_chat_room.html
-2024-07-01 17:19:06,278 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-01 17:19:13,278 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-01 17:27:16,878 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-01 17:29:53,861 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-02 09:16:36,651 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-02 09:24:42,529 INFO: Entering register function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:38]
-2024-07-02 09:24:42,531 INFO: Rendering register template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:58]
-2024-07-02 09:24:45,733 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 09:24:45,733 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 09:24:51,499 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 09:24:52,016 INFO: User a1@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 09:43:18,138 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-02 09:53:46,423 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-02 09:53:53,722 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-02 09:54:47,849 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-02 09:55:57,149 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 09:55:57,150 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 09:56:00,715 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 09:56:01,163 INFO: User a1@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 09:56:17,485 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 09:56:17,486 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 09:56:20,364 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 09:56:20,816 INFO: User a3@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 10:00:36,764 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:00:36,765 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 10:00:41,724 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:00:42,190 INFO: Login failed for email a1@naver.com [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:24]
-2024-07-02 10:00:42,190 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 10:00:47,485 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:00:47,942 INFO: User a2@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 10:44:23,650 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:44:23,651 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 10:44:26,416 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:44:26,875 INFO: User a2@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 10:44:31,658 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:44:31,658 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 10:44:34,256 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:44:34,719 INFO: User a1@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 10:44:46,938 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:44:46,938 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 10:44:50,704 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 10:44:51,164 INFO: User a2@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 11:06:45,344 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 11:06:45,345 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 11:06:51,495 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 11:06:51,964 INFO: User a3@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-02 11:07:51,914 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-02 11:07:51,915 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-02 11:07:54,943 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+TypeError: get_files() missing 1 required positional argument: 'branch'
+2024-07-08 10:23:46,343 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
+2024-07-08 10:23:57,350 ERROR: Exception on /project/save_code/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
+Traceback (most recent call last):
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 126, in save_code
+    files = get_files(project_id, default_branch)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: get_files() takes 1 positional argument but 2 were given
+2024-07-08 10:28:55,984 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]

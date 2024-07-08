@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file, jsonify
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
 from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm, CodeEditForm
@@ -41,6 +41,26 @@ def create_project():
         return redirect(url_for('project.detail', project_id=project.id))
     return render_template('project/create.html', form=form)
 
+
+
+def get_branches_internal(repo):
+    return [branch.name for branch in repo.get_branches()]
+
+@bp.route('/get_branches/<int:project_id>')
+@login_required
+def get_branches_api(project_id):
+    project = Project.query.get_or_404(project_id)
+    repo = get_github_repo(project)
+    branches = get_branches_internal(repo)
+    return jsonify(branches)
+
+def get_github_repo(project):
+    github_token = current_app.config['GITHUB_ACCESS_TOKEN']
+    g = Github(github_token)
+    return g.get_repo(project.github_repo)
+
+
+
 @bp.route('/save_code/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def save_code(project_id):
@@ -53,17 +73,10 @@ def save_code(project_id):
     g = Github(github_token)
     repo = g.get_repo(project.github_repo)
 
-    # 파일 목록 가져오기
-    files = []
-    contents = repo.get_contents("")
-    while contents:
-        file_content = contents.pop(0)
-        if file_content.type == "dir":
-            contents.extend(repo.get_contents(file_content.path))
-        else:
-            files.append(file_content)
-
+    branches = get_branches_internal(repo)
+    
     form = CodeSaveForm()
+    form.branch_name.choices = [(branch, branch) for branch in branches]
 
     if request.method == 'POST':
         action = request.form.get('action')
@@ -125,8 +138,12 @@ def save_code(project_id):
 
         return redirect(url_for('project.detail', project_id=project.id))
 
-    return render_template('project/save_code.html', form=form, project=project, files=files)
+    default_branch = repo.default_branch
+    files = get_files_internal(repo, default_branch)
+    if not files:
+        flash('파일목록 가져오기 실패', 'error')
 
+    return render_template('project/save_code.html', form=form, project=project, files=files)
 
 
 @bp.route('/get_file_content/<int:project_id>', methods=['GET', 'POST'])
@@ -136,18 +153,53 @@ def get_file_content(project_id):
     
     if request.method == 'POST':
         file_path = request.form.get('file_path')
+        branch_name = request.form.get('branch_name')
     else:
         file_path = request.args.get('file_path')
+        branch_name = request.args.get('branch_name')
     
     github_token = current_app.config['GITHUB_ACCESS_TOKEN']
     g = Github(github_token)
     repo = g.get_repo(project.github_repo)
 
     try:
-        content = repo.get_contents(file_path)
+        content = repo.get_contents(file_path, ref=branch_name)
         return content.decoded_content.decode('utf-8')
     except Exception as e:
         return str(e), 400
+    
+def get_files_internal(repo, branch):
+    try:
+        files = []
+        contents = repo.get_contents("", ref=branch)
+        while contents:
+            file_content = contents.pop(0)
+            if file_content.type == "dir":
+                contents.extend(repo.get_contents(file_content.path, ref=branch))
+            else:
+                files.append({"path": file_content.path, "type": file_content.type})
+        return files
+    except Exception as e:
+        current_app.logger.error(f'파일 목록을 가져오는 중 오류 발생: {str(e)}')
+        return []
+
+@bp.route('/get_files/<int:project_id>')
+@login_required
+def get_files_api(project_id):
+    branch = request.args.get('branch')
+    if not branch:
+        return jsonify({"error": "Branch parameter is missing"}), 400
+    
+    project = Project.query.get_or_404(project_id)
+    repo = get_github_repo(project)
+
+    try:
+        files = get_files_internal(repo, branch)
+        return jsonify(files)
+    except Exception as e:
+        current_app.logger.error(f'파일 목록을 가져오는 중 오류 발생: {str(e)}')
+        return jsonify({"error": str(e)}), 500
+    
 
 @bp.route('/create_post/<int:project_id>', methods=['POST'])
 @login_required
