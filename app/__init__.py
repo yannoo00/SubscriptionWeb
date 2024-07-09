@@ -35,7 +35,7 @@ def create_app(config_class=Config):
     app.logger.setLevel(logging.INFO)
     app.logger.info('Application startup')
 
-    from app.views import mypage, auth, payments, main, community, project, notification, mentorship, chat
+    from app.views import mypage, auth, payments, main, community, project, notification, mentorship, chat, github_integration
     app.register_blueprint(auth.bp, url_prefix='/auth')
     app.register_blueprint(payments.bp, url_prefix='/payments')
     app.register_blueprint(main.bp)

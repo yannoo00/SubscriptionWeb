@@ -70,55 +70,53 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var branchSelect = document.getElementById('edit_branch_name');
-    var fileSelect = document.getElementById('file_path');
+    var projectId = {{ project.id }};  // Jinja2 템플릿 변수
 
-    // 초기 파일 목록 로드
-    loadFiles(branchSelect.value);
+    function loadFiles(branch) {
+        fetch(`/project/get_files/${projectId}?branch=${encodeURIComponent(branch)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(files => {
+                var fileSelect = document.getElementById('file_path');
+                fileSelect.innerHTML = '';
+                files.forEach(file => {
+                    var option = document.createElement('option');
+                    option.value = file.path;
+                    option.textContent = file.path;
+                    fileSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading files:', error);
+                alert('파일 목록을 불러오는 데 실패했습니다: ' + error.message);
+            });
+    }
+
+    // 초기 브랜치 목록 로드
+    fetch(`/project/get_branches/${projectId}`)
+        .then(response => response.json())
+        .then(branches => {
+            branchSelect.innerHTML = '';
+            branches.forEach(branch => {
+                var option = document.createElement('option');
+                option.value = branch;
+                option.textContent = branch;
+                branchSelect.appendChild(option);
+            });
+            // 브랜치 목록을 로드한 후 첫 번째 브랜치의 파일 목록을 로드
+            if (branches.length > 0) {
+                loadFiles(branches[0]);
+            }
+        })
+        .catch(error => console.error('Error loading branches:', error));
 
     branchSelect.addEventListener('change', function() {
         loadFiles(this.value);
     });
-
-    fileSelect.addEventListener('change', function() {
-        loadFileContent(this.value, branchSelect.value);
-    });
-
-    function loadFiles(branch) {
-    fetch(`/project/get_files/{{ project.id }}?branch=${branch}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(files => {
-            var fileSelect = document.getElementById('file_path');
-            fileSelect.innerHTML = '';
-            files.forEach(file => {
-                var option = document.createElement('option');
-                option.value = file.path;
-                option.textContent = file.path;
-                fileSelect.appendChild(option);
-            });
-            // 파일 목록이 로드된 후 첫 번째 파일의 내용을 로드
-            if (files.length > 0) {
-                loadFileContent(files[0].path, branch);
-            }
-        })
-        .catch(error => {
-            console.error('Error loading files:', error);
-            alert('파일 목록을 불러오는 데 실패했습니다.'+ error.message);
-        });
-}
-
-    function loadFileContent(file, branch) {
-        fetch(`/project/get_file_content/{{ project.id }}?file_path=${file}&branch_name=${branch}`)
-            .then(response => response.text())
-            .then(content => {
-                document.getElementById('edit_content').value = content;
-            })
-            .catch(error => console.error('Error loading file content:', error));
-    }
 });
 </script>
 {% endblock %}

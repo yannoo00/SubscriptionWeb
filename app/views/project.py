@@ -1,11 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, send_file, jsonify
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, jsonify
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
-from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm, CodeEditForm
-from werkzeug.utils import secure_filename
+from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
 from app import db
-import os
-from github import Github, GithubException
+from app.views.github_integration import get_github_repo, get_branches_internal, get_files_internal, create_github_file, update_github_file, get_file_content
 
 bp = Blueprint('project', __name__, url_prefix='/project')
 
@@ -15,7 +13,6 @@ def list_projects():
     form = ProjectParticipationForm()
     projects = Project.query.all()
     return render_template('project/list.html', projects=projects, form=form)
-
 
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -27,11 +24,8 @@ def create_project():
         db.session.commit()
 
         # GitHub 리포지토리 생성
-        github_token = current_app.config['GITHUB_ACCESS_TOKEN']
-        g = Github(github_token)
-        user = g.get_user()
         try:
-            repo = user.create_repo(project.title, private=False, auto_init=True)
+            repo = get_github_repo(project)
             project.github_repo = repo.full_name
             db.session.commit()
             flash(f'프로젝트와 GitHub 리포지토리 {repo.full_name}가 생성되었습니다.', 'success')
@@ -41,11 +35,6 @@ def create_project():
         return redirect(url_for('project.detail', project_id=project.id))
     return render_template('project/create.html', form=form)
 
-
-
-def get_branches_internal(repo):
-    return [branch.name for branch in repo.get_branches()]
-
 @bp.route('/get_branches/<int:project_id>')
 @login_required
 def get_branches_api(project_id):
@@ -53,13 +42,6 @@ def get_branches_api(project_id):
     repo = get_github_repo(project)
     branches = get_branches_internal(repo)
     return jsonify(branches)
-
-def get_github_repo(project):
-    github_token = current_app.config['GITHUB_ACCESS_TOKEN']
-    g = Github(github_token)
-    return g.get_repo(project.github_repo)
-
-
 
 @bp.route('/save_code/<int:project_id>', methods=['GET', 'POST'])
 @login_required
@@ -69,10 +51,7 @@ def save_code(project_id):
         flash('이 프로젝트에는 연결된 GitHub 리포지토리가 없습니다.', 'error')
         return redirect(url_for('project.detail', project_id=project.id))
 
-    github_token = current_app.config['GITHUB_ACCESS_TOKEN']
-    g = Github(github_token)
-    repo = g.get_repo(project.github_repo)
-
+    repo = get_github_repo(project)
     branches = get_branches_internal(repo)
     
     form = CodeSaveForm()
@@ -83,36 +62,8 @@ def save_code(project_id):
 
         if action == 'new_file':
             if form.validate_on_submit():
-                code_content = form.code.data
-                file_name = form.file_name.data
-                branch_name = form.branch_name.data
-                commit_message = form.commit_message.data
-
-                try:
-                    # 브랜치 확인 및 생성
-                    try:
-                        repo.get_branch(branch_name)
-                    except GithubException as e:
-                        if e.status == 404:
-                            default_branch = repo.get_branch(repo.default_branch)
-                            repo.create_git_ref(ref=f"refs/heads/{branch_name}", sha=default_branch.commit.sha)
-                            flash(f'새로운 브랜치 "{branch_name}"가 생성되었습니다.', 'info')
-                        else:
-                            raise
-
-                    # 새 파일 생성
-                    repo.create_file(file_name, commit_message, code_content, branch=branch_name)
-                    flash(f'새 파일 "{file_name}"이 생성되었습니다.', 'success')
-
-                except GithubException as e:
-                    flash(f'GitHub 작업 중 오류가 발생했습니다: {e.data.get("message", str(e))}', 'error')
-                    current_app.logger.error(f'GitHub 오류: {str(e)}')
-                except Exception as e:
-                    flash(f'예상치 못한 오류가 발생했습니다: {str(e)}', 'error')
-                    current_app.logger.error(f'예상치 못한 오류: {str(e)}')
-
-            else:
-                flash('폼 데이터가 유효하지 않습니다.', 'error')
+                success, message = create_github_file(repo, form.file_name.data, form.code.data, form.branch_name.data, form.commit_message.data)
+                flash(message, 'success' if success else 'error')
 
         elif action == 'edit_file':
             file_path = request.form.get('file_path')
@@ -121,18 +72,8 @@ def save_code(project_id):
             commit_message = request.form.get('edit_commit_message')
 
             if file_path and content and branch_name and commit_message:
-                try:
-                    # 파일 업데이트
-                    contents = repo.get_contents(file_path, ref=branch_name)
-                    repo.update_file(contents.path, commit_message, content, contents.sha, branch=branch_name)
-                    flash(f'파일 "{file_path}"이 업데이트되었습니다.', 'success')
-
-                except GithubException as e:
-                    flash(f'GitHub 작업 중 오류가 발생했습니다: {e.data.get("message", str(e))}', 'error')
-                    current_app.logger.error(f'GitHub 오류: {str(e)}')
-                except Exception as e:
-                    flash(f'예상치 못한 오류가 발생했습니다: {str(e)}', 'error')
-                    current_app.logger.error(f'예상치 못한 오류: {str(e)}')
+                success, message = update_github_file(repo, file_path, content, branch_name, commit_message)
+                flash(message, 'success' if success else 'error')
             else:
                 flash('필요한 모든 필드를 입력해주세요.', 'error')
 
@@ -145,10 +86,9 @@ def save_code(project_id):
 
     return render_template('project/save_code.html', form=form, project=project, files=files)
 
-
 @bp.route('/get_file_content/<int:project_id>', methods=['GET', 'POST'])
 @login_required
-def get_file_content(project_id):
+def get_file_content_api(project_id):
     project = Project.query.get_or_404(project_id)
     
     if request.method == 'POST':
@@ -158,30 +98,13 @@ def get_file_content(project_id):
         file_path = request.args.get('file_path')
         branch_name = request.args.get('branch_name')
     
-    github_token = current_app.config['GITHUB_ACCESS_TOKEN']
-    g = Github(github_token)
-    repo = g.get_repo(project.github_repo)
-
-    try:
-        content = repo.get_contents(file_path, ref=branch_name)
-        return content.decoded_content.decode('utf-8')
-    except Exception as e:
-        return str(e), 400
+    repo = get_github_repo(project)
+    success, content = get_file_content(repo, file_path, branch_name)
     
-def get_files_internal(repo, branch):
-    try:
-        files = []
-        contents = repo.get_contents("", ref=branch)
-        while contents:
-            file_content = contents.pop(0)
-            if file_content.type == "dir":
-                contents.extend(repo.get_contents(file_content.path, ref=branch))
-            else:
-                files.append({"path": file_content.path, "type": file_content.type})
-        return files
-    except Exception as e:
-        current_app.logger.error(f'파일 목록을 가져오는 중 오류 발생: {str(e)}')
-        return []
+    if success:
+        return content
+    else:
+        return content, 400
 
 @bp.route('/get_files/<int:project_id>')
 @login_required
@@ -199,7 +122,6 @@ def get_files_api(project_id):
     except Exception as e:
         current_app.logger.error(f'파일 목록을 가져오는 중 오류 발생: {str(e)}')
         return jsonify({"error": str(e)}), 500
-    
 
 @bp.route('/create_post/<int:project_id>', methods=['POST'])
 @login_required
