@@ -3,7 +3,7 @@
 {% block content %}
 <h2>{{ project.title }} - 진행상황 기록</h2>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data" id="progress-form">
     {{ form.csrf_token }}
     <div class="form-group">
         {{ form.date.label }}
@@ -11,7 +11,19 @@
     </div>
     <div class="form-group">
         {{ form.description.label }}
-        {{ form.description(class="form-control", rows="5") }}
+        {{ form.description(class="form-control", rows="5", id="description-field", placeholder="이미지를 붙여넣기 하세요...") }}
+    </div>
+    <div class="form-group">
+        {{ form.image.label }}
+        {{ form.image(class="form-control-file") }}
+    </div>
+    <div class="form-group">
+        {{ form.ai_conversation_link.label }}
+        {{ form.ai_conversation_link(class="form-control", placeholder="GPT 대화 공유 링크를 입력하세요") }}
+    </div>
+    <div class="form-group">
+        {{ form.ai_conversation_file.label }}
+        {{ form.ai_conversation_file(class="form-control-file") }}
     </div>
     {{ form.submit(class="btn btn-primary") }}
 </form>
@@ -23,9 +35,53 @@
 <div class="card my-3">
     <div class="card-body">
         <h5 class="card-title">{{ progress.date.strftime('%Y-%m-%d') }}</h5>
-        <p class="card-text">{{ progress.description }}</p>
+        <p class="card-text">{{ progress.description|safe }}</p>
+        {% if progress.image %}
+        <img src="{{ url_for('uploaded_file', filename=progress.image) }}" class="img-fluid" alt="Progress Image">
+        {% endif %}
+        {% if progress.ai_conversation_link %}
+        <p><a href="{{ progress.ai_conversation_link }}" target="_blank">GPT 대화 링크</a></p>
+        {% endif %}
+        {% if progress.ai_conversation_file %}
+        <p><a href="{{ url_for('uploaded_file', filename=progress.ai_conversation_file) }}" target="_blank">Claude 대화 내역</a></p>
+        {% endif %}
     </div>
 </div>
 {% endfor %}
+
+<script>
+document.getElementById('description-field').addEventListener('paste', function(event) {
+    var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    for (var index in items) {
+        var item = items[index];
+        if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
+            var file = item.getAsFile();
+            var formData = new FormData();
+            formData.append('image', file);
+
+            fetch('{{ url_for("project.upload_image") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ form.csrf_token._value() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    var img = document.createElement('img');
+                    img.src = data.url;
+                    document.getElementById('description-field').value += '\n<img src="' + data.url + '">\n';
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+            });
+
+            event.preventDefault();
+        }
+    }
+});
+</script>
 
 {% endblock %}

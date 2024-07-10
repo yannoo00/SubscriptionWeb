@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, current_user
@@ -22,11 +22,16 @@ def create_app(config_class=Config):
     app = Flask(__name__, template_folder='templates')
     app.config.from_object(config_class)
     app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'uploads')
+
     csrf.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
     socketio.init_app(app, cors_allowed_origins="*")
+
+    # Ensure the upload folder exists
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
 
     file_handler = RotatingFileHandler('app.log', maxBytes=10240, backupCount=10)
     file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -46,6 +51,10 @@ def create_app(config_class=Config):
     app.register_blueprint(mentorship.bp, url_prefix='/mentorship')
     app.register_blueprint(chat.bp, url_prefix='/chat')
 
+    @app.route('/uploads/<filename>')
+    def uploaded_file(filename):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
     @socketio.on('connect')
     def handle_connect():
         if current_user.is_authenticated:
@@ -59,7 +68,7 @@ def create_app(config_class=Config):
     return app
 
 def send_notification(user_id, message):
-    socketio.emit('notification', {'message':message}, room = user_id)
+    socketio.emit('notification', {'message': message}, room=user_id)
 
 from app.models import User
 

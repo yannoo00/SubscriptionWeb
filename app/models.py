@@ -56,12 +56,12 @@ class Project(db.Model):
     completed = db.Column(db.Boolean, default=False)
     participants = db.relationship('User', secondary='project_participant', back_populates='projects', overlaps="project_participants")
     project_participants = db.relationship('ProjectParticipant', back_populates='project', lazy=True, overlaps="participants,projects")
+    progresses = db.relationship('ProjectProgress', back_populates='project', lazy=True)  # 새로운 관계 추가
     overview = db.Column(db.Text)
     requirements = db.Column(db.Text)
     flowchart = db.Column(db.Text)
     timeline = db.Column(db.Text)
     github_repo = db.Column(db.String(200))
-
 
 class ProjectParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -133,10 +133,11 @@ class ProjectProgress(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     description = db.Column(db.Text, nullable=False)
-    project = db.relationship('Project', backref=db.backref('progress', lazy=True))
-    user = db.relationship('User', backref=db.backref('project_progress', lazy=True))
-
-
+    image = db.Column(db.String(255))  # 이미지 파일 경로를 저장할 필드
+    ai_conversation_link = db.Column(db.String(255))  # GPT 대화 공유 링크
+    ai_conversation_file = db.Column(db.String(255))  # Claude 대화 내역 파일 경로
+    project = db.relationship('Project', back_populates='progresses')
+    user = db.relationship('User')
 
 class ChatRoom(db.Model):
     id = db.Column(db.Integer, primary_key=True)

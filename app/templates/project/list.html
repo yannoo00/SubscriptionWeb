@@ -1,24 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>프로젝트 목록</h2>
-<a href="{{ url_for('project.create_project') }}" class="btn btn-primary mb-3">프로젝트 생성</a>
-<ul>
-{% for project in projects %}
-    <li>
-        <a href="{{ url_for('project.detail', project_id=project.id) }}">{{ project.title }}</a>
-        {% if current_user.is_authenticated %}
-            {% if project.completed %}
-                <span class="btn btn-secondary disabled">완료됨</span>
-            {% elif current_user in project.participants %}
-                <span class="badge badge-success">참여중</span>
-            {% else %}
-                <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
-                    {{ form.csrf_token }}
-                    <button type="submit" class="btn btn-primary">참여하기</button>
-                </form>
+<div class="project-list-container">
+    <h2>프로젝트 목록</h2>
+    <a href="{{ url_for('project.create_project') }}" class="btn btn-primary create-btn">프로젝트 생성</a>
+    <ul class="project-list">
+    {% for project in projects %}
+        <li class="project-item">
+            <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-title">{{ project.title }}</a>
+            {% if current_user.is_authenticated %}
+                {% if project.completed %}
+                    <span class="badge badge-secondary">완료됨</span>
+                {% elif current_user in project.participants %}
+                    <span class="badge badge-success">참여중</span>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    </li>
-{% endfor %}
-</ul>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}

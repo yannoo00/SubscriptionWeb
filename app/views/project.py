@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, jsonify
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, jsonify, send_from_directory
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
 from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
 from app import db
 from app.views.github_integration import get_github_repo, get_branches_internal, get_files_internal, create_github_file, update_github_file, get_file_content
+from werkzeug.utils import secure_filename
+import os
 
 bp = Blueprint('project', __name__, url_prefix='/project')
 
@@ -278,7 +280,29 @@ def progress(project_id):
     
     form = ProjectProgressForm()
     if form.validate_on_submit():
-        progress = ProjectProgress(project=project, user=current_user, date=form.date.data, description=form.description.data)
+        filename = None
+        if form.image.data:
+            file = form.image.data
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+        conversation_filename = None
+        if form.ai_conversation_file.data:
+            conversation_file = form.ai_conversation_file.data
+            conversation_filename = secure_filename(conversation_file.filename)
+            conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
+            conversation_file.save(conversation_file_path)
+        
+        progress = ProjectProgress(
+            project=project, 
+            user=current_user, 
+            date=form.date.data, 
+            description=form.description.data,
+            image=filename,
+            ai_conversation_link=form.ai_conversation_link.data,
+            ai_conversation_file=conversation_filename
+        )
         db.session.add(progress)
         db.session.commit()
         flash('진행상황이 성공적으로 기록되었습니다.', 'success')
@@ -307,3 +331,75 @@ def plan(project_id):
     form.flowchart.data = project.flowchart
     
     return render_template('project/plan.html', project=project, form=form)
+
+
+
+
+#이미지 업로드용 API엔드포인트.
+@bp.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@bp.route('/upload_image', methods=['POST'])
+@login_required
+def upload_image():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image file provided'}), 400
+
+    image = request.files['image']@bp.route('/progress/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def progress(project_id):
+    project = Project.query.get_or_404(project_id)
+    if current_user not in project.participants and current_user != project.client:
+        flash('프로젝트 참여자와 의뢰자만 진행상황을 볼 수 있습니다.', 'warning')
+        return redirect(url_for('project.detail', project_id=project_id))
+    
+    form = ProjectProgressForm()
+    if form.validate_on_submit():
+        filename = None
+        if form.image.data:
+            file = form.image.data
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+        conversation_filename = None
+        if form.ai_conversation_file.data:
+            conversation_file = form.ai_conversation_file.data
+            conversation_filename = secure_filename(conversation_file.filename)
+            conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
+            conversation_file.save(conversation_file_path)
+        
+        progress = ProjectProgress(
+            project=project, 
+            user=current_user, 
+            date=form.date.data, 
+            description=form.description.data,
+            image=filename,
+            ai_conversation_link=form.ai_conversation_link.data,
+            ai_conversation_file=conversation_filename
+        )
+        db.session.add(progress)
+        db.session.commit()
+        flash('진행상황이 성공적으로 기록되었습니다.', 'success')
+        return redirect(url_for('project.progress', project_id=project_id))
+    
+    progress_list = ProjectProgress.query.filter_by(project=project).order_by(ProjectProgress.date.desc()).all()
+    return render_template('project/progress.html', project=project, form=form, progress_list=progress_list)
+
+    if image.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if image and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        image.save(file_path)
+        
+        return jsonify({'url': url_for('uploaded_file', filename=filename)})
+
+    return jsonify({'error': 'Invalid file type'}), 400
+

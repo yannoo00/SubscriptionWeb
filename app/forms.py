@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField
-from wtforms.validators import DataRequired, NumberRange, Length
+from wtforms.validators import DataRequired, NumberRange, Length, URL
 
 class RatingForm(FlaskForm):
     rating = IntegerField('평점', validators=[DataRequired(), NumberRange(min=1, max=5)])
@@ -63,6 +63,11 @@ class ProjectProgressForm(FlaskForm):
     date = DateField('날짜', validators=[DataRequired()])
     description = TextAreaField('진행내용', validators=[DataRequired()])
     submit = SubmitField('기록')    
+    image = FileField('이미지 업로드', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'], '이미지 파일만 허용됩니다.')])
+    ai_conversation_link = StringField('GPT 대화 공유 링크', validators=[URL()])
+    ai_conversation_file = FileField('Claude 대화 내역 업로드', validators=[FileAllowed(['mhtml'], 'MHTML 파일만 허용됩니다.')])
+
+
 
 class RequirementForm(FlaskForm):
     requirement = StringField('Requirement', validators=[DataRequired()])

@@ -1,60 +1,11 @@
-2024-07-08 10:32:55,016 ERROR: Exception on /project/save_code/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
-Traceback (most recent call last):
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 144, in save_code
-    files = files_response.json if files_response.status_code == 200 else[]
-                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'tuple' object has no attribute 'status_code'
-2024-07-08 10:36:36,522 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-08 10:36:40,421 ERROR: Exception on /project/save_code/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
-Traceback (most recent call last):
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 143, in save_code
-    files_response = get_files_internal(project_id)
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: get_files_internal() missing 1 required positional argument: 'branch'
-2024-07-08 10:40:03,162 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-09 09:34:06,182 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-09 09:38:57,503 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-09 09:43:01,663 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-09 09:43:14,663 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-09 09:43:14,664 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-09 09:43:18,085 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-09 09:43:18,623 INFO: User a3@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-09 09:54:41,157 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-09 10:09:57,959 ERROR: 파일 목록을 가져오는 중 오류 발생: 404 {"message": "This repository is empty.", "documentation_url": "https://docs.github.com/v3/repos/contents/#get-contents", "status": "404"} [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\github_integration.py:24]
-2024-07-09 10:13:49,928 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:36]
-2024-07-09 10:57:08,405 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-09 10:57:08,406 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-09 10:57:09,684 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-09 10:57:09,685 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-09 10:57:14,790 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-09 10:57:14,791 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
+2024-07-10 10:56:56,936 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 10:56:58,954 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:14:12,016 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:14:18,505 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:14:26,069 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:14:28,000 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:17:13,505 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:17:20,123 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:17:25,613 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:17:40,400 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-10 11:17:42,164 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
