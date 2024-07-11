@@ -179,7 +179,7 @@ def delete_project(project_id):
         flash('프로젝트가 삭제되었습니다.', 'success')
     return redirect(url_for('project.list_projects'))
 
-@bp.route('/detail/<int:project_id>')
+@bp.route('/detail/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def detail(project_id):
     project = Project.query.get_or_404(project_id)
@@ -188,7 +188,45 @@ def detail(project_id):
     contribution_form = ContributionForm()
     accept_form = AcceptParticipantForm()
     participate_form = ParticipateForm()
-    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form, contribution_form = contribution_form, accept_form = accept_form, form=participate_form)
+    progress_form = ProjectProgressForm()
+
+    if request.method == 'POST':
+        if 'submit_progress' in request.form:
+            if progress_form.validate_on_submit():
+                filename = None
+                if progress_form.image.data:
+                    file = progress_form.image.data
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                    file.save(file_path)
+
+                conversation_filename = None
+                if progress_form.ai_conversation_file.data:
+                    conversation_file = progress_form.ai_conversation_file.data
+                    conversation_filename = secure_filename(conversation_file.filename)
+                    conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
+                    conversation_file.save(conversation_file_path)
+
+                new_progress = ProjectProgress(
+                    project=project,
+                    user=current_user,
+                    date=progress_form.date.data,
+                    description=progress_form.description.data,
+                    image=filename,
+                    ai_conversation_link=progress_form.ai_conversation_link.data,
+                    ai_conversation_file=conversation_filename
+                )
+                db.session.add(new_progress)
+                db.session.commit()
+                flash('진행 상황이 성공적으로 기록되었습니다.', 'success')
+
+    progress_list = ProjectProgress.query.filter_by(project=project).order_by(ProjectProgress.date.desc()).all()
+
+    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form,
+                        contribution_form=contribution_form, accept_form=accept_form, 
+                        participate_form=participate_form,  # 이 줄 추가
+                        form=progress_form,  # 여기를 수정
+                        progress_form=progress_form, progress_list=progress_list)
 
 @bp.route('/participate/<int:project_id>', methods=['POST'])
 @login_required
@@ -270,46 +308,62 @@ def accept_participant(project_id):
 
     return redirect(url_for('project.detail', project_id=project_id))
 
-@bp.route('/progress/<int:project_id>', methods=['GET', 'POST'])
+from app.forms import PostForm, CommentForm  # 필요한 폼들을 import
+
+@bp.route('/feedback/<int:project_id>')
 @login_required
-def progress(project_id):
+def feedback(project_id):
     project = Project.query.get_or_404(project_id)
     if current_user not in project.participants and current_user != project.client:
-        flash('프로젝트 참여자와 의뢰자만 진행상황을 볼 수 있습니다.', 'warning')
+        flash('You are not authorized to view this page.', 'warning')
         return redirect(url_for('project.detail', project_id=project_id))
-    
-    form = ProjectProgressForm()
-    if form.validate_on_submit():
-        filename = None
-        if form.image.data:
-            file = form.image.data
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
 
-        conversation_filename = None
-        if form.ai_conversation_file.data:
-            conversation_file = form.ai_conversation_file.data
-            conversation_filename = secure_filename(conversation_file.filename)
-            conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
-            conversation_file.save(conversation_file_path)
-        
-        progress = ProjectProgress(
-            project=project, 
-            user=current_user, 
-            date=form.date.data, 
-            description=form.description.data,
-            image=filename,
-            ai_conversation_link=form.ai_conversation_link.data,
-            ai_conversation_file=conversation_filename
-        )
-        db.session.add(progress)
-        db.session.commit()
-        flash('진행상황이 성공적으로 기록되었습니다.', 'success')
-        return redirect(url_for('project.progress', project_id=project_id))
+    post_form = PostForm()
+    comment_form = CommentForm()
+
+    return render_template('project/feedback.html', project=project, post_form=post_form, comment_form=comment_form)
+
+
+# @bp.route('/progress/<int:project_id>', methods=['GET', 'POST'])
+# @login_required
+# def progress(project_id):
+#     project = Project.query.get_or_404(project_id)
+#     if current_user not in project.participants and current_user != project.client:
+#         flash('프로젝트 참여자와 의뢰자만 진행상황을 볼 수 있습니다.', 'warning')
+#         return redirect(url_for('project.detail', project_id=project_id))
     
-    progress_list = ProjectProgress.query.filter_by(project=project).order_by(ProjectProgress.date.desc()).all()
-    return render_template('project/progress.html', project=project, form=form, progress_list=progress_list)
+#     form = ProjectProgressForm()
+#     if form.validate_on_submit():
+#         filename = None
+#         if form.image.data:
+#             file = form.image.data
+#             filename = secure_filename(file.filename)
+#             file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+#             file.save(file_path)
+
+#         conversation_filename = None
+#         if form.ai_conversation_file.data:
+#             conversation_file = form.ai_conversation_file.data
+#             conversation_filename = secure_filename(conversation_file.filename)
+#             conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
+#             conversation_file.save(conversation_file_path)
+        
+#         progress = ProjectProgress(
+#             project=project, 
+#             user=current_user, 
+#             date=form.date.data, 
+#             description=form.description.data,
+#             image=filename,
+#             ai_conversation_link=form.ai_conversation_link.data,
+#             ai_conversation_file=conversation_filename
+#         )
+#         db.session.add(progress)
+#         db.session.commit()
+#         flash('진행상황이 성공적으로 기록되었습니다.', 'success')
+#         return redirect(url_for('project.progress', project_id=project_id))
+    
+#     progress_list = ProjectProgress.query.filter_by(project=project).order_by(ProjectProgress.date.desc()).all()
+#     return render_template('project/progress.html', project=project, form=form, progress_list=progress_list)
 
 
 @bp.route('/plan/<int:project_id>', methods=['GET', 'POST'])

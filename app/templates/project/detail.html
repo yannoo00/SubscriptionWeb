@@ -10,23 +10,22 @@
 {% endif %}
 
 {% if current_user in project.participants or current_user == project.client %}
-<a href="{{ url_for('project.progress', project_id=project.id) }}" class="btn btn-secondary">진행상황</a>
 <a href="{{ url_for('project.plan', project_id=project.id) }}" class="btn btn-info">기획 페이지</a>
+<a href="{{ url_for('project.feedback', project_id=project.id) }}" class="btn btn-info">피드백</a>
 <a href="{{ url_for('project.save_code', project_id=project.id) }}" class="btn btn-primary">코드 저장</a>
 {% endif %}
 
-
-{% if current_user != project.client %}  <!-- 의뢰자가 아닌 경우에만 참여 버튼 및 상태 표시 -->
+{% if current_user != project.client %}
   {% if not project.completed %}
     {% set participant = project.project_participants|selectattr('user', 'equalto', current_user)|first %}
     {% if not participant %}
     <form action="{{ url_for('project.participate', project_id=project.id) }}" method="post">
-      {{ form.csrf_token }}
-      {{ form.submit(class="btn btn-primary") }}
+      {{ participate_form.csrf_token }}
+      {{ participate_form.submit(class="btn btn-primary") }}
     </form>
-  {% elif not participant.accepted %}
+    {% elif not participant.accepted %}
     <p>참가 신청 대기 중입니다.</p>
-  {% endif %}
+    {% endif %}
   {% endif %}
 {% endif %}
 
@@ -44,16 +43,15 @@
         <li>
             {{ participant.user.name }}
             <form action="{{ url_for('project.accept_participant', project_id=project.id) }}" method="post" class="d-inline">
-                {{ accept_form.csrf_token }}  <!-- csrf_token 사용 -->
+                {{ accept_form.csrf_token }}
                 <input type="hidden" name="user_id" value="{{ participant.user.id }}">
-                {{ accept_form.submit(class='btn btn-sm btn-success') }}  <!-- submit 버튼 사용 -->
+                {{ accept_form.submit(class='btn btn-sm btn-success') }}
             </form>
         </li>
       {% endif %}
     {% endfor %}
   </ul>
 {% endif %}
-
 
 {% if not project.completed %}
     {% if current_user.id == project.client_id %}
@@ -84,44 +82,86 @@
   </form>
 {% endif %}
 
-<h3>게시글 작성</h3>
-<form action="{{ url_for('project.create_post', project_id=project.id) }}" method="post">
-    {{ post_form.csrf_token }}
+<h2>{{ project.title }} - 진행상황 기록</h2>
+
+<form method="POST" enctype="multipart/form-data" id="progress-form">
+    {{ progress_form.csrf_token }}
     <div class="form-group">
-        {{ post_form.title.label }}
-        {{ post_form.title(class="form-control") }}
+        {{ progress_form.date.label }}
+        {{ progress_form.date(class="form-control") }}
     </div>
     <div class="form-group">
-        {{ post_form.content.label }}
-        {{ post_form.content(class="form-control", rows="3") }}
+        {{ progress_form.description.label }}
+        {{ progress_form.description(class="form-control", rows="5", id="description-field", placeholder="이미지를 붙여넣기 하세요...") }}
     </div>
-    {{ post_form.submit(class="btn btn-primary") }}
+    <div class="form-group">
+        {{ progress_form.image.label }}
+        {{ progress_form.image(class="form-control-file") }}
+    </div>
+    <div class="form-group">
+        {{ progress_form.ai_conversation_link.label }}
+        {{ progress_form.ai_conversation_link(class="form-control", placeholder="GPT 대화 공유 링크를 입력하세요") }}
+    </div>
+    <div class="form-group">
+        {{ progress_form.ai_conversation_file.label }}
+        {{ progress_form.ai_conversation_file(class="form-control-file") }}
+    </div>
+    {{ progress_form.submit(class="btn btn-primary") }}
 </form>
 
 <hr>
 
-<h3>게시글 목록</h3>
-{% for post in project.posts %}
+<h3>진행상황 목록</h3>
+{% for progress in progress_list %}
 <div class="card my-3">
     <div class="card-body">
-        <p class="card-text">{{ post.content }}</p>
-        <p class="card-text">작성자: {{ post.user.name }}</p>
-        <form action="{{ url_for('project.create_comment', post_id=post.id) }}" method="post">
-            {{ comment_form.csrf_token }}
-            <div class="form-group">
-                <textarea name="content" class="form-control" rows="2"></textarea>
-            </div>
-            <button type="submit" class="btn btn-secondary btn-sm">댓글 작성</button>
-        </form>
-        {% for comment in post.comments %}
-        <div class="card my-2">
-            <div class="card-body">
-                <p class="card-text">{{ comment.content }}</p>
-                <p class="card-text">작성자: {{ comment.user.name }}</p>
-            </div>
-        </div>
-        {% endfor %}
+        <h5 class="card-title">{{ progress.date.strftime('%Y-%m-%d') }}</h5>
+        <p class="card-text">{{ progress.description|safe }}</p>
+        {% if progress.image %}
+        <img src="{{ url_for('uploaded_file', filename=progress.image) }}" class="img-fluid" alt="Progress Image">
+        {% endif %}
+        {% if progress.ai_conversation_link %}
+        <p><a href="{{ progress.ai_conversation_link }}" target="_blank">GPT 대화 링크</a></p>
+        {% endif %}
+        {% if progress.ai_conversation_file %}
+        <p><a href="{{ url_for('uploaded_file', filename=progress.ai_conversation_file) }}" target="_blank">Claude 대화 내역</a></p>
+        {% endif %}
     </div>
 </div>
 {% endfor %}
+
+<script>
+document.getElementById('description-field').addEventListener('paste', function(event) {
+    var items = (event.clipboardData or event.originalEvent.clipboardData).items;
+    for (var index in items) {
+        var item = items[index];
+        if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
+            var file = item.getAsFile();
+            var formData = new FormData();
+            formData.append('image', file);
+
+            fetch('{{ url_for("project.upload_image") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ progress_form.csrf_token._value() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    var img = document.createElement('img');
+                    img.src = data.url;
+                    document.getElementById('description-field').value += '\n<img src="' + data.url + '">\n';
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+            });
+
+            event.preventDefault();
+        }
+    }
+});
+</script>
 {% endblock %}
