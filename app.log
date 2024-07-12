@@ -1,75 +1,20 @@
-2024-07-10 10:56:56,936 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 10:56:58,954 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:14:12,016 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:14:18,505 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:14:26,069 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:14:28,000 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:17:13,505 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:17:20,123 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:17:25,613 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:17:40,400 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-10 11:17:42,164 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 09:33:16,186 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 09:33:18,264 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 09:34:00,564 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-11 09:34:00,564 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-11 09:34:02,746 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-11 09:34:03,268 INFO: User a3@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-11 09:38:22,597 ERROR: 파일 목록을 가져오는 중 오류 발생: 404 {"message": "This repository is empty.", "documentation_url": "https://docs.github.com/v3/repos/contents/#get-contents", "status": "404"} [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\github_integration.py:24]
-2024-07-11 09:41:59,675 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-11 09:41:59,676 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
-2024-07-11 09:42:03,358 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
-2024-07-11 09:42:03,825 INFO: User a3@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]
-2024-07-11 10:01:50,628 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:01:51,376 ERROR: Exception on /project/detail/8 [GET] [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py:828]
-Traceback (most recent call last):
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 1463, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 872, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 870, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\app.py", line 855, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\project.py", line 191, in detail
-    return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form, contribution_form = contribution_form, accept_form = accept_form, form=participate_form)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\flask\templating.py", line 149, in render_template
-    template = app.jinja_env.get_or_select_template(template_name_or_list)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1084, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 1013, in get_template
-    return self._load_template(name, globals)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 972, in _load_template
-    template = self.loader.load(self, name, self.make_globals(globals))
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\loaders.py", line 138, in load
-    code = environment.compile(source, name, filename)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 768, in compile
-    self.handle_exception(source=source_hint)
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\myvenv\Lib\site-packages\jinja2\environment.py", line 939, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\templates\project\detail.html", line 176, in template
-    {% endfor %}
-jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endfor'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
-2024-07-11 10:02:10,211 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:02:12,094 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:05:26,005 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:05:27,712 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:09:24,690 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:09:26,455 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:16:31,157 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:20:50,673 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:29:10,087 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
-2024-07-11 10:32:29,097 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 11:05:59,826 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 11:06:02,337 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 11:06:33,584 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 11:06:40,539 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 11:09:54,163 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:10:59,302 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:11:33,915 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:20:15,841 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:20:23,390 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:20:25,279 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:25:44,482 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:26:11,211 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:26:19,392 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:26:25,446 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:26:31,817 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:26:33,882 INFO: Application startup [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\__init__.py:41]
+2024-07-12 13:26:54,959 INFO: Entering login function, request.method=GET [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+2024-07-12 13:26:54,960 INFO: Rendering login template [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:26]
+2024-07-12 13:27:00,026 INFO: Entering login function, request.method=POST [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:11]
+2024-07-12 13:27:00,511 INFO: User a1@naver.com logged in successfully [in C:\Users\kcti\Documents\GitHub\SubscriptionWeb\app\views\auth.py:18]

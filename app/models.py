@@ -23,10 +23,10 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     bio = db.Column(db.Text)
-    chat_rooms = db.relationship('ChatRoom', secondary='chat_room_participant', back_populates='participants', overlaps="chat_room_participants", viewonly = True)
-    chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='user', overlaps="chat_rooms,participants")
+    chat_rooms = db.relationship('ChatRoom', secondary='chat_room_participant', back_populates='participants')
+    chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='user')
     notifications = db.relationship('Notification', back_populates='user', lazy=True)
-    projects = db.relationship('Project', secondary='project_participant', back_populates='participants', overlaps="project_participants")
+    projects = db.relationship('Project', secondary='project_participant', back_populates='participants')
     subscription = db.relationship('Subscription', back_populates='subscriber', uselist=False)
     created_projects = db.relationship('Project', back_populates='client', lazy=True, foreign_keys='Project.client_id')
     mentees = db.relationship('User', 
@@ -35,14 +35,14 @@ class User(UserMixin, db.Model):
                               secondaryjoin=(mentorship_mentor.c.mentee_id == id),
                               backref=db.backref('mentors', lazy='dynamic'),
                               lazy='dynamic')
-                              
     pending_mentees = db.relationship('User', 
                                     secondary=mentorship_mentee,
                                     primaryjoin=(mentorship_mentee.c.mentor_id == id),
                                     secondaryjoin=(mentorship_mentee.c.mentee_id == id),
                                     backref=db.backref('pending_mentors', lazy='dynamic'),
                                     lazy='dynamic')
-    project_participants = db.relationship('ProjectParticipant', back_populates='user', lazy=True, overlaps="projects")
+    project_participants = db.relationship('ProjectParticipant', back_populates='user', lazy=True)
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -142,17 +142,19 @@ class ProjectProgress(db.Model):
 class ChatRoom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    is_public = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    participants = db.relationship('User', secondary='chat_room_participant', back_populates='chat_rooms', overlaps ='chat_room_participants')
-    chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='chat_room', overlaps = 'participants')
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    participants = db.relationship('User', secondary='chat_room_participant', back_populates='chat_rooms')
+    chat_room_participants = db.relationship('ChatRoomParticipant', back_populates='chat_room')
 
 class ChatRoomParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     chat_room_id = db.Column(db.Integer, db.ForeignKey('chat_room.id'), nullable=False)
     joined_at = db.Column(db.DateTime, default=datetime.utcnow)
-    user = db.relationship('User', back_populates='chat_room_participants', overlaps="chat_rooms,participants")
-    chat_room = db.relationship('ChatRoom', back_populates='chat_room_participants',  overlaps="participants")
+    user = db.relationship('User', back_populates='chat_room_participants')
+    chat_room = db.relationship('ChatRoom', back_populates='chat_room_participants')
 
 class ChatMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)

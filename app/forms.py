@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField
+from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField, BooleanField, SelectMultipleField
 from wtforms.validators import DataRequired, NumberRange, Length, URL
 
 class RatingForm(FlaskForm):
@@ -79,6 +79,9 @@ class ProjectPlanForm(FlaskForm):
 
 class ChatRoomForm(FlaskForm):
     name = StringField('채팅방 이름', validators=[DataRequired()])
+    is_public = BooleanField('전체 공개')
+    participants = SelectMultipleField('참여자', coerce=int)
+    submit = SubmitField('생성')
  
 
 class CodeSaveForm(FlaskForm):

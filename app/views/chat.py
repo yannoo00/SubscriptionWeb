@@ -61,23 +61,36 @@ def chat_list():
 @login_required
 def create_chat_room():
     form = ChatRoomForm()
+    form.participants.choices = [(user.id, user.name) for user in User.query.filter(User.id != current_user.id).all()]
+    
     if form.validate_on_submit():
-        chat_room = ChatRoom(name=form.name.data)
+        chat_room = ChatRoom(name=form.name.data, is_public=form.is_public.data, creator_id=current_user.id)
         db.session.add(chat_room)
-        db.session.commit()
+        db.session.flush()  # ID를 얻기 위해 flush
         
+        # 생성자를 참여자로 추가
         participant = ChatRoomParticipant(user_id=current_user.id, chat_room_id=chat_room.id)
         db.session.add(participant)
-        db.session.commit()
         
+        # 비공개 채팅방일 경우 선택된 참여자 추가
+        if not form.is_public.data:
+            for user_id in form.participants.data:
+                participant = ChatRoomParticipant(user_id=user_id, chat_room_id=chat_room.id)
+                db.session.add(participant)
+        
+        db.session.commit()
         flash('채팅방이 생성되었습니다.', 'success')
         return redirect(url_for('chat.chat_list'))
+    
     return render_template('chat/create_chat_room.html', form=form)
 
 @bp.route('/<int:chat_room_id>')
 @login_required
 def chat_room(chat_room_id):
     chat_room = ChatRoom.query.get_or_404(chat_room_id)
+    if not chat_room.is_public and current_user not in chat_room.participants:
+        flash('이 채팅방에 접근할 권한이 없습니다.', 'error')
+        return redirect(url_for('chat.chat_list'))
     messages = get_recent_messages(chat_room_id)
     return render_template('chat/chat_room.html', chat_room=chat_room, messages=messages)
 
