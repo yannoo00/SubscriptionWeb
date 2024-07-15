@@ -77,13 +77,16 @@ class ProjectPlanForm(FlaskForm):
     flowchart = TextAreaField('Flowchart', validators=[DataRequired()])
     submit = SubmitField('Save')
 
+
 class ChatRoomForm(FlaskForm):
     name = StringField('채팅방 이름', validators=[DataRequired()])
-    is_public = BooleanField('전체 공개')
-    participants = SelectMultipleField('참여자', coerce=int)
-    submit = SubmitField('생성')
- 
+    is_public = BooleanField('공개 채팅방')
+    participants = SelectMultipleField('참여자 선택', coerce=int)
 
+    def __init__(self, *args, **kwargs):
+        super(ChatRoomForm, self).__init__(*args, **kwargs)
+        # 참여자 선택 옵션은 뷰 함수에서 설정합니다.
+        
 class CodeSaveForm(FlaskForm):
     code = TextAreaField('코드', validators=[DataRequired()])
     file_name = StringField('파일 이름', validators=[DataRequired()])

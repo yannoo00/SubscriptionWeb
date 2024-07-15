@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+    {{ super() }}
+    <!-- 추가 스타일이 필요한 경우 여기에 추가 -->
+{% endblock %}
+
 {% block content %}
   <h1>새 채팅방 만들기</h1>
   <form method="POST">
@@ -8,6 +13,34 @@
       {{ form.name.label }}
       {{ form.name(class="form-control") }}
     </div>
+    <div class="form-group">
+      {{ form.is_public.label }}
+      {{ form.is_public(class="form-check-input") }}
+    </div>
+    <div id="participants-section" style="display: none;">
+      {{ form.participants.label }}
+      {{ form.participants(class="form-control selectpicker", multiple=true, data_live_search="true") }}
+    </div>
     <button type="submit" class="btn btn-primary">채팅방 생성</button>
   </form>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    $(document).ready(function() {
+      var isPublicField = document.getElementById('{{ form.is_public.id }}');
+      var participantsSection = document.getElementById('participants-section');
+      
+      function toggleParticipantsSection() {
+        participantsSection.style.display = isPublicField.checked ? 'none' : 'block';
+      }
+
+      isPublicField.addEventListener('change', toggleParticipantsSection);
+      toggleParticipantsSection(); // 초기 상태 설정
+
+      // Bootstrap-select 초기화
+      $('.selectpicker').selectpicker();
+    });
+  </script>
 {% endblock %}

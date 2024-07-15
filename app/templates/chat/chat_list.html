@@ -4,10 +4,30 @@
 
 {% block content %}
   <h1>채팅방 목록</h1>
+  
+  <h2>공개 채팅방</h2>
   <ul>
-    {% for room in chat_rooms %}
-      <li><a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}">{{ room.name }}</a></li>
+    {% for room in chat_rooms if room.is_public %}
+      <li>
+        <a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}">{{ room.name }}</a>
+        <span class="badge badge-success">공개</span>
+      </li>
+    {% else %}
+      <li>공개 채팅방이 없습니다.</li>
     {% endfor %}
   </ul>
+
+  <h2>비공개 채팅방</h2>
+  <ul>
+    {% for room in chat_rooms if not room.is_public and current_user in room.participants %}
+      <li>
+        <a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}">{{ room.name }}</a>
+        <span class="badge badge-warning">비공개</span>
+      </li>
+    {% else %}
+      <li>참여 중인 비공개 채팅방이 없습니다.</li>
+    {% endfor %}
+  </ul>
+
   <a href="{{ url_for('chat.create_chat_room') }}" class="btn btn-primary">새 채팅방 만들기</a>
 {% endblock %}
