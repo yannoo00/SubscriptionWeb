@@ -16,10 +16,14 @@
         </div>
         <button type="submit" class="btn btn-primary">전송</button>
       </form>
+      <form id="leave-room-form" action="{{ url_for('chat.leave_chat_room', chat_room_id=chat_room.id) }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button id="leave-room-btn" type="submit" class="btn btn-danger mt-3">채팅방 나가기</button>
+      </form>     
     </div>
     <div class="col-md-4">
       <h3>참여자 목록</h3>
-      <ul class="list-group">
+      <ul id="participant-list" class="list-group">
         {% for participant in chat_room.participants %}
           <li class="list-group-item">
             {{ participant.name }}
@@ -33,6 +37,11 @@
   </div>
 </div>
 
+<script>
+  var CHAT_ROOM_CREATOR_ID = {{ chat_room.creator_id }};
+  var CSRF_TOKEN = "{{ csrf_token() }}";
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -40,8 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const chatMessages = document.getElementById('chat-messages');
   const messageForm = document.getElementById('message-form');
   const messageInput = document.getElementById('message-input');
+  const leaveRoomBtn = document.getElementById('leave-room-btn');
+  const participantList = document.getElementById('participant-list');
 
-  if (chatMessages && messageForm && messageInput) {
+  if (chatMessages && messageForm && messageInput && leaveRoomBtn) {
     socket.on('connect', function() {
       socket.emit('join', {room: '{{ chat_room.id }}'});
     });
@@ -53,6 +64,17 @@ document.addEventListener('DOMContentLoaded', function() {
       chatMessages.scrollTop = chatMessages.scrollHeight;
     });
 
+    socket.on('status', function(data) {
+      const p = document.createElement('p');
+      p.innerHTML = `<em>${data.msg}</em>`;
+      chatMessages.appendChild(p);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+
+    socket.on('update_participants', function(data) {
+      updateParticipantList(data.participants);
+    });
+
     messageForm.addEventListener('submit', function(e) {
       e.preventDefault();
       if (messageInput.value) {
@@ -60,6 +82,43 @@ document.addEventListener('DOMContentLoaded', function() {
         messageInput.value = '';
       }
     });
+
+    leaveRoomBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      socket.emit('leave', {room: '{{ chat_room.id }}'});
+   
+        // AJAX를 사용하여 서버에 요청을 보냅니다.
+        fetch('{{ url_for("chat.leave_chat_room", chat_room_id=chat_room.id) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': CSRF_TOKEN
+            },
+            credentials: 'same-origin'
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '{{ url_for("chat.chat_list") }}';
+            } else {
+                console.error('채팅방을 나가는데 실패했습니다.');
+            }
+        });
+    });
+
+    function updateParticipantList(participants) {
+    participantList.innerHTML = '';
+    participants.forEach(function(participant) {
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.textContent = participant.name;
+        if (participant.id === CHAT_ROOM_CREATOR_ID) {
+            const span = document.createElement('span');
+            span.className = 'badge badge-primary';
+            span.textContent = '방장';
+            li.appendChild(span);
+        }
+        participantList.appendChild(li);
+    });
+}
   }
 });
 </script>
