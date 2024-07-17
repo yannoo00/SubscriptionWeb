@@ -61,15 +61,15 @@ def chat_room(chat_room_id):
 
 @socketio.on('join')
 def on_join(data):
-    username = current_user.name
     room = data['room']
     join_room(room)
-    emit('status', {'msg': username + ' has entered the room.'}, room=room)
-    
-    # 참여자가 입장할 때 업데이트된 참여자 목록 전송
     chat_room = ChatRoom.query.get(room)
-    updated_participants = [{"id": p.id, "name": p.name} for p in chat_room.participants]
-    emit('update_participants', {'participants': updated_participants}, room=room)
+    if chat_room:
+        updated_participants = [{"id": p.id, "name": p.name} for p in chat_room.participants]
+        emit('update_participants', {'participants': updated_participants}, room=room)
+        emit('status', {'msg': f'{current_user.name} has joined the room.'}, room=room)
+    else:
+        emit('status', {'msg': 'Error: Chat room not found.'}, room=room)
 
 @socketio.on('leave')
 def on_leave(data):
@@ -104,6 +104,7 @@ def handle_message(data):
     message = {
         'content': content,
         'username': current_user.name,
+        'user_id': current_user.id,  # 추가: 현재 사용자의 ID
         'timestamp': new_message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
     }
     

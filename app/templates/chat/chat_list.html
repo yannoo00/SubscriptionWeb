@@ -3,31 +3,59 @@
 {% block title %}채팅방 목록{% endblock %}
 
 {% block content %}
-  <h1>채팅방 목록</h1>
-  
-  <h2>공개 채팅방</h2>
-  <ul>
-    {% for room in chat_rooms if room.is_public %}
-      <li>
-        <a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}">{{ room.name }}</a>
-        <span class="badge badge-success">공개</span>
-      </li>
-    {% else %}
-      <li>공개 채팅방이 없습니다.</li>
-    {% endfor %}
-  </ul>
+<div class="container mt-4 chat-room-list">
+    <h1 class="text-center mb-4">채팅방 목록</h1>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header public-chat-header">
+                    <h2 class="h5 mb-0"><i class="fas fa-globe mr-2"></i>공개 채팅방</h2>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for room in chat_rooms if room.is_public %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}" class="room-link">
+                                <i class="fas fa-comments mr-2 text-success"></i>{{ room.name }}
+                            </a>
+                            <span class="badge badge-success">공개</span>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">
+                            <i class="fas fa-info-circle mr-2"></i>공개 채팅방이 없습니다.
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 
-  <h2>비공개 채팅방</h2>
-  <ul>
-    {% for room in chat_rooms if not room.is_public and current_user in room.participants %}
-      <li>
-        <a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}">{{ room.name }}</a>
-        <span class="badge badge-warning">비공개</span>
-      </li>
-    {% else %}
-      <li>참여 중인 비공개 채팅방이 없습니다.</li>
-    {% endfor %}
-  </ul>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header private-chat-header">
+                    <h2 class="h5 mb-0"><i class="fas fa-lock mr-2"></i>비공개 채팅방</h2>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for room in chat_rooms if not room.is_public and current_user in room.participants %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('chat.chat_room', chat_room_id=room.id) }}" class="room-link">
+                                <i class="fas fa-comments mr-2 text-warning"></i>{{ room.name }}
+                            </a>
+                            <span class="badge badge-warning">비공개</span>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">
+                            <i class="fas fa-info-circle mr-2"></i>참여 중인 비공개 채팅방이 없습니다.
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 
-  <a href="{{ url_for('chat.create_chat_room') }}" class="btn btn-primary">새 채팅방 만들기</a>
+    <div class="text-center">
+        <a href="{{ url_for('chat.create_chat_room') }}" class="btn btn-primary btn-lg btn-create-room">
+            <i class="fas fa-plus-circle mr-2"></i>새 채팅방 만들기
+        </a>
+    </div>
+</div>
 {% endblock %}
