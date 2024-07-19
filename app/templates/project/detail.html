@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="project-detail">
 <h2>{{ project.title }}</h2>
 <p>{{ project.description }}</p>
 <p>의뢰자: {{ project.client.name }}</p>
@@ -186,5 +187,5 @@
       });
   });
   </script>
-  
+</div>
 {% endblock %}

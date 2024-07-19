@@ -7,72 +7,71 @@
 
     <div class="row">
         <div class="col-md-8">
-            <h2 class="mb-3">멘토링 신청</h2>
-            <div class="list-group">
-                {% for user in users %}
-                    <div class="list-group-item">
-                        <h3 class="mb-2">{{ user.name }}</h3>
-                        {% if user.created_projects %}
-                            <p class="mb-2">완료한 프로젝트:</p>
-                            <ul class="list-unstyled">
-                                {% for project in user.created_projects|selectattr('completed') %}
-                                    <li>
-                                        <a href="{{ url_for('project.detail', project_id=project.id) }}" class="text-decoration-none">{{ project.title }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p class="text-muted">완료한 프로젝트가 없습니다.</p>
-                        {% endif %}
-                        
-                        {% if user != current_user %}
-                            {% if user in current_user.mentors %}
-                                <span class="badge bg-secondary">멘토링 중</span>
-                            {% elif user not in current_user.pending_mentors %}
-                                <form action="{{ url_for('mentorship.request_mentorship', mentor_id=user.id) }}" method="post" class="mt-2">
-                                    {{ request_form.csrf_token }}
-                                    {{ request_form.submit(class="btn btn-primary btn-sm") }}
-                                </form>
-                            {% else %}
-                                <span class="badge bg-warning">신청 대기 중</span>
-                            {% endif %}
-                        {% endif %}
+            <div class="card mentorship-card">
+                <div class="card-header">
+                    <h2 class="mb-0">멘토링 신청</h2>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for user in users %}
+                            <div class="list-group-item mentorship-item">
+                                <h3 class="mb-2">{{ user.name }}</h3>
+                                {% if user.created_projects %}
+                                    <p class="mb-2">완료한 프로젝트:</p>
+                                    <ul class="list-unstyled project-list">
+                                        {% for project in user.created_projects|selectattr('completed') %}
+                                            <li>
+                                                <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-link">{{ project.title }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-muted">완료한 프로젝트가 없습니다.</p>
+                                {% endif %}
+                                
+                                {% if user != current_user %}
+                                    {% if user in current_user.mentors %}
+                                        <span class="badge bg-secondary">멘토링 중</span>
+                                    {% elif user not in current_user.pending_mentors %}
+                                        <form action="{{ url_for('mentorship.request_mentorship', mentor_id=user.id) }}" method="post" class="mt-2">
+                                            {{ request_form.csrf_token }}
+                                            {{ request_form.submit(class="btn btn-primary btn-sm") }}
+                                        </form>
+                                    {% else %}
+                                        <span class="badge bg-warning">신청 대기 중</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <h2 class="mb-3">신청 수락</h2>
-            <div class="list-group">
-                {% for mentee in current_user.pending_mentees %}
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ mentee.name }}
-                        {% if mentee not in current_user.mentees %}
-                            <form action="{{ url_for('mentorship.accept_mentorship', mentee_id=mentee.id) }}" method="post">
-                                {{ accept_form.csrf_token }}
-                                {{ accept_form.submit(class="btn btn-success btn-sm") }}
-                            </form>
-                        {% else %}
-                            <span class="badge bg-secondary">멘토링 중</span>
-                        {% endif %}
+            <div class="card mentorship-card">
+                <div class="card-header">
+                    <h2 class="mb-0">신청 수락</h2>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for mentee in current_user.pending_mentees %}
+                            <div class="list-group-item mentorship-item d-flex justify-content-between align-items-center">
+                                <span>{{ mentee.name }}</span>
+                                {% if mentee not in current_user.mentees %}
+                                    <form action="{{ url_for('mentorship.accept_mentorship', mentee_id=mentee.id) }}" method="post">
+                                        {{ accept_form.csrf_token }}
+                                        {{ accept_form.submit(class="btn btn-success btn-sm") }}
+                                    </form>
+                                {% else %}
+                                    <span class="badge bg-secondary">멘토링 중</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .list-group-item {
-        transition: background-color 0.3s;
-    }
-    .list-group-item:hover {
-        background-color: #f8f9fa;
-    }
-    .btn-sm {
-        font-size: 0.8rem;
-        padding: 0.25rem 0.5rem;
-    }
-</style>
 {% endblock %}

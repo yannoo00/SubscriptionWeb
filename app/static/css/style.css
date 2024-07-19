@@ -210,6 +210,134 @@ body {
   margin-bottom: 5px;
 }
 
+/* 프로젝트 상세 페이지 스타일 */
+.project-detail {
+  background-color: #ffffff;
+  border-radius: 3px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.project-detail h2 {
+  color: #262626;
+  font-weight: 300;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.project-detail p {
+  color: #8e8e8e;
+  margin-bottom: 1rem;
+}
+
+.project-actions {
+  margin-bottom: 2rem;
+}
+
+.project-actions .btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.project-actions .btn-info {
+  background-color: #0095f6;
+  border-color: #0095f6;
+  color: #ffffff;
+}
+
+.project-actions .btn-info:hover {
+  background-color: #1877f2;
+  border-color: #1877f2;
+}
+
+.project-participants {
+  background-color: #fafafa;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.project-participants h4 {
+  color: #262626;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.project-participants ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.project-participants li {
+  margin-bottom: 0.5rem;
+}
+
+.contribution-form {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.contribution-form h4 {
+  color: #262626;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.progress-list .card {
+  border: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.progress-list .card-title {
+  font-weight: 600;
+  color: #262626;
+}
+
+.progress-list .card-text {
+  color: #262626;
+}
+
+.progress-list img {
+  border-radius: 3px;
+  margin-top: 1rem;
+}
+
+#toggle-progress-form {
+  background-color: #0095f6;
+  border-color: #0095f6;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+#toggle-progress-form:hover {
+  background-color: #1877f2;
+  border-color: #1877f2;
+}
+
+#progress-form-container {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+
+
 /* base.html에서 가져온 스타일 */
 .card {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -377,4 +505,95 @@ body {
 .message.received {
   background-color: #f1f0f0;
   align-self: flex-start;
+}
+
+
+/* 홈페이지 스타일 */
+/* 홈페이지 스타일 - 인스타그램 느낌 */
+body {
+  background-color: #fafafa;
+  color: #262626;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.container {
+  max-width: 935px;
+  padding: 20px;
+}
+
+.jumbotron {
+  background-color: #ffffff;
+  border-radius: 3px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.jumbotron h1 {
+  color: #262626;
+  font-weight: 300;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.jumbotron .lead {
+  color: #8e8e8e;
+  font-size: 1.2rem;
+}
+
+.jumbotron .btn-primary {
+  background-color: #0095f6;
+  border-color: #0095f6;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.jumbotron .btn-primary:hover {
+  background-color: #1877f2;
+  border-color: #1877f2;
+}
+
+.guidelines {
+  background-color: #ffffff;
+  border-radius: 3px;
+  padding: 2rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.guidelines h2 {
+  color: #262626;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.guideline-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #fafafa;
+  border-radius: 3px;
+  border: 1px solid #dbdbdb;
+}
+
+.guideline-section h3 {
+  color: #262626;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.guideline-section ul, .guideline-section ol {
+  padding-left: 1.5rem;
+  color: #262626;
+}
+
+.guideline-section li {
+  margin-bottom: 0.5rem;
+}
+
+.guideline-section strong {
+  color: #ed4956;
+  font-weight: 600;
 }
