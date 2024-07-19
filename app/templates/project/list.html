@@ -1,21 +1,42 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="project-list-container">
     <h2>프로젝트 목록</h2>
-    <a href="{{ url_for('project.create_project') }}" class="btn btn-primary create-btn">프로젝트 생성</a>
-    <ul class="project-list">
+    <div class="project-list">
     {% for project in projects %}
-        <li class="project-item">
-            <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-title">{{ project.title }}</a>
-            {% if current_user.is_authenticated %}
-                {% if project.completed %}
-                    <span class="badge badge-secondary">완료됨</span>
-                {% elif current_user in project.participants %}
-                    <span class="badge badge-success">참여중</span>
+        <div class="project-card">
+            <div class="project-card-body">
+                <h3 class="project-title">{{ project.title }}</h3>
+                <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
+                <div class="project-meta">
+                    <span>참여자: {{ project.participants|length }}</span>
+                    <span>생성일: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
+                </div>
+                <div class="participant-list">
+                    {% for participant in project.participants[:3] %}
+                        <span class="participant-item">{{ participant.name }}</span>
+                    {% endfor %}
+                    {% if project.participants|length > 3 %}
+                        <span class="participant-item">+{{ project.participants|length - 3 }}</span>
+                    {% endif %}
+                </div>
+                {% if current_user.is_authenticated %}
+                    {% if project.completed %}
+                        <div class="project-status">완료됨</div>
+                    {% elif current_user in project.participants %}
+                        <div class="project-status">참여중</div>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        </li>
+            </div>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
+    <a href="{{ url_for('project.create_project') }}" class="btn btn-primary create-btn">새 프로젝트 만들기</a>
 </div>
 {% endblock %}

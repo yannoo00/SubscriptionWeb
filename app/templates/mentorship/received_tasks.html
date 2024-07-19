@@ -1,5 +1,9 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/mentorship.css') }}">
+{% endblock %}
 {% block content %}
 <h1>받은 과제 목록</h1>
 <ul>

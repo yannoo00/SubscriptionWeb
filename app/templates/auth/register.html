@@ -1,4 +1,9 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/auth.css') }}">
+{% endblock %}
 
 {% block title %}회원가입{% endblock %}
 

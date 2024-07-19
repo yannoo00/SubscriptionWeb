@@ -1,0 +1,36 @@
+.auth-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .auth-title {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .auth-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .auth-form .btn {
+    width: 100%;
+  }
+  
+  .auth-links {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .auth-links a {
+    margin: 0 0.5rem;
+  }
+  
+  .auth-error {
+    color: var(--danger-color);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
