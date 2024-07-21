@@ -1,0 +1,102 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+}
+
+/* 환영 섹션 */
+.welcome-section {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #e6f3ff;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 2.5em;
+    color: #0066cc;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #004d99;
+}
+
+/* 가이드라인 섹션 */
+.guidelines-container {
+    padding: 20px;
+}
+
+.guidelines-title {
+    text-align: center;
+    color: #0066cc;
+    margin-bottom: 20px;
+}
+
+.guidelines-scroll {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+
+.guideline-card {
+    flex: 0 0 auto;
+    width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.guideline-card h3 {
+    color: #0066cc;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.guideline-card ul, .guideline-card ol {
+    padding-left: 20px;
+}
+
+.guideline-card li {
+    margin-bottom: 10px;
+}
+
+/* 스크롤바 스타일 */
+.guidelines-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.guidelines-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.guidelines-scroll::-webkit-scrollbar-thumb {
+    background: #0066cc;
+    border-radius: 4px;
+}
+
+.guidelines-scroll::-webkit-scrollbar-thumb:hover {
+    background: #004d99;
+}

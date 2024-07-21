@@ -10,31 +10,33 @@
     <h2>프로젝트 목록</h2>
     <div class="project-list">
     {% for project in projects %}
-        <div class="project-card">
-            <div class="project-card-body">
-                <h3 class="project-title">{{ project.title }}</h3>
-                <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
-                <div class="project-meta">
-                    <span>참여자: {{ project.participants|length }}</span>
-                    <span>생성일: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
-                </div>
-                <div class="participant-list">
-                    {% for participant in project.participants[:3] %}
-                        <span class="participant-item">{{ participant.name }}</span>
-                    {% endfor %}
-                    {% if project.participants|length > 3 %}
-                        <span class="participant-item">+{{ project.participants|length - 3 }}</span>
+        <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-card-link">
+            <div class="project-card">
+                <div class="project-card-body">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
+                    <div class="project-meta">
+                        <span>참여자: {{ project.participants|length }}</span>
+                        <span>생성일: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
+                    </div>
+                    <div class="participant-list">
+                        {% for participant in project.participants[:3] %}
+                            <span class="participant-item">{{ participant.name }}</span>
+                        {% endfor %}
+                        {% if project.participants|length > 3 %}
+                            <span class="participant-item">+{{ project.participants|length - 3 }}</span>
+                        {% endif %}
+                    </div>
+                    {% if current_user.is_authenticated %}
+                        {% if project.completed %}
+                            <div class="project-status">완료됨</div>
+                        {% elif current_user in project.participants %}
+                            <div class="project-status">참여중</div>
+                        {% endif %}
                     {% endif %}
                 </div>
-                {% if current_user.is_authenticated %}
-                    {% if project.completed %}
-                        <div class="project-status">완료됨</div>
-                    {% elif current_user in project.participants %}
-                        <div class="project-status">참여중</div>
-                    {% endif %}
-                {% endif %}
             </div>
-        </div>
+        </a>
     {% endfor %}
     </div>
     <a href="{{ url_for('project.create_project') }}" class="btn btn-primary create-btn">새 프로젝트 만들기</a>

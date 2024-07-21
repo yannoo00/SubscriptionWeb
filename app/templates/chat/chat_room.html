@@ -6,47 +6,47 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-8">
-      <div class="chat-container">
-        <div class="chat-header">
-          <h2>{{ chat_room.name }}</h2>
-        </div>
-        <div id="chat-messages" class="chat-messages">
-          {% for message in messages %}
-            <div class="message {% if message.sender.id == current_user.id %}sent{% else %}received{% endif %}">
-              <strong>{{ message.sender.name }}</strong>
-              <p>{{ message.content }}</p>
-              <small>{{ message.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
-            </div>
-          {% endfor %}
-        </div>
-        <form id="message-form" class="chat-input">
-          <input type="text" id="message-input" placeholder="메시지를 입력하세요...">
-          <button type="submit">전송</button>
-        </form>
-      </div>
-      <form id="leave-room-form" action="{{ url_for('chat.leave_chat_room', chat_room_id=chat_room.id) }}" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button id="leave-room-btn" type="submit" class="btn btn-danger mt-3">채팅방 나가기</button>
-      </form>
+<div class="chat-container">
+  <div class="chat-sidebar">
+    <div class="chat-header">
+      <h2>{{ chat_room.name }}</h2>
     </div>
-    <div class="col-md-4">
-      <div class="participant-container">
-        <h3>참여자 목록</h3>
-        <ul id="participant-list" class="participant-list">
-          {% for participant in chat_room.participants %}
-            <li>
-              {{ participant.name }}
-              {% if participant.id == chat_room.creator_id %}
-                <span class="badge badge-primary">방장</span>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
+
+    <div class="participant-container">
+      <h3>참여자 목록</h3>
+      <ul id="participant-list" class="participant-list">
+        {% for participant in participants %}
+          <li>
+            {{ participant.name }}
+            {% if participant.id == chat_room.creator_id %}
+              <span class="badge badge-primary">방장</span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
     </div>
+
+    <form id="leave-room-form" action="{{ url_for('chat.leave_chat_room', chat_room_id=chat_room.id) }}" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button id="leave-room-btn" type="submit">채팅방 나가기</button>
+    </form>
+  </div>
+  <div class="chat-main">
+    <div id="chat-messages" class="chat-messages">
+      {% for message in messages %}
+        <div class="chat-message {% if message.sender.id == current_user.id %}chat-message-sender{% else %}chat-message-receiver{% endif %}">
+          <div class="chat-message-content">
+            <span class="chat-message-sender-name">{{ message.sender.name }}: </span>
+            <p>{{ message.content }}</p>
+            <span class="chat-message-time">{{ message.timestamp.strftime('%H:%M') }}</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <form id="message-form" class="chat-input">
+      <input type="text" id="message-input" placeholder="메시지를 입력하세요...">
+      <button type="submit">전송</button>
+    </form>
   </div>
 </div>
 
@@ -57,6 +57,7 @@
   var CURRENT_USER_ID = {{ current_user.id }};
   var LEAVE_CHAT_ROOM_URL = "{{ url_for('chat.leave_chat_room', chat_room_id=chat_room.id) }}";
   var CHAT_LIST_URL = "{{ url_for('chat.chat_list') }}";
+  var INITIAL_PARTICIPANTS = {{ participants|tojson|safe }};
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>

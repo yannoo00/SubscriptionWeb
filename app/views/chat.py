@@ -56,8 +56,9 @@ def chat_room(chat_room_id):
         return redirect(url_for('chat.chat_list'))
     
     messages = ChatMessage.query.filter_by(chat_room_id=chat_room_id).order_by(ChatMessage.timestamp).all()
+    participants = [{"id": p.id, "name": p.name} for p in chat_room.participants]
     csrf_token = generate_csrf()    
-    return render_template('chat/chat_room.html', chat_room=chat_room, messages=messages)
+    return render_template('chat/chat_room.html', chat_room=chat_room, messages=messages, participants=participants)
 
 @socketio.on('join')
 def on_join(data):
@@ -65,11 +66,22 @@ def on_join(data):
     join_room(room)
     chat_room = ChatRoom.query.get(room)
     if chat_room:
+        # 공개 채팅방인 경우 참여자로 추가
+        if chat_room.is_public:
+            participant = ChatRoomParticipant.query.filter_by(user_id=current_user.id, chat_room_id=chat_room.id).first()
+            if not participant:
+                new_participant = ChatRoomParticipant(user_id=current_user.id, chat_room_id=chat_room.id)
+                db.session.add(new_participant)
+                db.session.commit()
+        
+        # 참여자 목록 업데이트
+        chat_room = ChatRoom.query.get(room)  # Refresh the chat room object
         updated_participants = [{"id": p.id, "name": p.name} for p in chat_room.participants]
         emit('update_participants', {'participants': updated_participants}, room=room)
         emit('status', {'msg': f'{current_user.name} has joined the room.'}, room=room)
     else:
         emit('status', {'msg': 'Error: Chat room not found.'}, room=room)
+
 
 @socketio.on('leave')
 def on_leave(data):
@@ -102,9 +114,10 @@ def handle_message(data):
     db.session.commit()
     
     message = {
+        'id': new_message.id,
         'content': content,
         'username': current_user.name,
-        'user_id': current_user.id,  # 추가: 현재 사용자의 ID
+        'user_id': current_user.id,
         'timestamp': new_message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
     }
     

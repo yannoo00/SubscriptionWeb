@@ -6,15 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
 {% endblock %}
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프로젝트 기획 및 순서도</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+{% block content %}
+<div class="project-plan-container">
     <header>
         <h1>프로젝트 기획 및 순서도</h1>
     </header>
@@ -38,5 +31,5 @@
             <button type="submit" class="btn btn-primary">저장</button>
         </form>
     </main>
-</body>
-</html>
+</div>
+{% endblock %}

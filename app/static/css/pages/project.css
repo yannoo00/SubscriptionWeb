@@ -1,125 +1,229 @@
-/* pages/project.css */
-
 .project-list-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 60px; /* 버튼의 높이만큼 여백 추가 */
+}
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+.project-card {
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 300px; /* 카드의 최소 높이를 설정하여 일정한 크기를 유지 */
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-color: #b0e0e6;
+}
+
+.project-card-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1; /* 카드 내용이 일정하게 분포되도록 조정 */
+}
+
+.project-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #4a4a4a;
+}
+
+.project-description {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 15px;
+  flex-grow: 1; /* 설명 부분이 카드의 나머지 공간을 채우도록 설정 */
+}
+
+.project-meta {
+  font-size: 12px;
+  color: #999;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.project-participants {
+  margin-top: 10px;
+}
+
+.participant-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.participant-item {
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+.project-status {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 15px;
+  background-color: #e0f7fa;
+  color: #00838f;
+}
+
+@media (max-width: 600px) {
   .project-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .project-card {
-    background-color: #fff;
-    border: 2px solid #e0e0e0;
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    border-color: #b0e0e6;
-  }
-  
- 
-   .project-card-body {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .project-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #4a4a4a;
-  }
-  
-  .project-description {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 15px;
-    flex-grow: 1;
-  }
-  
-  .project-meta {
-    font-size: 12px;
-    color: #999;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  .project-participants {
-    margin-top: 10px;
-  }
-  
-  .participant-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
-  }
-  
-  .participant-item {
-    background-color: #f0f0f0;
-    border-radius: 15px;
-    padding: 5px 10px;
-    font-size: 12px;
-    color: #666;
-  }
-  
-  .project-status {
-    margin-top: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 15px;
-    background-color: #e0f7fa;
-    color: #00838f;
-  }
-  
-  @media (max-width: 600px) {
-    .project-list {
       grid-template-columns: 1fr;
-    }
   }
-
-
-
-  .project-list-container {
-    position: relative;
-    padding-bottom: 60px; /* 버튼의 높이만큼 여백 추가 */
 }
 
 .create-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
 }
 
 .create-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.project-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.project-section {
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.project-section:last-child {
+  border-bottom: none;
+}
+
+.project-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.project-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.project-meta {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 15px;
+}
+
+.project-actions {
+  margin-bottom: 20px;
+}
+
+.project-actions .btn {
+  margin-right: 10px;
+}
+
+.project-subtitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.project-participants {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.participant-item {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.project-status {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007BFF;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-6 {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  max-width: 50%;
 }
