@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/mypage.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="container my-page">
   <h1>마이페이지</h1>
