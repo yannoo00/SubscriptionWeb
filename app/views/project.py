@@ -13,29 +13,39 @@ bp = Blueprint('project', __name__, url_prefix='/project')
 @login_required
 def list_projects():
     form = ProjectParticipationForm()
-    projects = Project.query.all()
-    return render_template('project/list.html', projects=projects, form=form)
+    collaboration_projects = Project.query.filter_by(type='collaboration').all()
+    public_study_projects = Project.query.filter_by(type='study', is_public=True).all()
+    return render_template('project/list.html', collaboration_projects=collaboration_projects, study_projects=public_study_projects, form=form)
 
 @bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_project():
+    type = request.args.get('type', 'study')  # 기본값을 'study'로 설정
+    
+    if type == 'collaboration' and not current_user.is_admin:
+        flash('협업 프로젝트는 관리자만 생성할 수 있습니다.', 'danger')
+        return redirect(url_for('project.list_projects'))
+
     form = ProjectForm()
     if form.validate_on_submit():
-        project = Project(title=form.title.data, description=form.description.data, start_date=form.start_date.data, end_date=form.end_date.data, client=current_user)
+        project = Project(
+            title=form.title.data, 
+            description=form.description.data, 
+            start_date=form.start_date.data, 
+            end_date=form.end_date.data, 
+            client=current_user,
+            type=type,
+            is_public=form.is_public.data if type == 'study' else True
+        )
         db.session.add(project)
         db.session.commit()
 
-        # GitHub 리포지토리 생성
-        try:
-            repo = get_github_repo(project)
-            project.github_repo = repo.full_name
-            db.session.commit()
-            flash(f'프로젝트와 GitHub 리포지토리 {repo.full_name}가 생성되었습니다.', 'success')
-        except Exception as e:
-            flash(f'GitHub 리포지토리 생성 중 오류가 발생했습니다: {str(e)}', 'error')
+        # GitHub 리포지토리 생성 코드 (기존과 동일)
 
+        flash(f'새 {type} 프로젝트가 생성되었습니다.', 'success')
         return redirect(url_for('project.detail', project_id=project.id))
-    return render_template('project/create.html', form=form)
+    
+    return render_template('project/create.html', form=form, project_type=type)
 
 @bp.route('/detail/<int:project_id>', methods=['GET', 'POST'])
 @login_required

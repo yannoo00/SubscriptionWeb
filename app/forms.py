@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField, BooleanField, SelectMultipleField
-from wtforms.validators import DataRequired, NumberRange, Length, URL
+from wtforms import StringField, TextAreaField, DateField, SubmitField, IntegerField, FloatField, HiddenField, FieldList, FormField, BooleanField, SelectMultipleField, SelectField, PasswordField
+from wtforms.validators import DataRequired, NumberRange, Length, URL, Email, EqualTo
 
 class RatingForm(FlaskForm):
     rating = IntegerField('평점', validators=[DataRequired(), NumberRange(min=1, max=5)])
@@ -13,6 +13,8 @@ class ProjectForm(FlaskForm):
     start_date = DateField('시작일', validators=[DataRequired()])
     end_date = DateField('종료일', validators=[DataRequired()])
     submit = SubmitField('저장')
+    type = SelectField('프로젝트 유형', choices=[('collaboration', '협업 프로젝트'), ('study', '스터디 프로젝트')])
+    is_public = BooleanField('공개 설정 (스터디 프로젝트만 해당)')
 
 class PostForm(FlaskForm):
     title = StringField('제목', validators=[DataRequired()])
@@ -68,7 +70,6 @@ class ProjectProgressForm(FlaskForm):
     ai_conversation_file = FileField('Claude 대화 내역 업로드', validators=[FileAllowed(['mhtml'], 'MHTML 파일만 허용됩니다.')])
 
 
-
 class RequirementForm(FlaskForm):
     requirement = StringField('Requirement', validators=[DataRequired()])
 
@@ -100,3 +101,13 @@ class CodeEditForm(FlaskForm):
     branch_name = StringField('브랜치 이름', validators=[DataRequired(), Length(max=100)])
     commit_message = StringField('Commit 메시지', validators=[DataRequired(), Length(max=200)])
     submit = SubmitField('수정')
+
+
+class RegistrationForm(FlaskForm):
+    name = StringField('이름', validators=[DataRequired()])
+    email = StringField('이메일', validators=[DataRequired(), Email()])
+    password = PasswordField('비밀번호', validators=[DataRequired()])
+    confirm_password = PasswordField('비밀번호 확인', validators=[DataRequired(), EqualTo('password')])
+    is_admin = BooleanField('관리자로 가입')
+    admin_password = PasswordField('관리자 인증 비밀번호')
+    submit = SubmitField('가입하기')

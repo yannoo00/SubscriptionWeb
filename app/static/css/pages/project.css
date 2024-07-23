@@ -227,3 +227,28 @@
   padding-left: 15px;
   max-width: 50%;
 }
+
+
+.project-card-link:hover {
+  text-decoration: none;
+}
+
+.project-type-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.project-type-toggle button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.project-type-toggle button.active {
+  background-color: #007bff;
+  color: white;
+}

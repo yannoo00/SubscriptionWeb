@@ -1,31 +1,37 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/button.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
 {% endblock %}
 
 {% block content %}
-    <h2>프로젝트 생성</h2>
-    <form method="post">
-        {{ form.csrf_token }}
-        <div class="form-group">
-            {{ form.title.label }}
-            {{ form.title(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.description.label }}
-            {{ form.description(class="form-control", rows="5") }}
-        </div>
-        <div class="form-group">
-            {{ form.start_date.label }}
-            {{ form.start_date(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.end_date.label }}
-            {{ form.end_date(class="form-control") }}
-        </div>
-        <button type="submit" class="btn btn-primary">생성</button>
-    </form>
+<h2>새 {{ '협업' if project_type == 'collaboration' else '스터디' }} 프로젝트 생성</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.title.label }}
+        {{ form.title }}
+    </div>
+    <div>
+        {{ form.description.label }}
+        {{ form.description }}
+    </div>
+    <div>
+        {{ form.start_date.label }}
+        {{ form.start_date }}
+    </div>
+    <div>
+        {{ form.end_date.label }}
+        {{ form.end_date }}
+    </div>
+    {% if project_type == 'study' %}
+    <div>
+        {{ form.is_public.label }}
+        {{ form.is_public }}
+    </div>
+    {% endif %}
+    {{ form.submit }}
+</form>
 {% endblock %}

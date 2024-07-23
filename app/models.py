@@ -42,6 +42,7 @@ class User(UserMixin, db.Model):
                                     backref=db.backref('pending_mentors', lazy='dynamic'),
                                     lazy='dynamic')
     project_participants = db.relationship('ProjectParticipant', back_populates='user', lazy=True)
+    is_admin = db.Column(db.Boolean, default=False)
 
 
 class Project(db.Model):
@@ -62,6 +63,8 @@ class Project(db.Model):
     flowchart = db.Column(db.Text)
     timeline = db.Column(db.Text)
     github_repo = db.Column(db.String(200))
+    type = db.Column(db.String(20), nullable = False, default = 'collaboration')
+    is_public = db.Column(db.Boolean, default=True)
 
 class ProjectParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)

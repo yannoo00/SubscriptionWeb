@@ -1,44 +1,136 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/button.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="project-list-container">
     <h2>프로젝트 목록</h2>
-    <div class="project-list">
-    {% for project in projects %}
-        <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-card-link">
-            <div class="project-card">
-                <div class="project-card-body">
-                    <h3 class="project-title">{{ project.title }}</h3>
-                    <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
-                    <div class="project-meta">
-                        <span>참여자: {{ project.participants|length }}</span>
-                        <span>생성일: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
-                    </div>
-                    <div class="participant-list">
-                        {% for participant in project.participants[:3] %}
-                            <span class="participant-item">{{ participant.name }}</span>
-                        {% endfor %}
-                        {% if project.participants|length > 3 %}
-                            <span class="participant-item">+{{ project.participants|length - 3 }}</span>
-                        {% endif %}
-                    </div>
-                    {% if current_user.is_authenticated %}
-                        {% if project.completed %}
-                            <div class="project-status">완료됨</div>
-                        {% elif current_user in project.participants %}
-                            <div class="project-status">참여중</div>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-        </a>
-    {% endfor %}
+    
+    <div class="project-type-toggle">
+        <button id="collaborationBtn" class="active">협업 프로젝트</button>
+        <button id="studyBtn">스터디 프로젝트</button>
     </div>
-    <a href="{{ url_for('project.create_project') }}" class="btn btn-primary create-btn">새 프로젝트 만들기</a>
+
+    <div id="collaborationProjects" class="project-list">
+        {% for project in collaboration_projects %}
+            <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-card-link">
+                <div class="project-card">
+                    <div class="project-card-body">
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
+                        <div class="project-meta">
+                            <span>참여자: {{ project.participants|length }}</span>
+                            <span>생성일: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
+                        </div>
+                        <div class="participant-list">
+                            {% for participant in project.participants[:3] %}
+                                <span class="participant-item">{{ participant.name }}</span>
+                            {% endfor %}
+                            {% if project.participants|length > 3 %}
+                                <span class="participant-item">+{{ project.participants|length - 3 }}</span>
+                            {% endif %}
+                        </div>
+                        {% if current_user.is_authenticated %}
+                            {% if project.completed %}
+                                <div class="project-status">완료됨</div>
+                            {% elif current_user in project.participants %}
+                                <div class="project-status">참여중</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+        <div id="projectButtons" class="project-buttons {% if current_user.is_admin %}is-admin{% endif %}">
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_admin %}
+                    <a href="{{ url_for('project.create_project', type='collaboration') }}" class="btn btn-primary create-btn" id="collaborationButton">협업 프로젝트 만들기</a>
+                {% endif %}
+                <a href="{{ url_for('project.create_project', type='study') }}" class="btn btn-primary create-btn" id="studyButton">스터디 프로젝트 만들기</a>
+            {% endif %}
+        </div>
+
+    <div id="studyProjects" class="project-list" style="display: none;">
+        {% for project in study_projects %}
+            <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-card-link">
+                <div class="project-card">
+                    <div class="project-card-body">
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
+                        <div class="project-meta">
+                            <span>참여자: {{ project.participants|length }}</span>
+                            <span>생성일: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
+                        </div>
+                        <div class="participant-list">
+                            {% for participant in project.participants[:3] %}
+                                <span class="participant-item">{{ participant.name }}</span>
+                            {% endfor %}
+                            {% if project.participants|length > 3 %}
+                                <span class="participant-item">+{{ project.participants|length - 3 }}</span>
+                            {% endif %}
+                        </div>
+                        {% if current_user.is_authenticated %}
+                            {% if project.completed %}
+                                <div class="project-status">완료됨</div>
+                            {% elif current_user in project.participants %}
+                                <div class="project-status">참여중</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+
+
+    {% if current_user.is_authenticated %}
+        {% if current_user.is_admin %}
+            <a href="{{ url_for('project.create_project', type='collaboration') }}" class="btn btn-primary create-btn" id="collaborationButton">협업 프로젝트 만들기</a>
+        {% endif %}
+        <a href="{{ url_for('project.create_project', type='study') }}" class="btn btn-primary create-btn" id="studyButton">스터디 프로젝트 만들기</a>
+    {% endif %}
 </div>
+
+<script>
+    const collaborationBtn = document.getElementById('collaborationBtn');
+    const studyBtn = document.getElementById('studyBtn');
+    const collaborationProjects = document.getElementById('collaborationProjects');
+    const studyProjects = document.getElementById('studyProjects');
+    const collaborationButton = document.getElementById('collaborationButton');
+    const studyButton = document.getElementById('studyButton');
+
+    function showCollaborationProjects() {
+    collaborationProjects.style.display = 'grid';
+    studyProjects.style.display = 'none';
+    collaborationBtn.classList.add('active');
+    studyBtn.classList.remove('active');
+    if (collaborationButton) {
+        collaborationButton.style.display = 'inline-block';
+        studyButton.style.display = 'none';
+    } else {
+        studyButton.style.display = 'none';  // 관리자가 아닐 경우 둘 다 숨김
+    }
+}
+
+function showStudyProjects() {
+    collaborationProjects.style.display = 'none';
+    studyProjects.style.display = 'grid';
+    collaborationBtn.classList.remove('active');
+    studyBtn.classList.add('active');
+    if (collaborationButton) {
+        collaborationButton.style.display = 'none';
+    }
+    studyButton.style.display = 'inline-block';
+}
+
+    collaborationBtn.addEventListener('click', showCollaborationProjects);
+    studyBtn.addEventListener('click', showStudyProjects);
+
+    // 초기 상태 설정
+    showCollaborationProjects();
+</script>
 {% endblock %}

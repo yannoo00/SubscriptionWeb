@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app.models import User, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
+from app.forms import RegistrationForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -19,7 +20,7 @@ def login():
             if 'logged_in' not in session:
                 flash('로그인 되었습니다.', 'success')
                 session['logged_in'] = True
-            return redirect(url_for('main.index'))  # 적절한 경로로 수정해주세요.
+            return redirect(url_for('main.index'))  #
         else:
             current_app.logger.info(f'Login failed for email {email}')
             flash('잘못된 이메일 또는 비밀번호입니다.', 'danger')
@@ -35,25 +36,26 @@ def logout():
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
-    current_app.logger.info(f'Entering register function, request.method={request.method}')
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        user = User.query.filter_by(email=email).first()
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
         if user:
-            current_app.logger.info(f'Registration failed for email {email}, user already exists')
+            current_app.logger.info(f'Registration failed for email {form.email.data}, user already exists')
             flash('이미 등록된 이메일입니다.', 'danger')
-        elif password != confirm_password:
-            current_app.logger.info('Registration failed, passwords do not match')
-            flash('비밀번호가 일치하지 않습니다.', 'danger')
+        elif form.is_admin.data and form.admin_password.data != current_app.config['ADMIN_PASSWORD']:
+            current_app.logger.info('Registration failed, incorrect admin password')
+            flash('관리자 인증 비밀번호가 올바르지 않습니다.', 'danger')
         else:
-            new_user = User(name=name, email=email, password=generate_password_hash(password, method='pbkdf2:sha256'))
+            new_user = User(
+                name=form.name.data,
+                email=form.email.data,
+                password=generate_password_hash(form.password.data, method='pbkdf2:sha256'),
+                is_admin=form.is_admin.data
+            )
             db.session.add(new_user)
             db.session.commit()
-            current_app.logger.info(f'New user {email} registered successfully')
+            current_app.logger.info(f'New user {form.email.data} registered successfully. Admin: {form.is_admin.data}')
             flash('회원가입이 완료되었습니다.', 'success')
             return redirect(url_for('auth.login'))
-    current_app.logger.info('Rendering register template')
-    return render_template('auth/register.html')
+    
+    return render_template('auth/register.html', form=form)
