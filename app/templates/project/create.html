@@ -8,8 +8,9 @@
 
 {% block content %}
 <h2>새 {{ '협업' if project_type == 'collaboration' else '스터디' }} 프로젝트 생성</h2>
-<form method="POST">
+<form method="POST"  action="{{ url_for('project.create_project', type = project_type) }}">
     {{ form.hidden_tag() }}
+    <!-- {{ form.type }} -->
     <div>
         {{ form.title.label }}
         {{ form.title }}
@@ -26,7 +27,7 @@
         {{ form.end_date.label }}
         {{ form.end_date }}
     </div>
-    {% if project_type == 'study' %}
+        {% if project_type == 'study' %}
     <div>
         {{ form.is_public.label }}
         {{ form.is_public }}
@@ -34,4 +35,13 @@
     {% endif %}
     {{ form.submit }}
 </form>
+{% if form.errors %}
+    <div class="errors">
+        {% for field, errors in form.errors.items() %}
+            {% for error in errors %}
+                <p>{{ field }}: {{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
 {% endblock %}

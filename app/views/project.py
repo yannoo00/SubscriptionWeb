@@ -17,11 +17,11 @@ def list_projects():
     public_study_projects = Project.query.filter_by(type='study', is_public=True).all()
     return render_template('project/list.html', collaboration_projects=collaboration_projects, study_projects=public_study_projects, form=form)
 
-@bp.route('/create', methods=['GET', 'POST'])
+@bp.route('/create', methods=['GET', 'POST']) # url 경로 project/create를 연결 (bp의 url이 /project)
 @login_required
 def create_project():
     type = request.args.get('type', 'study')  # 기본값을 'study'로 설정
-    
+
     if type == 'collaboration' and not current_user.is_admin:
         flash('협업 프로젝트는 관리자만 생성할 수 있습니다.', 'danger')
         return redirect(url_for('project.list_projects'))
@@ -39,8 +39,6 @@ def create_project():
         )
         db.session.add(project)
         db.session.commit()
-
-        # GitHub 리포지토리 생성 코드 (기존과 동일)
 
         flash(f'새 {type} 프로젝트가 생성되었습니다.', 'success')
         return redirect(url_for('project.detail', project_id=project.id))
@@ -91,10 +89,10 @@ def detail(project_id):
     progress_list = ProjectProgress.query.filter_by(project=project).order_by(ProjectProgress.date.desc()).all()
 
     return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form,
-                        contribution_form=contribution_form, accept_form=accept_form, 
-                        participate_form=participate_form,  # 이 줄 추가
-                        form=progress_form,  # 여기를 수정
-                        progress_form=progress_form, progress_list=progress_list)
+                           contribution_form=contribution_form, accept_form=accept_form, 
+                           participate_form=participate_form,  # 이 줄 추가
+                           form=progress_form,  # 여기를 수정
+                           progress_form=progress_form, progress_list=progress_list)
 
 @bp.route('/participate/<int:project_id>', methods=['POST'])
 @login_required

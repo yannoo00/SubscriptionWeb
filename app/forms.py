@@ -13,7 +13,7 @@ class ProjectForm(FlaskForm):
     start_date = DateField('시작일', validators=[DataRequired()])
     end_date = DateField('종료일', validators=[DataRequired()])
     submit = SubmitField('저장')
-    type = SelectField('프로젝트 유형', choices=[('collaboration', '협업 프로젝트'), ('study', '스터디 프로젝트')])
+    #type = SelectField('프로젝트 유형', choices=[('collaboration', '협업 프로젝트'), ('study', '스터디 프로젝트')])
     is_public = BooleanField('공개 설정 (스터디 프로젝트만 해당)')
 
 class PostForm(FlaskForm):
