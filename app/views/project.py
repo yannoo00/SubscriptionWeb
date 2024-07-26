@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
 from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
 from app import db
-from app.views.github_integration import get_github_repo, get_branches_internal, get_files_internal, create_github_file, update_github_file, get_file_content
+from app.views.github_integration import get_github_repo, get_branches_internal, get_files_internal, create_github_file, update_github_file, get_file_content, create_github_repo
 from werkzeug.utils import secure_filename
 import os
 
@@ -40,8 +40,18 @@ def create_project():
         db.session.add(project)
         db.session.commit()
 
-        flash(f'새 {type} 프로젝트가 생성되었습니다.', 'success')
-        return redirect(url_for('project.detail', project_id=project.id))
+        # GitHub 리포지토리 생성 및 연결
+        success, repo_name = create_github_repo(project.title, project.description)
+        if success:
+            project.github_repo = repo_name
+            db.session.commit()
+            flash(f'새 {type} 프로젝트가 생성되고 GitHub 리포지토리가 연결되었습니다.', 'success')
+            return redirect(url_for('project.detail', project_id=project.id))
+        else:
+            flash('프로젝트는 생성되었지만 GitHub 리포지토리 연결에 실패했습니다.', 'warning')
+            return redirect(url_for('project.detail', project_id=project.id))
+
+            #return redirect(url_for('project.detail', project_id=project.id))
     
     return render_template('project/create.html', form=form, project_type=type)
 
@@ -187,8 +197,7 @@ def get_branches_api(project_id):
 def save_code(project_id):
     project = Project.query.get_or_404(project_id)
     if not project.github_repo:
-        flash('이 프로젝트에는 연결된 GitHub 리포지토리가 없습니다.', 'error')
-        return redirect(url_for('project.detail', project_id=project.id))
+        return jsonify({'success': False, 'message': '이 프로젝트에는 연결된 GitHub 리포지토리가 없습니다.'})
 
     repo = get_github_repo(project)
     branches = get_branches_internal(repo)
@@ -199,12 +208,14 @@ def save_code(project_id):
     if request.method == 'POST':
         action = request.form.get('action')
 
-        if action == 'new_file':
+        if action == '새 파일 저장':
             if form.validate_on_submit():
                 success, message = create_github_file(repo, form.file_name.data, form.code.data, form.branch_name.data, form.commit_message.data)
-                flash(message, 'success' if success else 'error')
+                return jsonify({'success': success, 'message': message})
+            else:
+                return jsonify({'success': False, 'message': '폼 유효성 검사 실패'})
 
-        elif action == 'edit_file':
+        elif action == '파일 수정':
             file_path = request.form.get('file_path')
             content = request.form.get('edit_content')
             branch_name = request.form.get('edit_branch_name')
@@ -212,18 +223,17 @@ def save_code(project_id):
 
             if file_path and content and branch_name and commit_message:
                 success, message = update_github_file(repo, file_path, content, branch_name, commit_message)
-                flash(message, 'success' if success else 'error')
+                return jsonify({'success': success, 'message': message})
             else:
-                flash('필요한 모든 필드를 입력해주세요.', 'error')
-
-        return redirect(url_for('project.detail', project_id=project.id))
+                return jsonify({'success': False, 'message': '필요한 모든 필드를 입력해주세요.'})
 
     default_branch = repo.default_branch
     files = get_files_internal(repo, default_branch)
     if not files:
-        flash('파일목록 가져오기 실패', 'error')
+        current_app.logger.warning('파일 목록을 가져오는데 실패했습니다.')
 
-    return render_template('project/save_code.html', form=form, project=project, files=files)
+    return render_template('project/save_code.html', form=form, project=project, files=files, branches=branches)
+
 
 @bp.route('/get_file_content/<int:project_id>', methods=['GET', 'POST'])
 @login_required

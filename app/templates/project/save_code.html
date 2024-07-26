@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/button.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
     <style>
@@ -125,53 +125,137 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var branchSelect = document.getElementById('edit_branch_name');
-    var projectId = {{ project.id }};  // Jinja2 템플릿 변수
+    var projectId = {{ project.id }};
+    var csrfToken = "{{ csrf_token() }}";  // CSRF 토큰 추가
 
     function loadFiles(branch) {
-        fetch(`/project/get_files/${projectId}?branch=${encodeURIComponent(branch)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(files => {
-                var fileSelect = document.getElementById('file_path');
-                fileSelect.innerHTML = '';
+        fetch("{{ url_for('project.get_files_api', project_id=project.id) }}" + `?branch=${encodeURIComponent(branch)}`, {
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(files => {
+            var fileSelect = document.getElementById('file_path');
+            fileSelect.innerHTML = '';
+            if (files.length === 0) {
+                var option = document.createElement('option');
+                option.textContent = "파일이 없습니다";
+                fileSelect.appendChild(option);
+            } else {
                 files.forEach(file => {
                     var option = document.createElement('option');
                     option.value = file.path;
                     option.textContent = file.path;
                     fileSelect.appendChild(option);
                 });
-            })
-            .catch(error => {
-                console.error('Error loading files:', error);
-                alert('파일 목록을 불러오는 데 실패했습니다: ' + error.message);
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Error loading files:', error);
+            alert('파일 목록을 불러오는 데 실패했습니다: ' + error.message);
+        });
     }
 
-    // 초기 브랜치 목록 로드
-    fetch(`/project/get_branches/${projectId}`)
-        .then(response => response.json())
-        .then(branches => {
-            branchSelect.innerHTML = '';
+    // 브랜치 목록 로드 및 파일 목록 초기화
+    fetch("{{ url_for('project.get_branches_api', project_id=project.id) }}", {
+        headers: {
+            'X-CSRFToken': csrfToken
+        }
+    })
+    .then(response => response.json())
+    .then(branches => {
+        branchSelect.innerHTML = '';
+        if (branches.length === 0) {
+            var option = document.createElement('option');
+            option.textContent = "브랜치가 없습니다";
+            branchSelect.appendChild(option);
+        } else {
             branches.forEach(branch => {
                 var option = document.createElement('option');
                 option.value = branch;
                 option.textContent = branch;
                 branchSelect.appendChild(option);
             });
-            // 브랜치 목록을 로드한 후 첫 번째 브랜치의 파일 목록을 로드
-            if (branches.length > 0) {
-                loadFiles(branches[0]);
-            }
-        })
-        .catch(error => console.error('Error loading branches:', error));
+            loadFiles(branches[0]);  // 첫 번째 브랜치의 파일 목록 로드
+        }
+    })
+    .catch(error => {
+        console.error('Error loading branches:', error);
+        alert('브랜치 목록을 불러오는 데 실패했습니다: ' + error.message);
+    });
 
     branchSelect.addEventListener('change', function() {
         loadFiles(this.value);
     });
-});
+
+    document.querySelector('form[name="action"][value="새 파일 저장"]').closest('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                console.log('파일 생성 성공:', data.message);
+                // 성공 시 추가 작업 (예: 폼 리셋)
+                this.reset();
+            } else {
+                alert('오류: ' + data.message);
+                console.error('파일 생성 실패:', data.message);
+                if (data.message.includes('브랜치')) {
+                    console.log('브랜치가 생성되지 않았습니다.');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Fetch 오류:', error);
+            alert('파일 생성 중 오류가 발생했습니다.');
+        });
+    });
+
+    // 기존 파일 수정 폼 제출 이벤트 리스너
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                console.log('파일 수정 성공:', data.message);
+                // 성공 시 추가 작업
+            } else {
+                alert('오류: ' + data.message);
+                console.error('파일 수정 실패:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch 오류:', error);
+            alert('파일 수정 중 오류가 발생했습니다.');
+        });
+    });
+});    
 </script>
 {% endblock %}

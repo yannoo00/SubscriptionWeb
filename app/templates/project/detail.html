@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/button.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
 {% endblock %}
@@ -92,26 +92,26 @@
         <div id="progress-form-container" style="display: none;">
           <form method="POST" enctype="multipart/form-data" id="progress-form">
               {{ progress_form.csrf_token }}
-              <div class="form-group">
-                  {{ progress_form.date.label }}
-                  {{ progress_form.date(class="form-control") }}
-              </div>
-              <div class="form-group">
-                  {{ progress_form.description.label }}
-                  {{ progress_form.description(class="form-control", rows="5", id="description-field", placeholder="이미지를 붙여넣기 하세요...") }}
-              </div>
-              <div class="form-group">
-                  {{ progress_form.image.label }}
-                  {{ progress_form.image(class="form-control-file") }}
-              </div>
-              <div class="form-group">
-                  {{ progress_form.ai_conversation_link.label }}
-                  {{ progress_form.ai_conversation_link(class="form-control", placeholder="GPT 대화 공유 링크를 입력하세요") }}
-              </div>
-              <div class="form-group">
-                  {{ progress_form.ai_conversation_file.label }}
-                  {{ progress_form.ai_conversation_file(class="form-control-file") }}
-              </div>
+                <div class="form-group">
+                    {{ progress_form.date.label(for="date") }}
+                    {{ progress_form.date(class="form-control", id="date") }}
+                </div>              
+                <div class="form-group">
+                    {{ progress_form.description.label(for="description") }}
+                    {{ progress_form.description(class="form-control", rows="5", id="description", placeholder="이미지를 붙여넣기 하세요...") }}
+                </div>                
+                <div class="form-group">
+                    {{ progress_form.image.label(for="image") }}
+                    {{ progress_form.image(class="form-control-file", id="image") }}
+                </div>                
+                <div class="form-group">
+                    {{ progress_form.ai_conversation_link.label(for="ai_conversation_link") }}
+                    {{ progress_form.ai_conversation_link(class="form-control", id="ai_conversation_link", placeholder="GPT 대화 공유 링크를 입력하세요") }}
+                </div>
+                <div class="form-group">
+                    {{ progress_form.ai_conversation_file.label(for="ai_conversation_file") }}
+                    {{ progress_form.ai_conversation_file(class="form-control-file", id="ai_conversation_file") }}
+                </div>
               {{ progress_form.submit(class="btn btn-primary") }}
           </form>
         </div>
@@ -139,55 +139,70 @@
     </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          var toggleButton = document.getElementById('toggle-progress-form');
-          var formContainer = document.getElementById('progress-form-container');
-      
-          if (toggleButton && formContainer) {
-              toggleButton.addEventListener('click', function() {
-                  if (formContainer.style.display === 'none') {
-                      formContainer.style.display = 'block';
-                      toggleButton.textContent = '진행상황 작성 취소';
-                  } else {
-                      formContainer.style.display = 'none';
-                      toggleButton.textContent = '진행상황 작성하기';
-                  }
-              });
-          }
-      
-          document.getElementById('description-field').addEventListener('paste', function(event) {
-              var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-              for (var index in items) {
-                  var item = items[index];
-                  if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
-                      var file = item.getAsFile();
-                      var formData = new FormData();
-                      formData.append('image', file);
-      
-                      fetch('{{ url_for("project.upload_image") }}', {
-                          method: 'POST',
-                          body: formData,
-                          headers: {
-                              'X-CSRFToken': '{{ progress_form.csrf_token._value() }}'
-                          }
-                      })
-                      .then(response => response.json())
-                      .then(data => {
-                          if (data.url) {
-                              var img = document.createElement('img');
-                              img.src = data.url;
-                              document.getElementById('description-field').value += '\n<img src="' + data.url + '">\n';
-                          }
-                      })
-                      .catch(error => {
-                          console.error('Error uploading image:', error);
-                      });
-      
-                      event.preventDefault();
-                  }
-              }
-          });
-      });
-    </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var toggleButton = document.getElementById('toggle-progress-form');
+            var formContainer = document.getElementById('progress-form-container');
+        
+            if (toggleButton && formContainer) {
+                toggleButton.addEventListener('click', function() {
+                    if (formContainer.style.display === 'none') {
+                        formContainer.style.display = 'block';
+                        toggleButton.textContent = '진행상황 작성 취소';
+                    } else {
+                        formContainer.style.display = 'none';
+                        toggleButton.textContent = '진행상황 작성하기';
+                    }
+                });
+            } else {
+                console.error('Toggle button or form container not found');
+            }
+        
+            var descriptionField = document.getElementById('description');
+            if (descriptionField) {
+                descriptionField.addEventListener('paste', function(event) {
+                    var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                    for (var index in items) {
+                        var item = items[index];
+                        if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
+                            var file = item.getAsFile();
+                            var formData = new FormData();
+                            formData.append('image', file);
+        
+                            fetch('{{ url_for("project.upload_image") }}', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRFToken': '{{ progress_form.csrf_token._value() }}'
+                                }
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.url) {
+                                    var img = document.createElement('img');
+                                    img.src = data.url;
+                                    descriptionField.value += '\n<img src="' + data.url + '">\n';
+                                } else {
+                                    console.error('Image URL not found in response');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error uploading image:', error);
+                                alert('이미지 업로드 중 오류가 발생했습니다.');
+                            });
+        
+                            event.preventDefault();
+                        }
+                    }
+                });
+            } else {
+                console.error('Description field not found');
+            }
+        });
+        </script>
 </div>
 {% endblock %}
