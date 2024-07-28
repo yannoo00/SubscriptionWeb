@@ -4,6 +4,8 @@ from app.models import Project, Notification, ProjectPost, ProjectComment, Proje
 from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
 from app import db
 from app.views.github_integration import get_github_repo, get_branches_internal, get_files_internal, create_github_file, update_github_file, get_file_content, create_github_repo
+from github import Github
+from github.GithubException import GithubException
 from werkzeug.utils import secure_filename
 import os
 
@@ -17,7 +19,7 @@ def list_projects():
     public_study_projects = Project.query.filter_by(type='study', is_public=True).all()
     return render_template('project/list.html', collaboration_projects=collaboration_projects, study_projects=public_study_projects, form=form)
 
-@bp.route('/create', methods=['GET', 'POST']) # url 경로 project/create를 연결 (bp의 url이 /project)
+@bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_project():
     type = request.args.get('type', 'study')  # 기본값을 'study'로 설정
@@ -28,6 +30,7 @@ def create_project():
 
     form = ProjectForm()
     if form.validate_on_submit():
+        # 먼저 Project 객체를 생성합니다
         project = Project(
             title=form.title.data, 
             description=form.description.data, 
@@ -41,17 +44,15 @@ def create_project():
         db.session.commit()
 
         # GitHub 리포지토리 생성 및 연결
-        success, repo_name = create_github_repo(project.title, project.description)
+        success, repo_name, message = create_github_repo(project.title, project.description)
         if success:
             project.github_repo = repo_name
             db.session.commit()
-            flash(f'새 {type} 프로젝트가 생성되고 GitHub 리포지토리가 연결되었습니다.', 'success')
+            flash(f'새 {type} 프로젝트가 생성되고 GitHub 리포지토리가 연결되었습니다. {message}', 'success')
             return redirect(url_for('project.detail', project_id=project.id))
         else:
-            flash('프로젝트는 생성되었지만 GitHub 리포지토리 연결에 실패했습니다.', 'warning')
+            flash(f'프로젝트는 생성되었지만 GitHub 리포지토리 연결에 실패했습니다. {message}', 'warning')
             return redirect(url_for('project.detail', project_id=project.id))
-
-            #return redirect(url_for('project.detail', project_id=project.id))
     
     return render_template('project/create.html', form=form, project_type=type)
 
@@ -192,6 +193,35 @@ def get_branches_api(project_id):
     branches = get_branches_internal(repo)
     return jsonify(branches)
 
+@bp.route('/create_branch/<int:project_id>', methods=['POST'])
+@login_required
+def create_branch(project_id):
+    project = Project.query.get_or_404(project_id)
+    if not project.github_repo:
+        return jsonify({'success': False, 'message': '이 프로젝트에는 연결된 GitHub 리포지토리가 없습니다.'})
+
+    repo = get_github_repo(project)
+    new_branch_name = request.form.get('new_branch_name')
+
+    try:
+        # 먼저 기본 브랜치를 가져오려고 시도합니다
+        default_branch = repo.get_branch(repo.default_branch)
+    except GithubException as e:
+        if e.status == 404:
+            # 기본 브랜치가 없는 경우, 빈 커밋을 만들어 기본 브랜치를 생성합니다
+            try:
+                repo.create_file("README.md", "Initial commit", "# " + project.title, branch="main")
+                default_branch = repo.get_branch("main")
+            except GithubException as e:
+                return jsonify({'success': False, 'message': f'기본 브랜치 생성 실패: {str(e)}'})
+        else:
+            return jsonify({'success': False, 'message': f'기본 브랜치 가져오기 실패: {str(e)}'})
+
+    try:
+        repo.create_git_ref(ref=f"refs/heads/{new_branch_name}", sha=default_branch.commit.sha)
+        return jsonify({'success': True, 'message': f'새 브랜치 "{new_branch_name}"가 생성되었습니다.'})
+    except GithubException as e:
+        return jsonify({'success': False, 'message': f'브랜치 생성 실패: {str(e)}'})
 @bp.route('/save_code/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def save_code(project_id):
@@ -213,7 +243,7 @@ def save_code(project_id):
                 success, message = create_github_file(repo, form.file_name.data, form.code.data, form.branch_name.data, form.commit_message.data)
                 return jsonify({'success': success, 'message': message})
             else:
-                return jsonify({'success': False, 'message': '폼 유효성 검사 실패'})
+                return jsonify({'success': False, 'message': '폼 유효성 검사 실패', 'errors': form.errors})
 
         elif action == '파일 수정':
             file_path = request.form.get('file_path')
@@ -227,12 +257,7 @@ def save_code(project_id):
             else:
                 return jsonify({'success': False, 'message': '필요한 모든 필드를 입력해주세요.'})
 
-    default_branch = repo.default_branch
-    files = get_files_internal(repo, default_branch)
-    if not files:
-        current_app.logger.warning('파일 목록을 가져오는데 실패했습니다.')
-
-    return render_template('project/save_code.html', form=form, project=project, files=files, branches=branches)
+    return render_template('project/save_code.html', form=form, project=project, branches=branches)
 
 
 @bp.route('/get_file_content/<int:project_id>', methods=['GET', 'POST'])
@@ -267,12 +292,17 @@ def get_files_api(project_id):
 
     try:
         files = get_files_internal(repo, branch)
+        if not files:
+            current_app.logger.info(f'프로젝트 {project_id}의 브랜치 {branch}에 파일이 없습니다.')
         return jsonify(files)
+    except GithubException as e:
+        current_app.logger.error(f'GitHub API 오류: {e.status} {e.data}')
+        return jsonify({"error": str(e.data)}), e.status
     except Exception as e:
-        current_app.logger.error(f'파일 목록을 가져오는 중 오류 발생: {str(e)}')
-        return jsonify({"error": str(e)}), 500
-
+        current_app.logger.error(f'파일 목록을 가져오는 중 예상치 못한 오류 발생: {str(e)}')
+        return jsonify({"error": "Internal server error"}), 500
 @bp.route('/create_post/<int:project_id>', methods=['POST'])
+
 @login_required
 def create_post(project_id):
     project = Project.query.get_or_404(project_id)
