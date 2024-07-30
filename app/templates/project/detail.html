@@ -23,6 +23,29 @@
         </div>
         {% endif %}
     </div>
+
+    <div class="project-section">
+        <h3 class="project-subtitle">자동화 툴 상태</h3>
+        {% if current_user == project.client %}
+        <form id="automationToolForm" action="{{ url_for('project.toggle_automation_tool', project_id=project.id) }}" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="automationToolCheck" name="automation_tool" 
+                       {% if project.automation_tool_in_development %}checked{% endif %}>
+                <label class="form-check-label" for="automationToolCheck">자동화 툴 개발 중</label>
+            </div>
+            <button type="submit" style="display: none;" id="submitButton"></button>
+        </form>
+        {% else %}
+            <p>
+                {% if project.automation_tool_in_development %}
+                    자동화 툴 개발 중
+                {% else %}
+                    자동화 툴 연결되지 않음
+                {% endif %}
+            </p>
+        {% endif %}
+    </div>
     
     <div class="project-section">
         <div class="row">
@@ -203,6 +226,19 @@
                 console.error('Description field not found');
             }
         });
-        </script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var checkbox = document.getElementById('automationToolCheck');
+            var form = document.getElementById('automationToolForm');
+            
+            if (checkbox && form) {
+                checkbox.addEventListener('change', function() {
+                    form.submit();
+                });
+            } else {
+                console.error('Checkbox or form not found');
+            }
+        });
+    </script>
 </div>
 {% endblock %}

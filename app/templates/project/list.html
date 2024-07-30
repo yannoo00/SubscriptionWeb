@@ -19,6 +19,9 @@
         <a href="{{ url_for('project.detail', project_id=project.id) }}" class="project-card-link">
             <div class="project-card">
                 <div class="project-card-body">
+                    {% if project.automation_tool_in_development %}
+                    <div class="automation-tool-badge">자동화 툴</div>
+                    {% endif %}                
                     <h3 class="project-title">{{ project.title }}</h3>
                     <p class="project-description">{{ project.description[:50] }}{% if project.description|length > 50 %}...{% endif %}</p>
                     <div class="project-meta">

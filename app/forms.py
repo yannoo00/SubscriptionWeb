@@ -111,3 +111,6 @@ class RegistrationForm(FlaskForm):
     is_admin = BooleanField('관리자로 가입')
     admin_password = PasswordField('관리자 인증 비밀번호')
     submit = SubmitField('가입하기')
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')

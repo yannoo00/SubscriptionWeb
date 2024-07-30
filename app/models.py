@@ -65,6 +65,8 @@ class Project(db.Model):
     github_repo = db.Column(db.String(200))
     type = db.Column(db.String(20), nullable = False, default = 'collaboration')
     is_public = db.Column(db.Boolean, default=True)
+    automation_tool_in_development = db.Column(db.Boolean, default=False)
+
 
 class ProjectParticipant(db.Model):
     id = db.Column(db.Integer, primary_key=True)

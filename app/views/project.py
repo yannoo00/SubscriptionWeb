@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, jsonify, send_from_directory
 from flask_login import login_required, current_user
 from app.models import Project, Notification, ProjectPost, ProjectComment, ProjectParticipant, ProjectProgress
-from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm
+from app.forms import ProjectForm, PostForm, CommentForm, ProjectParticipationForm, ContributionForm, AcceptParticipantForm, ProjectProgressForm, ProjectPlanForm, ParticipateForm, CodeSaveForm, EmptyForm
 from app import db
 from app.views.github_integration import get_github_repo, get_branches_internal, get_files_internal, create_github_file, update_github_file, get_file_content, create_github_repo
 from github import Github
@@ -66,6 +66,7 @@ def detail(project_id):
     accept_form = AcceptParticipantForm()
     participate_form = ParticipateForm()
     progress_form = ProjectProgressForm()
+    empty_form = EmptyForm()  # EmptyForm 인스턴스 생성
 
     if request.method == 'POST':
         if 'submit_progress' in request.form:
@@ -101,9 +102,10 @@ def detail(project_id):
 
     return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form,
                            contribution_form=contribution_form, accept_form=accept_form, 
-                           participate_form=participate_form,  # 이 줄 추가
-                           form=progress_form,  # 여기를 수정
-                           progress_form=progress_form, progress_list=progress_list)
+                           participate_form=participate_form,
+                           progress_form=progress_form,
+                           progress_list=progress_list,
+                           form=empty_form)  # EmptyForm을 'form'으로 전달
 
 @bp.route('/participate/<int:project_id>', methods=['POST'])
 @login_required
@@ -236,7 +238,7 @@ def save_code(project_id):
     form.branch_name.choices = [(branch, branch) for branch in branches]
 
     if request.method == 'POST':
-        action = request.form.get('action')
+        action = request.form.get('action') 
 
         if action == '새 파일 저장':
             if form.validate_on_submit():
@@ -457,3 +459,21 @@ def upload_image():
         return jsonify({'url': url_for('uploaded_file', filename=filename)})
 
     return jsonify({'error': 'Invalid file type'}), 400
+
+
+@bp.route('/toggle_automation_tool/<int:project_id>', methods=['POST'])
+@login_required
+def toggle_automation_tool(project_id):
+    form = EmptyForm()  # 빈 폼 생성
+    if form.validate_on_submit():  # CSRF 토큰 검증
+        project = Project.query.get_or_404(project_id)
+        if current_user != project.client:
+            flash('권한이 없습니다.', 'error')
+        else:
+            project.automation_tool_in_development = not project.automation_tool_in_development
+            db.session.commit()
+            flash('자동화 툴 상태가 업데이트되었습니다.', 'success')
+    else:
+        flash('CSRF 토큰이 유효하지 않습니다.', 'error')
+    return redirect(url_for('project.detail', project_id=project_id))
+
