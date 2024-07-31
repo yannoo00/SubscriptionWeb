@@ -15,7 +15,8 @@
         {% if project.github_repo %}
         <p class="project-meta">GitHub 리포지토리: <a href="https://github.com/{{ project.github_repo }}" target="_blank">{{ project.github_repo }}</a></p>
         {% endif %}
-        {% if current_user in project.participants or current_user == project.client %}
+        {% set participant = project.project_participants|selectattr('user', 'equalto', current_user)|selectattr('accepted', 'equalto', True)|first %}
+        {% if participant or current_user == project.client %}        
         <div class="project-actions">
             <a href="{{ url_for('project.plan', project_id=project.id) }}" class="btn btn-info">기획 페이지</a>
             <a href="{{ url_for('project.feedback', project_id=project.id) }}" class="btn btn-info">피드백</a>
@@ -71,20 +72,21 @@
                 </p>
                 {% if current_user.id == project.client_id %}
                   <h4 class="project-subtitle">참가 신청 목록</h4>
-                  <ul class="project-participants">
-                    {% for participant in project.project_participants %}
-                      {% if not participant.accepted %}
-                        <li class="participant-item">
-                            {{ participant.user.name }}
-                            <form action="{{ url_for('project.accept_participant', project_id=project.id) }}" method="post" class="d-inline">
-                                {{ accept_form.csrf_token }}
-                                <input type="hidden" name="user_id" value="{{ participant.user.id }}">
-                                {{ accept_form.submit(class='btn btn-sm btn-success') }}
-                            </form>
-                        </li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
+                    <ul class="project-participants">
+                        {% for participant in project.project_participants %}
+                            {% if not participant.accepted %}
+                                <li class="participant-item">
+                                    <span class="participant-name">{{ participant.user.name }}</span>
+                                    <form action="{{ url_for('project.accept_participant', project_id=project.id) }}" method="post" class="participant-actions">
+                                        {{ accept_form.csrf_token }}
+                                        <input type="hidden" name="user_id" value="{{ participant.user.id }}">
+                                        {{ accept_form.submit(class='btn btn-sm btn-success detail-btn-success') }}
+                                    </form>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+
                 {% endif %}
             </div>
             <div class="col-6">
