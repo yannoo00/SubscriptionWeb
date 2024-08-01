@@ -346,18 +346,6 @@ def edit_project(project_id):
         return redirect(url_for('project.detail', project_id=project.id))
     return render_template('project/edit.html', form=form, project=project)
 
-@bp.route('/delete/<int:project_id>')
-@login_required
-def delete_project(project_id):
-    project = Project.query.get_or_404(project_id)
-    if project.client != current_user:
-        flash('권한이 없습니다.', 'error')
-    else:
-        db.session.delete(project)
-        db.session.commit()
-        flash('프로젝트가 삭제되었습니다.', 'success')
-    return redirect(url_for('project.list_projects'))
-
 @bp.route('/feedback/<int:project_id>')
 @login_required
 def feedback(project_id):
@@ -476,4 +464,20 @@ def toggle_automation_tool(project_id):
     else:
         flash('CSRF 토큰이 유효하지 않습니다.', 'error')
     return redirect(url_for('project.detail', project_id=project_id))
+
+@bp.route('/delete/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def delete_project(project_id):
+    project = Project.query.get_or_404(project_id)
+    if request.method == 'POST':
+        if project.client == current_user or current_user.is_admin:
+            db.session.delete(project)
+            db.session.commit()
+            flash('프로젝트가 삭제되었습니다.', 'success')
+        else:
+            flash('프로젝트를 삭제할 권한이 없습니다.', 'error')
+        return redirect(url_for('project.list_projects'))
+    else:
+        # GET 요청의 경우 확인 페이지를 보여줄 수 있습니다.
+        return render_template('project/confirm_delete.html', project=project)
 

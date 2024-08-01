@@ -169,3 +169,4 @@ class ChatMessage(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     chat_room = db.relationship('ChatRoom', backref=db.backref('messages', lazy=True))
     sender = db.relationship('User', backref=db.backref('sent_messages', lazy=True))
+

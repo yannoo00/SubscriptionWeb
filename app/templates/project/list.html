@@ -3,6 +3,18 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/components/button.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/project.css') }}">
+<style>
+    .filter-buttons {
+        margin-bottom: 20px;
+    }
+    .filter-buttons button {
+        margin-right: 10px;
+    }
+    .filter-active {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -12,6 +24,13 @@
     <div class="project-type-toggle">
         <button id="collaborationBtn" class="active">협업 프로젝트</button>
         <button id="studyBtn">스터디 프로젝트</button>
+    </div>
+
+    <div class="filter-buttons">
+        <button id="allBtn" class="filter-active">전체</button>
+        <button id="participatingBtn">참여중</button>
+        <button id="ongoingBtn">진행중</button>
+        <button id="completedBtn">완료된</button>
     </div>
 
     <div id="collaborationProjects" class="project-list">
@@ -128,7 +147,52 @@
     collaborationBtn.addEventListener('click', showCollaborationProjects);
     studyBtn.addEventListener('click', showStudyProjects);
 
+    const allBtn = document.getElementById('allBtn');
+    const participatingBtn = document.getElementById('participatingBtn');
+    const ongoingBtn = document.getElementById('ongoingBtn');
+    const completedBtn = document.getElementById('completedBtn');
+
+    const projectCards = document.querySelectorAll('.project-card');
+
+    function filterProjects(filter) {
+        projectCards.forEach(card => {
+            switch(filter) {
+                case 'all':
+                    card.style.display = 'block';
+                    break;
+                case 'participating':
+                    card.style.display = card.querySelector('.project-status') && 
+                                         card.querySelector('.project-status').textContent === '참여중' 
+                                         ? 'block' : 'none';
+                    break;
+                case 'ongoing':
+                    card.style.display = !card.querySelector('.project-status') || 
+                                         card.querySelector('.project-status').textContent !== '완료됨' 
+                                         ? 'block' : 'none';
+                    break;
+                case 'completed':
+                    card.style.display = card.querySelector('.project-status') && 
+                                         card.querySelector('.project-status').textContent === '완료됨' 
+                                         ? 'block' : 'none';
+                    break;
+            }
+        });
+
+        // 활성화된 필터 버튼 스타일 변경
+        [allBtn, participatingBtn, ongoingBtn, completedBtn].forEach(btn => {
+            btn.classList.remove('filter-active');
+        });
+        event.target.classList.add('filter-active');
+    }
+
+    allBtn.addEventListener('click', (event) => filterProjects('all', event));
+    participatingBtn.addEventListener('click', (event) => filterProjects('participating', event));
+    ongoingBtn.addEventListener('click', (event) => filterProjects('ongoing', event));
+    completedBtn.addEventListener('click', (event) => filterProjects('completed', event));
+
     // 초기 상태 설정
     showCollaborationProjects();
+    filterProjects('all');
+    
 </script>
 {% endblock %}

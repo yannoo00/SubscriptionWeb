@@ -15,6 +15,14 @@
         {% if project.github_repo %}
         <p class="project-meta">GitHub 리포지토리: <a href="https://github.com/{{ project.github_repo }}" target="_blank">{{ project.github_repo }}</a></p>
         {% endif %}
+        
+        {% if current_user == project.client or current_user.is_admin %}
+        <form action="{{ url_for('project.delete_project', project_id=project.id) }}" method="post" onsubmit="return confirm('정말로 이 프로젝트를 삭제하시겠습니까?');">
+            {{ form.csrf_token }}
+            <button type="submit" class="btn btn-danger">프로젝트 삭제</button>
+        </form>
+        {% endif %}
+
         {% set participant = project.project_participants|selectattr('user', 'equalto', current_user)|selectattr('accepted', 'equalto', True)|first %}
         {% if participant or current_user == project.client %}        
         <div class="project-actions">
