@@ -1,34 +1,84 @@
+/* 컨테이너 스타일 */
 .project-list-container {
-  max-width: 800px;
+  max-width: 1800px;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
   position: relative;
-  padding-bottom: 60px; /* 버튼의 높이만큼 여백 추가 */
+  padding-bottom: 60px;
   background-color: #fafafa;
 }
 
+/* 프로젝트 리스트 스타일 */
 .project-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
+/* 프로젝트 카드 링크 스타일 */
+.project-card-link {
+  display:block;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.project-card-link:hover {
+  text-decoration: none;
+}
+
+/* 반응형 카드 크기 */
+.project-card-link {
+  flex-basis: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .project-card-link {
+    flex-basis: calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
+}
+
+@media (min-width: 900px) {
+  .project-card-link {
+    flex-basis: calc(33.333% - 14px);
+    max-width: calc(33.333% - 14px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .project-card-link {
+    flex-basis: calc(25% - 15px);
+    max-width: calc(25% - 15px);
+  }
+}
+
+@media (min-width: 1500px) {
+  .project-card-link {
+    flex-basis: calc(20% - 16px);
+    max-width: calc(20% - 16px);
+  }
+}
+
+/* 프로젝트 카드 스타일 */
 .project-card {
   background-color: #fff;
   border: 1px solid #dbdbdb;
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   min-height: 280px;
-
   position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .project-card:hover {
@@ -45,6 +95,7 @@
   flex-grow: 1;
 }
 
+/* 프로젝트 제목 스타일 */
 .project-title {
   font-size: 18px;
   font-weight: 600;
@@ -52,6 +103,7 @@
   color: #262626;
 }
 
+/* 프로젝트 설명 스타일 */
 .project-description {
   font-size: 14px;
   color: #737373;
@@ -60,6 +112,7 @@
   text-align: center;
 }
 
+/* 프로젝트 메타 정보 스타일 */
 .project-meta {
   font-size: 12px;
   color: #999;
@@ -69,8 +122,12 @@
   margin-top: 10px;
 }
 
+/* 참가자 리스트 스타일 */
 .project-participants {
   margin-top: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .participant-list {
@@ -84,27 +141,19 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  /* display: flex;
-  justify-content: space-between;
-  align-items: 10px;
-  margin-bottom: 10px;
-
-  background-color: #f0f0f0;
-  border-radius: 15px;
-  padding: 5px 10px;
-  font-size: 12px;
-  color: #666; */
 }
 
 .participant-name {
-  flex-grow: 1; /* 이름 부분이 가능한 넓은 공간을 차지하게 함 */
-}
-.participant-actions {
-  background: none; /* 하얀 배경 제거 */
-  border: none; /* 테두리 제거 */
-  box-shadow: none; /* 박스 그림자 제거 */
+  flex-grow: 1;
 }
 
+.participant-actions {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+/* 프로젝트 상태 스타일 */
 .project-status {
   margin-top: 10px;
   font-size: 12px;
@@ -115,12 +164,7 @@
   color: #00838f;
 }
 
-@media (max-width: 600px) {
-  .project-list {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* 생성 버튼 스타일 */
 .create-btn {
   position: fixed;
   bottom: 20px;
@@ -142,6 +186,7 @@
   background-color: #0056b3;
 }
 
+/* 프로젝트 상세 페이지 스타일 */
 .project-detail-container {
   max-width: 800px;
   margin: 0 auto;
@@ -158,25 +203,13 @@
   border-bottom: none;
 }
 
-.project-title {
-  font-size: 24px;
+.project-subtitle {
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
-  color: #262626;
-}
-
-.project-description {
-  font-size: 16px;
-  color: #737373;
   margin-bottom: 20px;
 }
 
-.project-meta {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 15px;
-}
-
+/* 프로젝트 액션 버튼 스타일 */
 .project-actions {
   margin-bottom: 20px;
 }
@@ -194,24 +227,7 @@
   background-color: #0056b3;
 }
 
-.project-subtitle {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.project-participants {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.project-status {
-  font-size: 16px;
-  font-weight: bold;
-  color: #007bff;
-}
-
+/* 카드 스타일 */
 .card {
   border: none;
   border-radius: 8px;
@@ -243,6 +259,7 @@
   margin-top: 15px;
 }
 
+/* 레이아웃 유틸리티 클래스 */
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -258,10 +275,7 @@
   max-width: 50%;
 }
 
-.project-card-link:hover {
-  text-decoration: none;
-}
-
+/* 프로젝트 타입 토글 버튼 스타일 */
 .project-type-toggle {
   display: flex;
   justify-content: center;
@@ -289,11 +303,13 @@
   background-color: #e0e0e0;
 }
 
+/* 제목 스타일 */
 h2 {
   font-size: 24px;
   color: #262626;
 }
 
+/* 폼 스타일 */
 form {
   max-width: 600px;
   margin: 0 auto;
@@ -333,7 +349,7 @@ form button:hover {
   background-color: #0056b3;
 }
 
-
+/* 자동화 도구 배지 스타일 */
 .automation-tool-badge {
   position: absolute;
   top: 10px;
@@ -346,15 +362,14 @@ form button:hover {
   font-weight: bold;
 }
 
-
+/* 성공 버튼 스타일 */
 .project-detail-container .btn-success.detail-btn-success {
   background-color: var(--success-color);
-  border: none; /* 테두리를 제거하여 하얀 네모 배경을 제거 */
-  box-shadow: none; /* 박스 그림자 제거 */
+  border: none;
+  box-shadow: none;
 }
 
 .project-detail-container .btn-success.detail-btn-success:hover {
   background-color: #218838;
-  border: none; /* 테두리를 제거하여 하얀 네모 배경을 제거 */
+  border: none;
 }
-

@@ -64,3 +64,42 @@
     background-color: #c82333;
     border-color: #bd2130;
   }
+
+
+  
+/* 필터 버튼 기본 스타일 */
+.filter-buttons button {
+  display: inline-block;
+  margin-right: 10px; /* 마진 설정 */
+  padding: 0.375rem 0.75rem; /* 패딩 설정 */
+  font-size: 1rem; /* 폰트 크기 */
+  line-height: 1.5; /* 줄 간격 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  vertical-align: middle; /* 수직 중앙 정렬 */
+  border-radius: 0.25rem; /* 테두리 둥글게 */
+  border: 1px solid transparent; /* 테두리 설정 */
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, 
+              border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* 전환 효과 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
+  user-select: none; /* 텍스트 선택 방지 */
+}
+
+/* 필터 버튼 기본 및 호버 상태 */
+.filter-buttons button {
+  color: #333; /* 기본 텍스트 색상 */
+  background-color: #f8f9fa; /* 기본 배경 색상 */
+  border-color: #ced4da; /* 기본 테두리 색상 */
+}
+
+.filter-buttons button:hover {
+  color: #fff; /* 호버 시 텍스트 색상 */
+  background-color: #007bff; /* 호버 시 배경 색상 */
+  border-color: #0056b3; /* 호버 시 테두리 색상 */
+}
+
+/* 활성화 상태 스타일 */
+.filter-active {
+  color: #fff; /* 활성화 시 텍스트 색상 */
+  background-color: #007bff; /* 활성화 시 배경 색상 */
+  border-color: #0056b3; /* 활성화 시 테두리 색상 */
+}
