@@ -59,6 +59,8 @@ def create_project():
 @bp.route('/detail/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def detail(project_id):
+    print(f"Entering detail function for project_id: {project_id}")  # 로그 추가
+
     project = Project.query.get_or_404(project_id)
     post_form = PostForm()
     comment_form = CommentForm()
@@ -69,36 +71,50 @@ def detail(project_id):
     empty_form = EmptyForm()  # EmptyForm 인스턴스 생성
 
     if request.method == 'POST':
+        print("POST request received")  # 로그 추가
+        print(f"Form data: {request.form}")  # 폼 데이터 출력        
         if 'submit_progress' in request.form:
+            print("submit_progress found in form")  # 로그 추가
             if progress_form.validate_on_submit():
-                filename = None
-                if progress_form.image.data:
-                    file = progress_form.image.data
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
+                print("Form validated successfully")  # 로그 추가
+                try:
+                    filename = None
+                    if progress_form.image.data:
+                        file = progress_form.image.data
+                        filename = secure_filename(file.filename)
+                        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                        file.save(file_path)
 
-                conversation_filename = None
-                if progress_form.ai_conversation_file.data:
-                    conversation_file = progress_form.ai_conversation_file.data
-                    conversation_filename = secure_filename(conversation_file.filename)
-                    conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
-                    conversation_file.save(conversation_file_path)
+                    conversation_filename = None
+                    if progress_form.ai_conversation_file.data:
+                        conversation_file = progress_form.ai_conversation_file.data
+                        conversation_filename = secure_filename(conversation_file.filename)
+                        conversation_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], conversation_filename)
+                        conversation_file.save(conversation_file_path)
 
-                new_progress = ProjectProgress(
-                    project=project,
-                    user=current_user,
-                    date=progress_form.date.data,
-                    description=progress_form.description.data,
-                    image=filename,
-                    ai_conversation_link=progress_form.ai_conversation_link.data,
-                    ai_conversation_file=conversation_filename
-                )
-                db.session.add(new_progress)
-                db.session.commit()
-                flash('진행 상황이 성공적으로 기록되었습니다.', 'success')
+                    new_progress = ProjectProgress(
+                        project=project,
+                        user=current_user,
+                        date=progress_form.date.data,
+                        description=progress_form.description.data,
+                        image=filename,
+                        ai_conversation_link=progress_form.ai_conversation_link.data,
+                        ai_conversation_file=conversation_filename
+                    )
+                    db.session.add(new_progress)
+                    db.session.commit()
+                    print(f"New progress added: ID={new_progress.id}, Project ID={new_progress.project_id}, User ID={new_progress.user_id}, Date={new_progress.date}")
+
+                    flash('진행 상황이 성공적으로 기록되었습니다.', 'success')
+                except Exception as e:
+                    db.session.rollback()
+                    print(f"Error occurred while saving progress: {str(e)}")  # 로그 추가
+                    flash('진행 상황 저장 중 오류가 발생했습니다.', 'error')                
+                return redirect(url_for('project.detail', project_id=project.id))
+
 
     progress_list = ProjectProgress.query.filter_by(project=project).order_by(ProjectProgress.date.desc()).all()
+    print(f"Progress list count: {len(progress_list)}")  # 로그 추가
 
     return render_template('project/detail.html', project=project, post_form=post_form, comment_form=comment_form,
                            contribution_form=contribution_form, accept_form=accept_form, 

@@ -123,7 +123,7 @@
         <h3 class="project-subtitle">{{ project.title }} - 진행상황 기록</h3>
         <button id="toggle-progress-form" class="btn btn-primary mb-3">진행상황 작성하기</button>
         <div id="progress-form-container" style="display: none;">
-          <form method="POST" enctype="multipart/form-data" id="progress-form">
+          <form method="POST" enctype="multipart/form-data" id="progress-form" action="{{ url_for('project.detail', project_id=project.id) }}">
               {{ progress_form.csrf_token }}
                 <div class="form-group">
                     {{ progress_form.date.label(for="date") }}
@@ -145,16 +145,18 @@
                     {{ progress_form.ai_conversation_file.label(for="ai_conversation_file") }}
                     {{ progress_form.ai_conversation_file(class="form-control-file", id="ai_conversation_file") }}
                 </div>
-              {{ progress_form.submit(class="btn btn-primary") }}
-          </form>
+                <button type="submit" name="submit_progress" class="btn btn-primary">{{ progress_form.submit.label.text }}</button>          
+            </form>
         </div>
     </div>
 
     <div class="project-section">
         <h3 class="project-subtitle">진행상황 목록</h3>
+        <p>Debug: Total progress items: {{ progress_list|length }}</p>
         {% for progress in progress_list %}
         <div class="card my-3">
             <div class="card-body">
+                <p>Debug: Rendering progress item {{ loop.index }}</p>
                 <h5 class="card-title">{{ progress.date.strftime('%Y-%m-%d') }}</h5>
                 <p class="card-text">{{ progress.description|safe }}</p>
                 {% if progress.image %}
@@ -168,6 +170,8 @@
                 {% endif %}
             </div>
         </div>
+        {% else %}
+        <p>No progress items found.</p>
         {% endfor %}
     </div>
 
